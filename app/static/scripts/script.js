@@ -896,7 +896,7 @@ function addLayers() {
       name: 'change-upscaled-300m',
       urls: 'https://storage.googleapis.com/aqua-monitor/AquaMonitor_2_300m_2016_08_27/{z}/{x}/{y}.png',
       index: nLayers++,
-      minZoom: 6,
+      minZoom: 5,
       maxZoom: 10,
       mode: 'static',
       opacity: 80
@@ -905,7 +905,7 @@ function addLayers() {
       name: 'change',
       urls: renderSurfaceWaterChanges(false, true),
       index: nLayers++,
-      minZoom: 11,
+      minZoom: 10,
       maxZoom: 22,
       mode: 'static',
       opacity: 80
