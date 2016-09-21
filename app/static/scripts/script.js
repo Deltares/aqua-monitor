@@ -905,7 +905,7 @@ function addLayers() {
       name: 'change',
       urls: renderSurfaceWaterChanges(false, true),
       index: nLayers++,
-      minZoom: 9,
+      minZoom: 11,
       maxZoom: 22,
       mode: 'static',
       opacity: 80
