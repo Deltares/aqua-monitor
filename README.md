@@ -1,5 +1,8 @@
-# aqua-monitor
-Monitoring surface water changes from space at global scale
+Aqua Monitor shows how the Earth's surface water has changed during the last 30 years.
+
+http://aqua-monitor.appspot.com
+
+See also the following Nature Climate Change paper: http://nature.com/nclimate/journal/v6/n9/full/nclimate3111.html
 
 # How to build?
 
