@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+
+        <title>Aqua Monitor - monitoring surface water changes from space.</title>
+
+        <meta name="description" content="Wonder how Earth's surface water changed during the last 30 years? Aqua Monitor detects these changes in real-time using satellite imagery for any place on Earth." />
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+        <script src="static/scripts/chart.js"></script>
+
+        <!-- Load the Google Maps API. -->
+        <!--<script src="https://maps.google.com/maps/api/js?sensor=false"></script>-->
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=drawing,places&key=AIzaSyDJk7KL7QvV8MoxIHU_XnHVb1kNYT7h07U"></script>
+
+        <!-- Load compiled Earth Engine JavaScript client library. -->
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.1.1/material.indigo-pink.min.css">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
+
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.5/dc.min.js"></script>
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.5/dc.min.css">
+
+        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+        <link rel="stylesheet" href="static/libs/normalize.css"/>
+
+        <link rel="stylesheet" href="static/styles/chart.css">
+        <link rel="stylesheet" href="static/styles/time-selector.css">
+        <link rel="stylesheet" href="static/styles/searchbox.css">
+
+        <link rel="stylesheet" href="static/styles/query-chart.css">
+
+        <template id="query-chart-template">
+            <div class="query-chart" id="query-chart"></div>
+        </template>
+
+        <!-- build:css styles/vendor.css -->
+        <!-- bower:css -->
+        <!-- endbower -->
+        <!-- endbuild -->
+
+
+        <!-- build:css static/styles/all.css -->
+        <link rel="stylesheet" href="static/styles/main.css">
+        <!-- endbuild -->
+
+        <!-- build:js /static/scripts/vendor/modernizr.js -->
+        <script src="/bower_components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
+    </head>
+    <body>
+        <!--[if lt IE 11]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
+            href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div id="sidebar" class="ui left demo vertical inverted sidebar labeled icon menu">
+            <a class="item">
+                <i class="area chart icon"></i>
+                Query
+            </a>
+            <a class="item">
+                <i class="download icon"></i>
+                Download
+            </a>
+            <a class="item">
+                <i class="twitter icon"></i>
+                Twitter
+            </a>
+        </div>
+
+        <!-- places autocomplete input -->
+        <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+
+        <!-- The element into which we render the Google Map. Static map by default. -->
+        <div id="map"></div>
+
+        <div id="time-selector-container">
+            <input type="text" id="time-selector-range" value=""/>
+        </div>
+
+        <div id="chart-dashboard">
+            <div id="chart"></div>
+            <div id="chart-range"></div>
+        </div>
+
+        <button id="button-menu-sidebar" class="ui icon button">
+            <i class="sidebar icon"></i>
+        </button>
+
+        <div id="map-buttons" class="ui vertical small icon buttons">
+            <!--
+            <button id="button-download" class="ui icon button">
+                <i class="download icon"></i>
+            </button>
+            -->
+            <button id="button-query" class="ui icon toggle button">
+                <i class="area chart icon"></i>
+            </button>
+            <!--
+                        <button id="button-info" class="ui icon toggle button">
+                            <i class="info icon"></i>
+                        </button>
+            -->
+        </div>
+
+        <div id="zoom-warning" class="ui warning message">
+            <i class="close icon"></i>
+
+            Warning! Zoom in to see surface water changes
+            for selected dates.
+        </div>
+
+        <div id="message-download" class="ui icon message">
+            <i id="message-download-icon" class="notched circle loading icon"></i>
+
+            <div id="message-download-content" class="content">
+                <div class="header">
+                    Just one second
+                </div>
+                <p>We're fetching that content for you.</p>
+            </div>
+        </div>
+
+        <div id="message-initializing-ee" class="ui icon message">
+            <i id="message-initialize-ee-icon" class="notched circle loading icon"></i>
+
+            <div id="message-initialize-ee-content" class="content">
+                <div class="header">
+                    Initializing
+                </div>
+                <p>Google Earth Engine ...</p>
+            </div>
+        </div>
+
+        <div id="deltares-logo">
+            <a target="_blank" href="http://deltares.nl/en" title="Click for more information about Deltares">
+                <div id="deltares-logo-image-div">
+                    <img id="deltares-logo-image" src="static/images/DeltaresLogoSmall.png" draggable="false">
+                </div>
+            </a>
+        </div>
+
+        <button id="info-button" class="ui button active toggle gm-aqua-control">
+          <i class="info icon"></i>
+        </button>
+
+        <div id="info-box" class="ui card">
+        <div class="content" id="info-text">
+            <h2 id="info-text-title">
+              Surface water changes (1985-2016)
+            </h2>
+
+            <p id="info-text-body">
+                Green and blue colors represent areas where surface water changes occured during the last 30 years.
+                Green pixels show where surface water has been turned into land (accretion, land reclamation, droughts).
+                Blue pixels show where land has been changed into surface water (erosion, reservoir construction).<br><br>
+
+The results of the analysis are published in: <br><br><a href="http://www.nature.com/nclimate/journal/v6/n9/full/nclimate3111.html"><strong>Donchyts et.al, 2016, Nature Climate Change</strong></a>
+<br><br><br>
+                <a href="http://earthengine.google.com">
+                    <img src="static/images/GEE.png">
+                </a>
+</p>
+       </div>
+
+        <div class="extra content" id="info-buttons-content">
+          <div class="left floated like" id="info-buttons">
+            <div id="twitter-div">
+                <a class="ui small primary button" id="twitter-button"
+                   href="https://twitter.com/aqua_monitor" title="Follow on Twitter">
+                    <i class="twitter icon"></i>
+                </a>
+            </div>
+
+            <div id="contact-div">
+                <a class="ui small button" id="contact-button"
+                   href="mailto:gennadii.donchyts@deltares.nl?subject=Aqua Monitor Feedback" title="Get in touch!">
+                    <i class="mail icon"></i>
+                </a>
+            </div>
+
+            <div id="terms-div">
+                <a class="ui small button" id="terms-button" href="https://www.deltares.nl/en/disclaimer/"
+                   title="Terms of Use">
+                    <i class="copyright icon"></i>
+                </a>
+            </div>
+          </div>
+
+          <div class="right floated star">
+            <a class="ui small button" id="info-close-button">
+              <i class="close icon"></i>
+            </a>
+          </div>
+
+
+        </div>
+
+        </div>
+        <!--
+        <div id="slider-div-morph">
+           <input id="slider-morph" data-slider-tooltip="hide" type="text"/>
+        </div>
+
+        <div id="slider-div-image">
+           <input id="slider-image" type="text"/>
+           <div class="slider-label">Image</div>
+        </div>
+        -->
+
+        <div id="label-year-before">1985</div>
+        <div id="label-year-after">2015</div>
+
+        <table id="layers-table">
+            <tr>
+                <td>
+                    <div class="slider-label">Changes</div>
+                </td>
+                <td><input id="slider-change" type="text"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="slider-label" id='slider-label-after'>2015</div>
+                </td>
+                <td><input id="slider-after" type="text"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="slider-label" id='slider-label-before'>2000</div>
+                </td>
+                <td><input id="slider-before" type="text"/></td>
+            </tr>
+        </table>
+
+        <div id="layers-toggle-table">
+            <div class="ui toggle checkbox">
+                <input id="toggle-change" type="checkbox" checked>
+                <label for="toggle-change">Changes</label>
+            </div>
+            <div class="ui toggle checkbox">
+                <input id="toggle-after" type="checkbox">
+                <label for="toggle-after">2015</label>
+            </div>
+            <div class="ui toggle checkbox">
+                <input id="toggle-before" type="checkbox" checked>
+                <label for="toggle-before">2000</label>
+            </div>
+        </div>
+
+
+        <!-- Slow loading scripts can be at the end -->
+        <script>
+            var client_id = '{{ client_id }}';
+            var token_type = '{{ token_type }}';
+            var access_token = '{{ access_token }}';
+            var token_expires_in_sec = '{{ token_expires_in_sec }}';
+            var expire_time = '{{ token_expire_time }}';
+            var view = {{ view }};
+            var debug = {{ debug }};
+            var percentile = {{ percentile }};
+            var smoothen = {{ smoothen }};
+            var site = {{ site }};
+            var refine = {{ refine }};
+            var waterSlopeThreshold = {{ slope_threshold }};
+            var waterSlopeThresholdSensitive = {{ slope_threshold_sensitive }};
+            var allYears = {{ all_years }};
+            var allYearsStep = {{ all_years_step }};
+            var averagingMonths1 = {{ averaging_months1 }};
+            var averagingMonths2 = {{ averaging_months2 }};
+            var minYear = {{ min_year }};
+            var maxYear = {{ max_year }};
+            var filterCount = {{ filter_count }};
+            var ndviFilter = {{ ndvi_filter }};
+            var waterSlopeOpacity = {{ water_slope_opacity }};
+            var mode = "static";
+            var minYearStart = 2000;
+        </script>
+
+        <!-- build:js /static/scripts/vendor.js -->
+        <!-- bower:js -->
+        <script src="/bower_components/jquery/dist/jquery.js"></script>
+        <script src="/bower_components/lodash/lodash.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!-- TODO: move to bower -->
+        <link rel="stylesheet" type="text/css"
+              href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
+
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.1.5/css/bootstrap-slider.min.css"
+              crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.1.5/bootstrap-slider.min.js"
+                crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+        <link rel="stylesheet" href="static/libs/ion.rangeSlider.css">
+        <link rel="stylesheet" href="static/libs/ion.rangeSlider.skinModern.css">
+
+        <script type="text/javascript" src="static/libs/ion.rangeSlider.js"></script>
+
+        <!-- build:js static/scripts/plugins.js -->
+        <!-- endbuild -->
+
+        <script src="static/libs/ee_api_js.js"></script>
+        <script src="static/scripts/searchbox.js"></script>
+        <script src="static/scripts/script.js"></script>
+        <script src="static/scripts/time-selector.js"></script>
+        <script src="static/scripts/query-chart.js"></script>
+        <script src="static/scripts/main.js"></script>
+        <!-- build:js static/scripts/all.js -->
+        <!-- endbuild -->
+    </body>
+</html>

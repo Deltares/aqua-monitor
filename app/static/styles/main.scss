@@ -1,0 +1,448 @@
+$icon-font-path: '../fonts/';
+
+$white: #fff;
+$gray-light: #ccc;
+$black: #000;
+$button-shadow: rgba($black, .3) 0 1px 4px -1px;
+// bower:scss
+// endbower
+
+#map .gm-style {
+  // OverlayMapPanes for these layers
+  div:first-child > div:first-child {
+    // change layers
+    .change,
+    .change-heatmap,
+    .change-upscaled-300m,
+    .dynamic-change,
+    .dynamic-change-refined {
+      img {
+        // a bit nicer colors
+        // TODO: replace once corrected in the source
+        filter: hue-rotate(15deg) saturate(80%) !important;
+      }
+    }
+  }
+}
+
+#map.styled .gm-style {
+  // our custom layers
+  div:first-child > div:first-child {
+
+    // after layers
+    .after-percentile,
+    .after-percentile-sharpened {
+      img {
+        // a bit newer
+        filter: sepia(50%) !important;
+      }
+    }
+    // before layers
+    .before-percentile,
+    .before-percentile-sharpened {
+      img {
+        // a bit older
+        filter: sepia(50%) !important;
+      }
+    }
+    // all other layers
+    div {
+      img {
+        // used as background, not too much color
+        filter: saturate(20%);
+      }
+    }
+  }
+}
+
+#map .gm-style {
+  .gm-aqua-control {
+    align-items: center;
+    background-color: $white;
+    border-radius: 2px;
+    box-shadow: $button-shadow;
+    display: flex;
+    height: 28px;
+    justify-content: center;
+    margin-right: 10px;
+    margin-top: 10px;
+    width: 28px;
+
+    &:hover {
+      border-radius: 2px;
+    }
+
+    .ui.icon.button {
+      border-radius: 2px;
+      box-shadow: none;
+      height: 100%;
+      margin-right: 0;
+      padding: 0;
+      width: 100%;
+      &:hover {
+        border-radius: 2px;
+      }
+    }
+
+    i.icon {
+      // reset
+      height: initial;
+      margin: initial;
+    }
+
+  }
+}
+
+.browserupgrade {
+  background: $gray-light;
+  color: $white;
+  margin: .2em 0;
+  padding: .2em 0;
+}
+
+/* Custom page header */
+.header {
+
+  /* Make the masthead heading the same height as the navigation */
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+.controls {
+  margin-top: 10px;
+  border: 0px solid transparent;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+#pac-input {
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  text-overflow: ellipsis;
+  padding: 0 11px 0 13px;
+  width: 320px;
+  background: rgba(250, 250, 255, 0.78);
+  &::placeholder {
+    color: rgba(10, 10, 10, 0.8);
+  }
+  &:focus {
+    border-color: #4d90fe;
+  }
+}
+
+#info-button {
+  display: none;
+  position: absolute;
+  bottom: 165px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 2px;
+  margin: 0;
+  padding: 5px;
+  background: ghostwhite;
+
+  .icon {
+    margin: 0;
+  }
+}
+
+#info-box {
+  display: none;
+  position: absolute;
+  top: 50px;
+  width: 320px;
+  left: 12px;
+  background: rgba(250, 250, 255, 0.78);
+  padding: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+
+  #info-text {
+    padding: 7px;
+
+    h2 {
+      font-size: 1.35rem;
+    }
+
+    p {
+      text-align: justify;
+    }
+  }
+
+  #info-buttons-content {
+    padding: 7px;
+    display: inherit;
+
+    div {
+      display: flex;
+      padding: 0;
+
+      .button {
+        display: flex;
+        height: 20px;
+        margin-right: 3px;
+        margin-left: 0;
+        padding: 3px;
+        border-radius: 2px;
+      }
+
+      .icon {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      #info-close-button {
+        background: transparent;
+        position: absolute;
+        right: 0px;
+      }
+    }
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+.navbar {
+  margin-bottom: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+#zoom-warning {
+  position: absolute;
+  left: 50%;
+  top: 15vh;
+  padding: 20px;
+  width: 660px;
+  margin-left: -330px;
+  display: none;
+}
+
+#map-buttons {
+  position: absolute;
+  left: 10px;
+  top: 100px;
+  display: none;
+}
+
+/*
+#button-query {
+  background-color: white;
+}
+
+#button-download {
+  background-color: white;
+}
+*/
+
+#message-query {
+  display: none;
+  position: absolute;
+  left: 50%;
+  margin-left: -225px;
+  width: 450px;
+  bottom: 250px;
+  padding: 20px;
+}
+
+#message-download {
+  display: none;
+  position: absolute;
+  left: 50%;
+  margin-left: -225px;
+  width: 450px;
+  bottom: 150px;
+  padding: 20px;
+}
+
+#message-initializing-ee {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 350px;
+  margin-left: -175px;
+  display: none;
+}
+
+#message-initialize-ee-icon {
+  float: left;
+}
+
+#message-download-icon {
+  float: left;
+}
+
+#message-download-content {
+  width: 340px;
+  float: right;
+}
+
+#sidebar {
+  display: none;
+}
+
+#button-menu-sidebar {
+  position: absolute;
+  left: 10px;
+  top: 60px;
+  background-color: white;
+  display: none;
+}
+
+#deltares-logo {
+  position: absolute;
+  left: 50%;
+  margin-left: -35px;
+  bottom: 7px;
+  width: 70px;
+  height: 17px;
+  overflow: visible;
+  float: none;
+  display: inline;
+}
+
+#deltares-logo-image-div {
+  width: 87px;
+  height: 21px;
+  cursor: pointer;
+}
+
+#deltares-logo-image {
+  -webkit-user-select: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  -webkit-filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.5));
+}
+
+.slider.slider-vertical {
+  height: 100%;
+}
+
+.slider.slider-horizontal {
+  width: 100%;
+}
+
+#layers-toggle-table {
+  left: 50%;
+  position: absolute;
+  bottom: 45px;
+  width: 120px;
+  background-color: rgba(255, 255, 255, 0.8);
+  margin-left: -60px;
+  display: none;
+}
+
+#layers-toggle-table .toggle {
+  float: bottom;
+  height: 80%;
+  margin-left: 10px;
+}
+
+#layers-toggle-table label {
+  font-size: 12px;
+}
+
+#layers-table {
+  right: 70px;
+  position: absolute;
+  bottom: 25px;
+  display: none;
+}
+
+#layers-table .slider {
+  width: 120px;
+  margin-bottom: 6px;
+  margin-top: 6px;
+  margin-left: 15px;
+}
+
+#label-year-before {
+  opacity: 0;
+  left: 15px;
+  position: absolute;
+  bottom: 38%;
+  color: $white;
+  font-size: 30px;
+  text-shadow: 1px 1px 0 black, -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black;
+  display: none;
+}
+
+#label-year-after {
+  opacity: 0;
+  right: 15px;
+  position: absolute;
+  bottom: 38%;
+  color: $white;
+  font-size: 30px;
+  text-shadow: 1px 1px 0 black, -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black;
+  display: none;
+}
+
+.slider-label {
+  text-align: right;
+}
+
+.slider .slider-selection {
+  background: #BABABA;
+}
+
+.slider-label {
+  color: $white;
+  font-size: 11px;
+  text-shadow: 1px 1px 0px black, -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black;
+}

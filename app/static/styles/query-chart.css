@@ -1,0 +1,25 @@
+svg.query-chart path.line {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.query-chart text {
+    font-size: 10px;
+}
+
+svg.query-chart .axis path,
+svg.query-chart .axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    font-size: 10px;
+    padding: -9px;
+}
+

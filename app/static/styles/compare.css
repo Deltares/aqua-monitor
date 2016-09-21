@@ -1,0 +1,130 @@
+/* variables: padding: 10px */
+body {
+  padding: 0;
+  margin: 0;
+}
+.compare-container {
+  width: 100vw ;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+/* apply padding */
+.bottom-map {
+  /* we can't use box-size: border-box because the mask */
+  position: absolute;
+
+}
+.top-map-mask {
+  position: absolute;
+}
+.top-map {
+  top: 0;
+  left: 0;
+  position: absolute;
+
+}
+
+.top-map, .bottom-map {
+  width: 100vw;
+  height: 100vh;
+}
+
+.top-map-mask {
+  /* compute size relative to the padding */
+  width: 50vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+
+
+.bottom-map {
+
+}
+.top-map-mask {
+  border-right-color: rgba(255,255,255,0.2);
+  border-right-style: solid;
+  border-right-width: 1px;
+}
+
+
+
+
+
+/* style based on http://thenewcode.com/819/A-Before-And-After-Image-Comparison-Slide-Control-in-HTML5 */
+
+.comparison-slider {
+  /* hide default appearance */
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  /* create a light effect */
+  background-color: rgba(255,255,255,0.2);
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  /* at the bottom */
+  top: calc(90vh - 10px);
+  /* from the left */
+  left: 0;
+  /* full width */
+  /* The slider is bound within the track */
+  /* https://bugs.webkit.org/show_bug.cgi?id=94158 */
+  width: 100vw;
+  /* 1 letter height */
+  height: 1rem;
+}
+
+
+.comparison-slider:focus {
+  outline: none;
+}
+.comparison-slider:active {
+  outline: none;
+}
+
+
+/* for chrome */
+.comparison-slider::-webkit-slider-runnable-track {
+  -webkit-appearance:none;
+  /* bit wider so the thumb stays in the middle */
+  width: 100vw;
+  outline: none;
+}
+
+
+.comparison-slider::-moz-range-track {
+  -moz-appearance:none;
+  width: 100vw;
+  outline: none;
+}
+
+
+.comparison-slider::active {
+  border: none;
+  outline: none;
+}
+.comparison-slider::-webkit-slider-thumb {
+  -webkit-appearance:none;
+  width: 1.4rem;
+  height: 1.4rem;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0px 0px 3px #333;
+  /* bug?  */
+  border-radius: 3px;
+}
+.comparison-slider::-moz-range-thumb {
+  -moz-appearance: none;
+  width: 1.4rem;
+  height: 1.4rem;
+  background: rgba(200, 200, 200, 0.8);
+  box-shadow: 0px 0px 3px #333;
+  border-radius: 3px;
+}
+.comparison-slider:focus::-webkit-slider-thumb {
+  background: rgba(255,255,255,0.9);
+}
+.comparison-slider:focus::-moz-range-thumb {
+  background: rgba(255,255,255,0.9);
+}

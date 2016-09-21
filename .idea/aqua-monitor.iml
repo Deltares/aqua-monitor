@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/app" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/.tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/dist" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="lodash" level="application" />
+    <orderEntry type="library" name="semantic" level="application" />
+    <orderEntry type="library" name="jquery.lazyload" level="application" />
+    <orderEntry type="library" name="moment" level="application" />
+    <orderEntry type="library" name="crossfilter" level="application" />
+    <orderEntry type="library" name="dc" level="application" />
+    <orderEntry type="library" name="d3.tip.v0.6.3" level="application" />
+    <orderEntry type="library" name="bootstrap-slider" level="application" />
+  </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/node_modules/browser-sync-ui/templates" />
+        <option value="$MODULE_DIR$/app/templates" />
+      </list>
+    </option>
+  </component>
+</module>

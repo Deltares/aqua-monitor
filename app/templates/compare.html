@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <title>Map compare</title>
+        <meta name="description" content="Comparing 2 maps">
+        <meta name="author" content="Fedor Baart">
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.6.1/lodash.min.js"></script>
+
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=drawing,places"></script>
+
+        <link rel="stylesheet" href="/static/styles/compare.css">
+
+        <!--[if lt IE 9]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+    </head>
+
+    <body>
+        <div class="compare-container">
+            <!-- bottom map -->
+            <div class="map bottom-map"></div>
+            <!-- map on top of the other one -->
+            <div class="top-map-mask" >
+                <!-- clipped by top-map -->
+                <div class="map top-map">
+                </div>
+            </div>
+
+            <!-- <div class="slider-background"></div> -->
+            <input type="range" class="comparison-slider" value="50" min="0" max="100" />
+        </div>
+
+        <!-- Slow loading scripts can be at the end -->
+        <script>
+            // Variables to be filled in by template
+            var client_id = '{{ client_id }}';
+            var token_type = '{{ token_type }}';
+            var access_token = '{{ access_token }}';
+            var token_expires_in_sec = '{{ token_expires_in_sec }}';
+            var expire_time = '{{ token_expire_time }}';
+            var view = {{ view }};
+        </script>
+
+        <script src="/static/libs/ee_api_js.js"></script>
+
+        <script src="/static/scripts/compare.js"></script>
+
+        <script src="/static/scripts/compare-ee.js"></script>
+
+    </body>
+</html>

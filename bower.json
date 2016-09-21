@@ -1,0 +1,22 @@
+{
+  "name": "webapp-default",
+  "private": true,
+  "dependencies": {
+    "bootstrap-sass": "~3.3.5",
+    "modernizr": "~2.8.1",
+    "lodash": "^4.13.1"
+  },
+  "overrides": {
+    "bootstrap-sass": {
+      "main": [
+        "assets/fonts/bootstrap/*",
+        "assets/javascripts/bootstrap.js"
+      ]
+    }
+  },
+  "devDependencies": {
+    "html5shiv": "^3.7.3",
+    "mocha": "^2.5.3",
+    "chai": "^3.5.0"
+  }
+}
