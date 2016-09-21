@@ -4,6 +4,10 @@ http://aqua-monitor.appspot.com
 
 See also the following Nature Climate Change paper: http://nature.com/nclimate/journal/v6/n9/full/nclimate3111.html
 
+The website shows static map by default, visualizing surface water changes which occurred during 1985-2016 as explained in the above paper (see supplementary materials). 
+
+A dynamic mode can be turned on for a more detailed analysis. In this mode, the surface water changes are computed on-the-fly using parameters provided by the user. Additionally, percentile composite images are generated for two selected years.
+
 # How to build?
 
 Install Node.js, which is used by build scripts to compile sources and prepare everything for deployment.
@@ -27,7 +31,7 @@ See gulpfile.babel.js for the rules used to do this.
 To deploy the Aqua Monitor under Google App Engine. The following files need to be added / modified:
 
 * app/privatekey.pem - add your service account key, this is used by Python backend.
-* app/config_web.py - add your client id, secret and refresh token, used at runtime to generate access to GEE for the JavaScript code. 
+* app/config_web.py - add your client id, secret, and a refresh token, used at runtime to generate access to GEE for the JavaScript code. 
 
 
 
