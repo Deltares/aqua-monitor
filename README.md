@@ -8,7 +8,9 @@ The website shows static map by default, visualizing surface water changes which
 
 A dynamic mode can be turned on for a more detailed analysis. In this mode, the surface water changes are computed on-the-fly using parameters provided by the user. Additionally, percentile composite images are generated for two selected years.
 
-The following Google Earth Engine script can be used to generate surface water changes on-the-fly: https://code.earthengine.google.com/b2213fa2838a5e1d7d16a5ec5b758210.
+The following Google Earth Engine script can be used to generate surface water changes on-the-fly: https://code.earthengine.google.com/b2213fa2838a5e1d7d16a5ec5b758210. And the following was used to generate scatic maps: https://code.earthengine.google.com/211b8491e1770136316d9df7f7e5ee20. 
+
+The results presented in the paper include a few additional clean-up steps (noise clean-up in the mountains using HAND mask, deforestation-like changes). But they were excluded during static map generation.
 
 # How to build?
 
