@@ -453,6 +453,7 @@ function addStaticLayer(layer) {
       if (!_.inRange(zoom, layer.minZoom, layer.maxZoom)) {
         return '';
       }
+
       // global mode
       if (layer.mode !== mode) {
         return '';
@@ -462,6 +463,7 @@ function addStaticLayer(layer) {
       if (map.overlayMapTypes.getAt(layer.index).opacity < 0.01) {
         return '';
       }
+
       // TODO: replace tile.x by mod
       return layer.urls
         .replace('{x}', tile.x.mod(Math.pow(2, zoom)))
@@ -479,7 +481,7 @@ function addStaticLayer(layer) {
   // Add the EE layer to the map.
   // Note that the layer.index does not define the position, but the z-index...
   map.overlayMapTypes.setAt(layer.index, mapType);
-  setOpacity(map, layer);
+  refreshLayerOpacity(map, layer);
 }
 
 function addEELayer(layer) {
@@ -502,6 +504,7 @@ function addEELayer(layer) {
         if (!_.inRange(zoom, layer.minZoom, layer.maxZoom)) {
           return '';
         }
+
         // global mode
         if (layer.mode !== mode) {
           return '';
@@ -527,7 +530,7 @@ function addEELayer(layer) {
 
     // Add the EE layer to the map.
     map.overlayMapTypes.setAt(layer.index, mapType);
-    setOpacity(map, layer);
+    refreshLayerOpacity(map, layer);
   });
 }
 
@@ -658,7 +661,7 @@ function initializeMap() {
     updateMapZoomDependencies();
   });
 
-  // switch mode between dynamic / static
+  // button change style
   var styleControlDiv = document.createElement('div');
   $(styleControlDiv).addClass('gm-aqua-control');
   styleControlDiv.innerHTML = '<button title="Switch between dark / light styles" class="ui toggle basic compact small icon button"><i class="paint brush icon"></button>';
@@ -668,7 +671,7 @@ function initializeMap() {
     $(evt.currentTarget).toggleClass('active');
   });
 
-  // button change style
+  // switch mode between dynamic / static
   var modeControlDiv = document.createElement('div');
   $(modeControlDiv).addClass('gm-aqua-control');
   modeControlDiv.innerHTML = '<button title="Toggle between static/dynamic versions" class="ui toggle basic compact small icon button"><i class="options icon"></button>';
@@ -698,7 +701,7 @@ function initializeMap() {
   initAutocomplete(map);
 
   return map;
-};
+}
 
 function addLayers() {
 
@@ -761,12 +764,12 @@ function addLayers() {
     ];
 
     // update sliders
-    _.each(sliders, (slider) => {
+    _.each(sliders, function(slider) {
       function updateSlider(evt) {
-        _.each(slider.layers, (layerName) => {
+        _.each(slider.layers, function(layerName) {
           var layer = layerByName(layerName);
           layer.opacity = evt.value;
-          setOpacity(map, layer);
+          refreshLayerOpacity(map, layer);
           slider.afterSlide(evt);
         });
       }
@@ -780,18 +783,18 @@ function addLayers() {
 
 
     // update toggles
-    _.each(sliders, (slider) => {
+    _.each(sliders, function(slider) {
       $(slider.toggleSelector).checkbox();
       $(slider.toggleSelector).change(function () {
         var checked = $('#toggle-change').is(':checked');
-        _.each(slider.layers, (layerName) => {
+        _.each(slider.layers, function(layerName) {
           var layer = layerByName(layerName);
           if (checked) {
             layer.opacity = 100;
           } else {
             layer.opacity = 0;
           }
-          setOpacity(map, layer);
+          refreshLayerOpacity(map, layer);
         });
       });
 
@@ -989,7 +992,6 @@ function layerByName(name) {
   return _.find(layers, ['name', name]);
 }
 
-
 function toggleMode() {
   // change the global mode
   mode = (mode == 'dynamic') ? 'static' : 'dynamic';
@@ -1020,20 +1022,30 @@ function toggleMode() {
   updateMapZoomDependencies();
 
   _.each(layers, function (layer) {
+    //refreshLayerOpacity(map, layer)
+
     // reset all overlays so that url's are reevaluated (based on zoom)
     var overlay = map.overlayMapTypes.getAt(layer.index);
     map.overlayMapTypes.removeAt(layer.index);
     map.overlayMapTypes.insertAt(layer.index, overlay);
   });
+}
 
-};
-
-function setOpacity(map, layer) {
+function refreshLayerOpacity(map, layer) {
   var overlay = map.overlayMapTypes.getAt(layer.index);
   if (overlay === undefined) {
     console.log('trying to set opacity for undefined overlay', layer, overlay);
     return;
   }
+
+  if(layer.mode === 'static') {
+    if(mode === 'static') {
+      overlay.setOpacity(layer.opacity / 100.0);
+    } else {
+      overlay.setOpacity(0);
+    }
+  }
+
   var appear = layer.opacity / 100 > 0.01 && overlay.getOpacity() < 0.01;
   overlay.setOpacity(layer.opacity / 100.0);
 
