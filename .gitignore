@@ -1,3 +1,4 @@
+config_web.py
 node_modules
 dist
 .tmp
