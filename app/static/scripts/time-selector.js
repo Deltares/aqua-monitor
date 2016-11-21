@@ -54,10 +54,10 @@ $(function () {
       }
 
       if(data.to != prevTo) {
-        layer = layerByName('before-percentile');
+        layer = layerByName('after-percentile');
         layer.urls = renderLandsatMosaic(percentile, years[3], fmt(moment([data.to]).add(averagingMonths2, 'month')));
         setLayer(map, layer);
-        layer = layerByName('before-percentile-sharpened');
+        layer = layerByName('after-percentile-sharpened');
         layer.urls = renderLandsatMosaic(percentile, years[3], fmt(moment([data.to]).add(averagingMonths2, 'month')), true);
         setLayer(map, layer);
         prevTo = data.to;
