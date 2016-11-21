@@ -37,6 +37,23 @@ To deploy the Aqua Monitor under Google App Engine. The following files need to 
 * app/privatekey.pem - add your service account key, this is used by Python backend.
 * app/config_web.py - add your client id, secret, and a refresh token, used at runtime to generate access to GEE for the JavaScript code. 
 
+# Advanced parameter, not exposed yet to the user interface
 
+This will work only at high zoom levels, the following (experimental) arguments can be used to tune the algorithm:
 
+Format: http://aqua-monitor.appspot.com?min_year=1990&max_year=1995
+
+* averaging_months1 = 36 - first filtering period, in months, all images from that period are used to compute percentile
+* averaging_months2 = 18 - second filtering period, in months, all images from that period are used to compute percentile
+* all_years = false - when true - linear regression in time will be computed using *ALL* years (moving average), >> can be extremely slow and even crash <<, but also produce much more accurate results.
+* min_year = 2000 - default value is 2000, but currently up to 1985 is supported. 1972 (60m resolution) will be added later
+* max_year = 2015
+* water_slope_opacity = 0.4 - can be used to show all slope values, not only the largest ones, ~0.7 is nice 
+* percentile=20 - default percentile is 20, use smaller values to select darker ones (also higher chance of shadows)
+* filter_count = 0 - minimum number of images required, otherwise the result will be empty 
+* slope_threshold = 0.03 - slope threshold used to filter large changes
+* slope_threshold_sensitive = 0.02 - threshold for sensitive wetness slope, used after zoom in to refine change around larger change
+* ndvi_filter = -99 - can be used to filter-out changes which are not due to surface water (vegetation cover, like deforestation). This can be x2 slower. Using 0.1 to exclude deforestation woks in most cases.
+* smoothen=true - smoothen changes image or leave it blocky
+* debug = false -  currently only shows surface water change refinement regions at higher zoom levels
 
