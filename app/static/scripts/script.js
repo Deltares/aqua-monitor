@@ -37,7 +37,7 @@ function getWaterTrendChangeRatio(start, stop) {
   return (15 / (stop - start));
 }
 
-var waterChangeTrendRatio = getWaterTrendChangeRatio(minYearStart, maxYear);
+var waterChangeTrendRatio = getWaterTrendChangeRatio(minYearSelection, maxYearSelection);
 
 // First, checks if it isn't implemented yet.
 if (!String.prototype.format) {
@@ -628,15 +628,15 @@ function initializeMap() {
 
   var location = locationInfos[locationIndex];
 
-  // overwrite from the filled in template if available
-  location.zoom = _.get(view, 'zoom', location.zoom);
-  location.center.lat = _.get(view, 'lat', location.center.lat);
-  location.center.lng = _.get(view, 'lng', location.center.lng);
-
   // full map
   location.zoom = 3;
   location.center.lat = 16.240652044117923;
   location.center.lng = -10;
+  
+    // overwrite from the filled in template if available
+    location.zoom = _.get(view, 'zoom', location.zoom);
+    location.center.lat = _.get(view, 'lat', location.center.lat);
+    location.center.lng = _.get(view, 'lng', location.center.lng);
 
   var mapOptions = {
     center: location.center,
@@ -675,7 +675,13 @@ function initializeMap() {
   var modeControlDiv = document.createElement('div');
   $(modeControlDiv).addClass('gm-aqua-control');
   modeControlDiv.innerHTML = '<button title="Toggle between static/dynamic versions" class="ui toggle basic compact small icon button"><i class="options icon"></button>';
+
+  if(mode === 'dynamic') {
+      $(modeControlDiv).children('button').addClass('active')
+  }
+
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(modeControlDiv);
+
   $(modeControlDiv).children('button').on('click', function (evt, el) {
     toggleMode();
     $(evt.currentTarget).toggleClass('active');
@@ -683,6 +689,35 @@ function initializeMap() {
 
   // info button
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push($('#info-button')[0]);
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push($('#share-button')[0]);
+
+  // strange, style changes for one button (GMaps bugs?)
+  $('#share-button').css('padding', 0)
+
+  $('#share-button').on('click', function (evt, el) {
+    var count = 0
+    var url = ''
+
+    function delimiter() {
+        return count ? '&' : '?'
+    }
+
+    if(mode != 'static') {
+      url += delimiter() + 'mode=dynamic';
+      count++;
+    }
+
+    url += delimiter() + 'from=' + minYearSelection
+    count++;
+
+    url += delimiter() + 'to=' + maxYearSelection
+    count++;
+
+    url += delimiter() + 'view=' + map.getCenter().lat() + ',' + map.getCenter().lng() + ',' + map.getZoom() + 'z'
+    count++;
+
+    window.history.replaceState('', '', url);
+  });
 
   google.maps.event.addDomListener(document, 'keyup', function (e) {
     var code = (e.keyCode ? e.keyCode : e.which);
@@ -864,18 +899,18 @@ function addLayers() {
     return date.format('YYYY-MM-DD');
   }
 
-  var before1 = moment(['{0}-01-01'.format(minYearStart)]);
-  var before2 = moment(['{0}-01-01'.format(minYearStart)]).add(averagingMonths1, 'month');
+  var before1 = moment(['{0}-01-01'.format(minYearSelection)]);
+  var before2 = moment(['{0}-01-01'.format(minYearSelection)]).add(averagingMonths1, 'month');
 
-  var after1 = moment(['{0}-01-01'.format(maxYear)]);
-  var after2 = moment(['{0}-01-01'.format(maxYear)]).add(averagingMonths2, 'month');
+  var after1 = moment(['{0}-01-01'.format(maxYearSelection)]);
+  var after2 = moment(['{0}-01-01'.format(maxYearSelection)]).add(averagingMonths2, 'month');
 
 
   // add dynamic changes layers
   var yearsAndPeriods = ee.List([[fmt(before1), averagingMonths1], [fmt(after1), averagingMonths2]]);
 
   if (allYears) {
-    var years = ee.List.sequence(minYearStart, maxYear, allYearsStep).map(function (y) {
+    var years = ee.List.sequence(minYearSelection, maxYearSelection, allYearsStep).map(function (y) {
       return ee.String(y).slice(0, 4).cat('-01-01');
     });
     var months = ee.List.repeat(averagingMonths1, maxYear - minYear + 1);

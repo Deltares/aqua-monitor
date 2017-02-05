@@ -147,9 +147,10 @@ ee.initialize(null, null, function () {
     $('#info-button').toggleClass('active');
   });
 
-  $('#label-year-before').text(minYearStart);
-  $('#label-year-after').text(maxYear);
-  $('#slider-label-before').text(minYearStart);
+  $('#label-year-before').text(minYearSelection);
+  $('#label-year-after').text(maxYearSelection);
+  $('#slider-label-before').text(minYearSelection);
+  $('#slider-label-after').text(maxYearSelection);
   $('#twitter-button').show();
   $('#info-box').show();
 
@@ -163,6 +164,10 @@ ee.initialize(null, null, function () {
     queryWaterTimeSeries(event.latLng, map);
   });
 
+
+  if(mode === 'dynamic') {
+    //toggleMode()
+  }
   // TODO: enable mode selector after initialization
 });
 

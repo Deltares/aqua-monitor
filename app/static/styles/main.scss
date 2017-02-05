@@ -149,6 +149,24 @@ $button-shadow: rgba($black, .3) 0 1px 4px -1px;
   }
 }
 
+#share-button {
+  display: none;
+  position: absolute;
+  padding: 0;
+  bottom: 185px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 2px;
+  margin: 0;
+  padding: 5px;
+  background: ghostwhite;
+
+  .icon {
+    margin: 0;
+  }
+}
+
 #info-button {
   display: none;
   position: absolute;

@@ -8,8 +8,8 @@ $(function () {
     keyboard: true,
     min: minYear,
     max: maxYear,
-    from: minYearStart,
-    to: maxYear,
+    from: minYearSelection,
+    to: maxYearSelection,
     min_interval: 1,
     grid: true,
     grid_snap: true,
@@ -71,6 +71,8 @@ $(function () {
       $('#slider-label-after').text(data.to);
       $('#label-year-before').text(data.from);
       $('#label-year-after').text(data.to);
+      minYearSelection = data.from
+      maxYearSelection = data.to
     }
   });
 });

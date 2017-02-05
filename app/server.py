@@ -100,6 +100,12 @@ class MainPageHandler(webapp2.RequestHandler):
         else:
             template_values['debug'] = 'false'
 
+        mode = self.request.params.get('mode', '')
+        if mode == 'dynamic':
+            template_values['mode'] = 'dynamic'
+        else: 
+            template_values['mode'] = 'static'
+
         refine = self.request.params.get('refine', '')
         if refine == 'false' or refine == '0':
             template_values['refine'] = 'false'
@@ -155,6 +161,18 @@ class MainPageHandler(webapp2.RequestHandler):
             template_values['all_years_step'] = int(all_years_step)
         else:
             template_values['all_years_step'] = 1
+
+        min_year_selection = self.request.params.get('from', '')
+        if min_year_selection:
+            template_values['min_year_selection'] = min_year_selection
+        else:
+            template_values['min_year_selection'] = 2000
+
+        max_year_selection = self.request.params.get('to', '')
+        if max_year_selection:
+            template_values['max_year_selection'] = max_year_selection
+        else:
+            template_values['max_year_selection'] = 2016
 
         min_year = self.request.params.get('min_year', '')
         if min_year:
