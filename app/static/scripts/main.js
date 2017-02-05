@@ -139,11 +139,13 @@ ee.initialize(null, null, function () {
 
   $('#info-close-button').click(function () {
     $('#info-box').transition('slide right');
+    $('#twitter-timeline-box').transition('slide right');
     $('#info-button').toggleClass('active');
   });
 
   $('#info-button').click(function () {
     $('#info-box').transition('slide right');
+    $('#twitter-timeline-box').transition('slide right');
     $('#info-button').toggleClass('active');
   });
 
@@ -153,7 +155,7 @@ ee.initialize(null, null, function () {
   $('#slider-label-after').text(maxYearSelection);
   $('#twitter-button').show();
   $('#info-box').show();
-
+  $('#twitter-timeline-box').show();
 
   // This event listener calls queryWaterTimeSeries() when the map is clicked.
   google.maps.event.addListener(map, 'click', function (event) {
@@ -184,3 +186,33 @@ $('#button-menu-sidebar').click(function () {
 
 ga('create', 'UA-74927830-1', 'auto');
 ga('send', 'pageview');
+
+
+// First, load the widgets.js file asynchronously
+var twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));
+
+/*
+twttr.events.bind(
+  'loaded',
+  function (event) {
+    event.widgets.forEach(function (widget) {
+      console.log("Created widget", widget.id);
+    });
+  }
+);
+*/

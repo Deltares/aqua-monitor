@@ -62,6 +62,10 @@ function renderLandsatMosaic(percentile, start, end, sharpen) {
 
   var images = ee.ImageCollection(l8.merge(l7).merge(l5).merge(l4));
 
+  if(minDoy !== 0 && maxDoy !== 365) {
+    images = images.filter(ee.Filter.dayOfYear(minDoy, maxDoy))
+  }
+
   var image = images
     .reduce(ee.Reducer.percentile([percentile]))
     .rename(bands);
@@ -715,6 +719,21 @@ function initializeMap() {
 
     url += delimiter() + 'view=' + map.getCenter().lat() + ',' + map.getCenter().lng() + ',' + map.getZoom() + 'z'
     count++;
+
+    if(minDoy !== 0) {
+      url += delimiter() + 'min_doy=' + minDoy;
+      count++;
+    }
+
+    if(minDoy !== 365) {
+      url += delimiter() + 'max_doy=' + maxDoy;
+      count++;
+    }
+
+    if(percentile != 20) { // default
+      url += delimiter() + 'percentile=' + percentile
+      count++;
+    }
 
     window.history.replaceState('', '', url);
   });

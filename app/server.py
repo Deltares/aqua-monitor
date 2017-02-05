@@ -174,6 +174,18 @@ class MainPageHandler(webapp2.RequestHandler):
         else:
             template_values['max_year_selection'] = 2016
 
+        min_doy = self.request.params.get('min_doy', '')
+        if min_doy:
+            template_values['min_doy'] = min_doy
+        else:
+            template_values['min_doy'] = 0
+
+        max_doy = self.request.params.get('max_doy', '')
+        if min_doy:
+            template_values['max_doy'] = max_doy
+        else:
+            template_values['max_doy'] = 365
+
         min_year = self.request.params.get('min_year', '')
         if min_year:
             template_values['min_year'] = min_year

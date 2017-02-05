@@ -48,6 +48,10 @@ Format: http://aqua-monitor.appspot.com?min_year=1990&max_year=1995
 * all_years = false - when true - linear regression in time will be computed using *ALL* years (moving average), >> can be extremely slow and even crash <<, but also produce much more accurate results.
 * min_year = 2000 - default value is 2000, but currently up to 1985 is supported. 1972 (60m resolution) will be added later
 * max_year = 2015
+* min_year_selection - first year to select in the timeline
+* max_year_selection - last year to select in the timeline
+* min_doy = 0
+* max_doy = 365
 * water_slope_opacity = 0.4 - can be used to show all slope values, not only the largest ones, ~0.7 is nice 
 * percentile=20 - default percentile is 20, use smaller values to select darker ones (also higher chance of shadows)
 * filter_count = 0 - minimum number of images required, otherwise the result will be empty 
@@ -56,4 +60,5 @@ Format: http://aqua-monitor.appspot.com?min_year=1990&max_year=1995
 * ndvi_filter = -99 - can be used to filter-out changes which are not due to surface water (vegetation cover, like deforestation). This can be x2 slower. Using 0.1 to exclude deforestation woks in most cases.
 * smoothen=true - smoothen changes image or leave it blocky
 * debug = false -  currently only shows surface water change refinement regions at higher zoom levels
+
 

@@ -158,12 +158,28 @@
             </a>
         </div>
 
+        <button id="share-button" class="ui button gm-aqua-control">
+          <i class="share alternate icon"></i>
+        </button>
+
         <button id="info-button" class="ui button active toggle gm-aqua-control">
           <i class="info icon"></i>
         </button>
 
+       <!-- TODO: find out why style does not work in CSS -->
+       <div id="twitter-timeline-box" style="display:none;position:absolute;bottom: 20px;width: 320px;left: 12px;background: rgba(250, 250, 255, 0.78);padding: 0;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);border-radius: 2px;" class="ui card">
+         <div class="content" id="twitter-text">
+
+         <!-- Twitter timeline -->
+         <a class="twitter-timeline" data-width="320" data-height="300" data-dnt="true" data-theme="light" data-chrome="nofooter noborders transparent"
+            data-link-color="#2B7BB9" href="https://twitter.com/aqua_monitor">Tweets by aqua_monitor</a>
+         <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+         </div>
+       </div>
+
+
         <div id="info-box" class="ui card">
-        <div class="content" id="info-text">
+          <div class="content" id="info-text">
             <h2 id="info-text-title">
               Surface water changes (1985-2016)
             </h2>
@@ -179,11 +195,11 @@ The results of the analysis are published in: <br><br><a href="http://www.nature
                     <img src="static/images/GEE.png">
                 </a>
 </p>
-       </div>
+         </div>
 
-        <div class="extra content" id="info-buttons-content">
-          <div class="left floated like" id="info-buttons">
-            <div id="twitter-div">
+          <div class="extra content" id="info-buttons-content">
+            <div class="left floated like" id="info-buttons">
+              <div id="twitter-div">
                 <a class="ui small primary button" id="twitter-button"
                    href="https://twitter.com/aqua_monitor" title="Follow on Twitter">
                     <i class="twitter icon"></i>
@@ -217,11 +233,9 @@ The results of the analysis are published in: <br><br><a href="http://www.nature
               <i class="close icon"></i>
             </a>
           </div>
+         </div>
+       </div>
 
-
-        </div>
-
-        </div>
         <!--
         <div id="slider-div-morph">
            <input id="slider-morph" data-slider-tooltip="hide" type="text"/>
@@ -294,11 +308,14 @@ The results of the analysis are published in: <br><br><a href="http://www.nature
             var averagingMonths2 = {{ averaging_months2 }};
             var minYear = {{ min_year }};
             var maxYear = {{ max_year }};
+            var minDoy = {{ min_doy }};
+            var maxDoy = {{ max_doy }};
             var filterCount = {{ filter_count }};
             var ndviFilter = {{ ndvi_filter }};
             var waterSlopeOpacity = {{ water_slope_opacity }};
-            var mode = "static";
-            var minYearStart = 2000;
+            var mode = '{{ mode }}';
+            var minYearSelection = {{ min_year_selection }};
+            var maxYearSelection = {{ max_year_selection }};
         </script>
 
         <!-- build:js /static/scripts/vendor.js -->
