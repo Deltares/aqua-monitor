@@ -184,11 +184,6 @@ $button-shadow: rgba($black, .3) 0 1px 4px -1px;
   }
 }
 
-.timeline-header, .timeline-footer
-{
-  display: none;
-}
-
 #twitter-timeline-box {
   display: none;
   position: absolute;
@@ -199,6 +194,12 @@ $button-shadow: rgba($black, .3) 0 1px 4px -1px;
   padding: 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   border-radius: 2px;
+
+#info-close-button {
+  background: transparent;
+  position: absolute;
+  right: 0px;
+ }
 }
 
 #info-box {

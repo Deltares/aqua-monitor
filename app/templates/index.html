@@ -167,14 +167,26 @@
         </button>
 
        <!-- TODO: find out why style does not work in CSS -->
-       <div id="twitter-timeline-box" style="display:none;position:absolute;bottom: 20px;width: 320px;left: 12px;background: rgba(250, 250, 255, 0.78);padding: 0;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);border-radius: 2px;" class="ui card">
-         <div class="content" id="twitter-text">
+       <div id="twitter-timeline-box" style="display:none;position:absolute;bottom: 20px;width: 320px;left: 12px;padding: 0;background: rgba(250, 250, 255, 1);box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);border-radius: 2px;" class="ui card">
+         <div class="content" id="twitter-timeline-content">
+
 
          <!-- Twitter timeline -->
-         <a class="twitter-timeline" data-width="320" data-height="300" data-dnt="true" data-theme="light" data-chrome="nofooter noborders transparent"
+         <a class="twitter-timeline scroll scroll-small" data-width="320" data-height="270" data-dnt="true" data-theme="light" data-chrome="noheader nofooter noborders transparent"
             data-link-color="#2B7BB9" href="https://twitter.com/aqua_monitor">Tweets by aqua_monitor</a>
-         <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+         <script src="//platform.twitter.com/widgets.js" charset="utf-8">
+         </script>
+
+
          </div>
+<!--
+          <div class="right floated star">
+            <a class="ui small button" id="info-close-button">
+              <i class="close icon"></i>
+            </a>
+          </div>
+-->
        </div>
 
 
