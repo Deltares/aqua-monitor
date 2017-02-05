@@ -136,13 +136,13 @@ class MainPageHandler(webapp2.RequestHandler):
         if averaging_months1:
             template_values['averaging_months1'] = float(averaging_months1)
         else:
-            template_values['averaging_months1'] = 36
+            template_values['averaging_months1'] = 12
 
         averaging_months2 = self.request.params.get('averaging_months2', '')
         if averaging_months2:
             template_values['averaging_months2'] = float(averaging_months2)
         else:
-            template_values['averaging_months2'] = 18
+            template_values['averaging_months2'] = 12
 
         all_years = self.request.params.get('all_years', '')
         if all_years == 'true' or all_years == 1:
