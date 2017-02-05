@@ -9,17 +9,20 @@ See: https://sites.google.com/site/earthengineapidocs for more details.
 # Using lowercase function naming to match the JavaScript names.
 # pylint: disable=g-bad-name
 
+# Disable lint messages caused by Python 3 compatibility changes.
+# pylint: disable=superfluous-parens
+
 import json
 
-import apifunction
-import computedobject
-import data
-import deprecation
-import ee_exception
-import ee_types
-import element
-import function
-import geometry
+from . import apifunction
+from . import computedobject
+from . import data
+from . import deprecation
+from . import ee_exception
+from . import ee_types
+from . import element
+from . import function
+from . import geometry
 
 
 class Image(element.Element):
@@ -184,7 +187,7 @@ class Image(element.Element):
     """
     request = params or {}
     request['image'] = self.serialize()
-    if request.has_key('region'):
+    if 'region' in request:
       if (isinstance(request['region'], dict) or
           isinstance(request['region'], list)):
         request['region'] = json.dumps(request['region'])
@@ -328,7 +331,7 @@ class Image(element.Element):
 
     # Add custom arguments, promoting them to Images manually.
     if opt_map:
-      for name, value in opt_map.iteritems():
+      for name, value in opt_map.items():
         all_vars.append(name)
         args[name] = Image(value)
 
@@ -354,10 +357,16 @@ class Image(element.Element):
     return ReinterpretedFunction().apply(args)
 
   def clip(self, clip_geometry):
-    """Clips an image by a Geometry, Feature or FeatureCollection.
+    """Clips an image to a Geometry or Feature.
+
+    The output bands correspond exactly the input bands, except data not
+    covered by the geometry is masked. The output image retains the
+    metadata of the input image.
+
+    Use clipToCollection to clip an image to a FeatureCollection.
 
     Args:
-      clip_geometry: The Geometry, Feature or FeatureCollection to clip to.
+      clip_geometry: The Geometry or Feature to clip to.
 
     Returns:
       The clipped image.

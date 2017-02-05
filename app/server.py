@@ -166,7 +166,7 @@ class MainPageHandler(webapp2.RequestHandler):
         if max_year:
             template_values['max_year'] = max_year
         else:
-            template_values['max_year'] = 2015
+            template_values['max_year'] = 2016
 
         filter_count = self.request.params.get('filter_count', '')
         if filter_count:

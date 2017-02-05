@@ -1,18 +1,30 @@
 #!/usr/bin/env python
 """Singleton for all of the library's communcation with the Earth Engine API."""
 
+from __future__ import print_function
+
 
 
 # Using lowercase function naming to match the JavaScript names.
 # pylint: disable=g-bad-name
 
+# pylint: disable=g-bad-import-order
 import contextlib
 import json
-import urllib
-
-import ee_exception
 import httplib2
+import six
 
+# pylint: disable=g-import-not-at-top
+try:
+  # Python 3.x
+  import urllib.error
+  import urllib.parse
+  import urllib.request
+except ImportError:
+  # Python 2.x
+  import urllib
+
+from . import ee_exception
 
 # OAuth2 credentials object.  This may be set by ee.Initialize().
 _credentials = None
@@ -40,6 +52,7 @@ _deadline_ms = 0
 # wrapper around the entire program (with ee.data.profiling, defined below).
 _profile_hook = None
 
+
 # The HTTP header through which profile results are returned.
 # Lowercase because that's how httplib2 does things.
 _PROFILE_HEADER_LOWERCASE = 'x-earth-engine-computation-profile'
@@ -49,6 +62,10 @@ DEFAULT_API_BASE_URL = 'https://earthengine.googleapis.com/api'
 
 # The default base URL for media/tile calls.
 DEFAULT_TILE_BASE_URL = 'https://earthengine.googleapis.com/'
+
+# Asset types recognized by create_assets().
+ASSET_TYPE_FOLDER = 'Folder'
+ASSET_TYPE_IMAGE_COLL = 'ImageCollection'
 
 
 def initialize(credentials=None, api_base_url=None, tile_base_url=None):
@@ -111,9 +128,6 @@ def profiling(hook):
   calls the hook function with all resulting profile IDs. If hook is null,
   disables profiling (or leaves it disabled).
 
-  Note: Profiling is not a generally available feature yet. Do not expect this
-  function to be useful.
-
   Args:
     hook: A function of one argument which is called with each profile
         ID obtained from API calls, just before the API call returns.
@@ -125,6 +139,8 @@ def profiling(hook):
     yield
   finally:
     _profile_hook = saved_hook
+
+
 
 
 def getInfo(asset_id):
@@ -176,8 +192,9 @@ def getMapId(params):
           to map onto 00-FF.
       gamma - (comma-separated numbers) Gamma correction
           factor (or one per band)
-      palette - (comma-separated strings) List of CSS-style color
-          strings (single-band previews only).
+      palette - (comma-separated strings) A string of comma-separated
+          CSS-style color strings (single-band previews only). For example,
+          'FF0000,000000'.
       format (string) Either 'jpg' (does not support transparency) or
           'png' (supports transparency).
 
@@ -313,7 +330,7 @@ def getDownloadId(params):
     A dict containing a docid and token.
   """
   params['json_format'] = 'v2'
-  if 'bands' in params and not isinstance(params['bands'], basestring):
+  if 'bands' in params and not isinstance(params['bands'], six.string_types):
     params['bands'] = json.dumps(params['bands'])
   return send_('/download', params)
 
@@ -395,7 +412,7 @@ def createAsset(value, opt_path=None):
   Returns:
     A description of the saved asset, including a generated ID.
   """
-  if not isinstance(value, basestring):
+  if not isinstance(value, six.string_types):
     value = json.dumps(value)
   args = {'value': value, 'json_format': 'v2'}
   if opt_path is not None:
@@ -477,7 +494,7 @@ def getTaskStatus(taskId):
         doesn't exist.
       error_message (string) For a FAILED task, a description of the error.
   """
-  if isinstance(taskId, basestring):
+  if isinstance(taskId, six.string_types):
     taskId = [taskId]
   args = {'q': ','.join(taskId)}
   return send_('/taskstatus', args, 'GET')
@@ -495,7 +512,8 @@ def startProcessing(taskId, params):
     taskId: ID for the task (obtained using newTaskId).
     params: The object that describes the processing task; only fields
       that are common for all processing types are documented below.
-        type (string) Either 'EXPORT_IMAGE' or 'EXPORT_FEATURES'.
+        type (string) Either 'EXPORT_IMAGE', 'EXPORT_FEATURES',
+          'EXPORT_VIDEO', or 'EXPORT_TILES'.
         json (string) JSON description of the image.
 
   Returns:
@@ -534,6 +552,8 @@ def startIngestion(taskId, params):
   return send_('/ingestionrequest', args)
 
 
+
+
 def getAssetRoots():
   """Returns the list of the root folders the user owns.
 
@@ -548,6 +568,27 @@ def getAssetRoots():
       ]
   """
   return send_('/buckets', {}, 'GET')
+
+
+def getAssetRootQuota(rootId):
+  """Returns quota usage details for the asset root with the given ID.
+
+  Usage notes:
+
+    - The id *must* be a root folder like "users/foo" (not "users/foo/bar").
+    - The authenticated user must own the asset root to see its quota usage.
+
+  Args:
+    rootId: The ID of the asset to check.
+
+  Returns:
+    A dict describing the asset's quota usage. Looks like, with size in bytes:
+      {
+          asset_count: {usage: number, limit: number},
+          asset_size: {usage: number, limit: number},
+      }
+  """
+  return send_('/quota', {'id': rootId}, 'GET')
 
 
 def getAssetAcl(assetId):
@@ -608,6 +649,13 @@ def createAssetHome(requestedId):
   send_('/createbucket', {'id': requestedId})
 
 
+def authorizeHttp(http):
+  if _credentials:
+    return _credentials.authorize(http)
+  else:
+    return http
+
+
 def send_(path, params, opt_method='POST', opt_raw=False):
   """Send an API call.
 
@@ -632,12 +680,15 @@ def send_(path, params, opt_method='POST', opt_raw=False):
     params['profiling'] = '1'
 
   url = _api_base_url + path
-  payload = urllib.urlencode(params)
-  http = httplib2.Http(timeout=int(_deadline_ms / 1000) or None)
-
   headers = {}
-  if _credentials:
-    http = _credentials.authorize(http)
+
+
+  try:
+    payload = urllib.parse.urlencode(params)  # Python 3.x
+  except AttributeError:
+    payload = urllib.urlencode(params)  # Python 2.x
+  http = httplib2.Http(timeout=(_deadline_ms / 1000.0) or None)
+  http = authorizeHttp(http)
 
   if opt_method == 'GET':
     url = url + ('&' if '?' in url else '?') + payload
@@ -650,7 +701,7 @@ def send_(path, params, opt_method='POST', opt_raw=False):
   try:
     response, content = http.request(url, method=opt_method, body=payload,
                                      headers=headers)
-  except httplib2.HttpLib2Error, e:
+  except httplib2.HttpLib2Error as e:
     raise ee_exception.EEException(
         'Unexpected HTTP error: %s' % e.message)
 
@@ -663,13 +714,22 @@ def send_(path, params, opt_method='POST', opt_raw=False):
   content_type = (response['content-type'] or 'application/json').split(';')[0]
   if content_type in ('application/json', 'text/json') and not opt_raw:
     try:
+      try:
+        # Python 3.x
+        try:
+          content = content.decode()
+        except AttributeError:
+          pass
+      except UnicodeDecodeError:
+        # Python 2.x
+        content = content
       json_content = json.loads(content)
-    except Exception, e:
-      raise ee_exception.EEException('Invalid JSON: ' + content)
+    except Exception as e:
+      raise ee_exception.EEException('Invalid JSON: %s' % content)
     if 'error' in json_content:
       raise ee_exception.EEException(json_content['error']['message'])
     if 'data' not in content:
-      raise ee_exception.EEException('Malformed response: ' + content)
+      raise ee_exception.EEException('Malformed response: ' + str(content))
   else:
     json_content = None
 
@@ -691,17 +751,16 @@ def send_(path, params, opt_method='POST', opt_raw=False):
 
 def create_assets(asset_ids, asset_type, mk_parents):
   """Creates the specified assets if they do not exist."""
-  asset = {'type': asset_type}
   for asset_id in asset_ids:
+    if getInfo(asset_id):
+      print('Asset %s already exists' % asset_id)
+      continue
     if mk_parents:
       parts = asset_id.split('/')
       path = ''
-      for part in parts:
+      for part in parts[:-1]:
         path += part
         if getInfo(path) is None:
-          createAsset(asset, path)
+          createAsset({'type': ASSET_TYPE_FOLDER}, path)
         path += '/'
-    elif getInfo(asset_id) is None:
-      createAsset(asset, asset_id)
-    else:
-      print 'Asset %s already exists' % asset_id
+    createAsset({'type': asset_type}, asset_id)

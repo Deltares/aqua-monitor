@@ -46,7 +46,7 @@
 
     ee.initialize(null, null, function () {
       addLayer(comparison.bottomMap, renderLandsatMosaic(20, '2000-01-01', '2001-01-01'));
-      addLayer(comparison.topMap, renderLandsatMosaic(20, '2015-01-01', '2016-01-01'));
+      addLayer(comparison.topMap, renderLandsatMosaic(20, '2016-01-01', '2017-01-01'));
 
     });
 
