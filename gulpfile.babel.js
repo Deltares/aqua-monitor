@@ -61,14 +61,14 @@ gulp.task('lint:test', lint('test/spec/**/*.js', testLintOptions));
 
 gulp.task('html', ['styles-scss', 'styles', 'scripts', 'libs'], () => {
   return gulp.src('app/static/*.html')
-    .pipe($.htmlmin({collapseWhitespace: true}))
+    //.pipe($.htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest('dist/static'));
 });
 
 gulp.task('templates', ['styles-scss', 'styles'], () => {
   return gulp.src(['app/templates/*.html'])
     .pipe($.useref({ searchPath: ['dist', '.'] }))
-    .pipe($.if('*.html', $.htmlmin({collapseWhitespace: true})))
+    //.pipe($.if('*.html', $.htmlmin({collapseWhitespace: true})))
     .pipe($.if('*.html',
                // html to templates
                gulp.dest('dist/templates'),

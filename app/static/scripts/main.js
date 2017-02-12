@@ -139,13 +139,13 @@ ee.initialize(null, null, function () {
 
   $('#info-close-button').click(function () {
     $('#info-box').transition('slide right');
-    $('#twitter-timeline-box').transition('slide right');
+    //$('#twitter-timeline-box').transition('slide right');
     $('#info-button').toggleClass('active');
   });
 
   $('#info-button').click(function () {
     $('#info-box').transition('slide right');
-    $('#twitter-timeline-box').transition('slide right');
+    // $('#twitter-timeline-box').transition('slide right');
     $('#info-button').toggleClass('active');
   });
 
@@ -154,7 +154,11 @@ ee.initialize(null, null, function () {
   $('#slider-label-before').text(minYearSelection);
   $('#slider-label-after').text(maxYearSelection);
   $('#twitter-button').show();
-  $('#info-box').show();
+
+
+  if($('body').width() > 1024) {
+    $('#info-box').show();
+  }
 
   // This event listener calls queryWaterTimeSeries() when the map is clicked.
   google.maps.event.addListener(map, 'click', function (event) {
@@ -187,12 +191,15 @@ ga('create', 'UA-74927830-1', 'auto');
 ga('send', 'pageview');
 
  
-
+/* buggy
 twttr.events.bind(
   'loaded',
   function (event) {
     event.widgets.forEach(function (widget) {
-        $('#twitter-timeline-box').show();
+        if($('body').width() > 1024 && $('#info-box').is(':visible')) {
+          $('#twitter-timeline-box').show();
+        }
     });
   }
 );
+*/

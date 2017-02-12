@@ -692,7 +692,10 @@ function initializeMap() {
   });
 
   // info button
-  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push($('#info-button')[0]);
+  if($('body').width() >= 1024) {
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push($('#info-button')[0]);
+  }
+  
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push($('#share-button')[0]);
 
   // strange, style changes for one button (GMaps bugs?)
@@ -875,8 +878,10 @@ function addLayers() {
         $('#deltares-logo').css('bottom', '20px')
 
         $('#layers-table').css('right', '10vw');
+        $('#layers-table').css('left', '10px');
+        $('#layers-table').css('right', '20px');
         $('#layers-table').css('bottom', '130px');
-        $('.slider').css('width', '80vw');
+        $('.slider').css('width', '60vw');
       } else {
         $('#time-selector-container').css('width', '40%');
         $('#time-selector-container').css('margin-left', '-20%');
@@ -885,19 +890,16 @@ function addLayers() {
 
         $('#layers-table').css('bottom', '25px');
         $('#layers-table').css('right', '70px');
-        $('.slider').css('width', '120px');
       }
 
-      if ($('body').width() < 590) {
-        if (mode === 'dynamic') {
-          $('#time-selector-container').hide();
-          $('#layers-table').hide();
-          $('#layers-toggle-table').show();
-        }
+      if ($('body').height() < 800) {
+         if($('#info-box').is(':visible')) {
+           $('#twitter-timeline-box').hide();
+         }       
       } else {
-        if (mode === 'dynamic') {
-          $('#layers-toggle-table').hide();
-        }
+         if($('#info-box').is(':visible')) {
+           $('#twitter-timeline-box').show();
+         }
       }
     }
 
@@ -910,7 +912,9 @@ function addLayers() {
       if (+$('#slider-div-before').width() < 60) {
         $('.tooltip-main').css('display', 'none');
       }
+
       fixTooltips();
+
     });
   }
 
