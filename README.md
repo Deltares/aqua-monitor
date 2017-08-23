@@ -46,6 +46,7 @@ Format: http://aqua-monitor.appspot.com?min_year=1990&max_year=1995
 * averaging_months1 = 36 - first filtering period, in months, all images from that period are used to compute percentile
 * averaging_months2 = 18 - second filtering period, in months, all images from that period are used to compute percentile
 * all_years = false - when true - linear regression in time will be computed using *ALL* years (moving average), >> can be extremely slow and even crash <<, but also produce much more accurate results.
+* all_years_step - step in years
 * min_year = 2000 - default value is 2000, but currently up to 1985 is supported. 1972 (60m resolution) will be added later
 * max_year = 2015
 * min_year_selection - first year to select in the timeline
