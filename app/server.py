@@ -172,7 +172,7 @@ class MainPageHandler(webapp2.RequestHandler):
         if max_year_selection:
             template_values['max_year_selection'] = max_year_selection
         else:
-            template_values['max_year_selection'] = 2016
+            template_values['max_year_selection'] = 2017
 
         min_doy = self.request.params.get('min_doy', '')
         if min_doy:
@@ -196,7 +196,7 @@ class MainPageHandler(webapp2.RequestHandler):
         if max_year:
             template_values['max_year'] = max_year
         else:
-            template_values['max_year'] = 2016
+            template_values['max_year'] = 2017
 
         filter_count = self.request.params.get('filter_count', '')
         if filter_count:

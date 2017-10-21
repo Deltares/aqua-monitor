@@ -37,6 +37,10 @@ To deploy the Aqua Monitor under Google App Engine. The following files need to 
 * app/privatekey.pem - add your service account key, this is used by Python backend.
 * app/config_web.py - add your client id, secret, and a refresh token, used at runtime to generate access to GEE for the JavaScript code. 
 
+Deploy using gcloud:
+
+* gcloud app deploy --project=<your-app-engine-project-name>
+
 # Advanced parameter, not exposed yet to the user interface
 
 This will work only at high zoom levels, the following (experimental) arguments can be used to tune the algorithm:
