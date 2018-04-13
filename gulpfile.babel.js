@@ -108,7 +108,7 @@ gulp.task('fonts', () => {
 });
 
 gulp.task('extras', () => {
-  return gulp.src(['app/**/*.yaml','app/**/*.pem','app/**/*.py','app/**/*.txt'])
+  return gulp.src(['app/**/*.yaml','app/**/*.pem','app/**/*.py','app/**/*.txt', 'app/*.json'])
 	  .pipe(gulp.dest('dist'));
 });
 
