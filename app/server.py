@@ -33,7 +33,10 @@ logger = logging.getLogger(__name__)
 REDUCTION_SCALE_METERS = 30
 
 jinja_environment = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
+    loader=jinja2.FileSystemLoader(
+        os.path.join(os.path.dirname(__file__), 'templates')
+    )
+)
 
 
 class MainPageHandler(webapp2.RequestHandler):
@@ -66,7 +69,9 @@ class MainPageHandler(webapp2.RequestHandler):
                 # just log, no worries
                 logger.exception('invalid view input', view)
 
-        expire_time = datetime.datetime.now() + timedelta(seconds=config_web.EE_TOKEN_EXPIRE_IN_SEC)
+        expire_time = datetime.datetime.now() + timedelta(
+            seconds=config_web.EE_TOKEN_EXPIRE_IN_SEC
+        )
 
         credentials = oauth2client.client.OAuth2Credentials(
             None,
@@ -88,6 +93,12 @@ class MainPageHandler(webapp2.RequestHandler):
             'view': view_json
         }
 
+        layer_string = self.request.params.get('layers', '')
+        if layer_string:
+            template_values['layers'] = layer_string.split(',')
+        else:
+            template_values['layers'] = ['surface']
+
         percentile = self.request.params.get('percentile', '')
         if percentile:
             template_values['percentile'] = int(percentile)
@@ -103,7 +114,7 @@ class MainPageHandler(webapp2.RequestHandler):
         mode = self.request.params.get('mode', '')
         if mode == 'dynamic':
             template_values['mode'] = 'dynamic'
-        else: 
+        else:
             template_values['mode'] = 'static'
 
         refine = self.request.params.get('refine', '')
