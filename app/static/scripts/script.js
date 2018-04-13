@@ -93,9 +93,11 @@ function renderSurfaceWaterChanges(enableHeatmap, change) {
   var swbdMask = swbd.unmask().not()
     .focal_max(60000, 'circle', 'meters').reproject('EPSG:4326', null, 10000);
 
-  land300m = land300m.mask(swbdMask);
-  water300m = water300m.mask(swbdMask);
-  scale = scale.multiply(swbdMask);
+  if(maskWater) {
+    land300m = land300m.mask(swbdMask);
+    water300m = water300m.mask(swbdMask);
+    scale = scale.multiply(swbdMask);
+  }
 
   var bg = ee.Image(1).visualize({opacity: 0.9, palette: ['000000'], forceRgbOutput: true});
 

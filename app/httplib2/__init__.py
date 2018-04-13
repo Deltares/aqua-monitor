@@ -22,7 +22,7 @@ __contributors__ = ["Thomas Broyer (t.broyer@ltgt.net)",
                     "Sam Ruby",
                     "Louis Nyffenegger"]
 __license__ = "MIT"
-__version__ = "0.9.2"
+__version__ = "0.9.1"
 
 import re
 import sys
@@ -1285,9 +1285,8 @@ class Http(object):
                     err = getattr(e, 'args')[0]
                 else:
                     err = e.errno
-                if err in (errno.ENETUNREACH, errno.EADDRNOTAVAIL) and i < RETRIES:
-                    continue  # retry on potentially transient socket errors
-                raise
+                if err == errno.ECONNREFUSED: # Connection refused
+                    raise
             except httplib.HTTPException:
                 # Just because the server closed the connection doesn't apparently mean
                 # that the server didn't send a response.

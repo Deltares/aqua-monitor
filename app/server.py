@@ -216,6 +216,12 @@ class MainPageHandler(webapp2.RequestHandler):
         else:
             template_values['water_slope_opacity'] = 0.4
 
+        mask_water = self.request.params.get('mask_water', '')
+        if mask_water == 'true' or mask_water == 1:
+            template_values['mask_water'] = 'true'
+        else:
+            template_values['mask_water'] = 'false'
+
         template = jinja_environment.get_template(name)
         logger.info("template: %s", template)
         self.response.out.write(template.render(template_values))
