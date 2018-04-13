@@ -4,6 +4,7 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import browserSync from 'browser-sync';
 import del from 'del';
 import {stream as wiredep} from 'wiredep';
+const debug = require('gulp-debug');
 import gae from 'gulp-gae';
 
 const $ = gulpLoadPlugins();
@@ -66,14 +67,21 @@ gulp.task('html', ['styles-scss', 'styles', 'scripts', 'libs'], () => {
 });
 
 gulp.task('templates', ['styles-scss', 'styles'], () => {
+
+  const htmlFilter = $.filter('**/*.html', {restore: true});
+  const otherFilter = $.filter('**/*.html', {restore: true});
+
   return gulp.src(['app/templates/*.html'])
-    .pipe($.useref({ searchPath: ['dist', '.'] }))
-    //.pipe($.if('*.html', $.htmlmin({collapseWhitespace: true})))
-    .pipe($.if('*.html',
-               // html to templates
-               gulp.dest('dist/templates'),
-               // others to dist
-               gulp.dest('dist')));
+    .pipe(
+      $.useref({ searchPath: ['dist', '.'] })
+    )
+    .pipe(
+      // html to templates
+      gulp.dest('dist/templates'),
+    )
+    .pipe(
+      gulp.dest('dist')
+    )
 });
 
 gulp.task('images', () => {
