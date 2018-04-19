@@ -66,7 +66,7 @@ $button-shadow: rgba($black, .3) 0 1px 4px -1px;
     justify-content: center;
     margin-right: 10px;
     margin-top: 10px;
-    width: 28px;
+    // width: 28px;
 
     &:hover {
       border-radius: 2px;
@@ -83,15 +83,16 @@ $button-shadow: rgba($black, .3) 0 1px 4px -1px;
         border-radius: 2px;
       }
     }
-
     i.icon {
       // reset
       height: initial;
-      margin: initial;
+      //margin: initial;
     }
 
   }
 }
+
+
 
 .browserupgrade {
   background: $gray-light;
@@ -153,7 +154,7 @@ $button-shadow: rgba($black, .3) 0 1px 4px -1px;
   display: none;
   position: absolute;
   padding: 0;
-  bottom: 185px;
+  bottom: 205px;
   right: 10px;
   width: 28px;
   height: 28px;
@@ -170,7 +171,7 @@ $button-shadow: rgba($black, .3) 0 1px 4px -1px;
 #info-button {
   display: none;
   position: absolute;
-  bottom: 165px;
+  bottom: 185px;
   right: 10px;
   width: 28px;
   height: 28px;
@@ -183,6 +184,25 @@ $button-shadow: rgba($black, .3) 0 1px 4px -1px;
     margin: 0;
   }
 }
+
+#datasets-button {
+  display: none;
+  position: absolute;
+  padding: 0;
+  bottom: 165px;
+  right: 10px;
+  //width: 120px;
+  height: 28px;
+  border-radius: 2px;
+  margin: 0;
+  padding: 5px;
+  background: ghostwhite;
+
+  .icon {
+    margin-left: 1px;
+  }
+}
+
 
 #twitter-timeline-box {
   display: none;

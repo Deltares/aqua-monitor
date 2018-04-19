@@ -166,9 +166,50 @@
           <i class="info icon"></i>
         </button>
 
-        <button id="component-button" class="ui button active gm-aqua-control">
+{#
+        <button id="datasets-button" class="ui button active gm-aqua-control">
           <i class="cubes icon"></i>
         </button>
+
+#}
+        <div id="datasets-button" class="ui multiple dropdown button gm-aqua-control">
+          <input type="hidden" name="filters">
+          <i id="datasets-icon" class="cubes icon"></i>
+          <span class="text">Datasets</span>
+          <div class="menu">
+            <div class="header">
+              <i class="add icon"></i>
+              add dataset ...
+            </div>
+
+            <div class="scrolling menu">
+              <div class="item" data-value="important">
+                <div class="ui green empty circular label"></div>
+                Surface Water
+              </div>
+              <div class="item" data-value="announcement">
+                <div class="ui black empty circular label"></div>
+                Shoreline
+              </div>
+              <div class="item" data-value="cannotfix">
+                <div class="ui blue empty circular label"></div>
+                Bathymetry
+              </div>
+              <div class="item" data-value="news">
+                <div class="ui purple empty circular label"></div>
+                Reservoirs and Lakes
+              </div>
+              <div class="item" data-value="enhancement">
+                <div class="ui orange empty circular label"></div>
+                Rivers
+              </div>
+              <div class="item" data-value="off-topic">
+                <div class="ui yellow empty circular label"></div>
+                Basins
+              </div>
+            </div>
+          </div>
+        </div>
 
        <!-- TODO: find out why style does not work in CSS -->
        <!-- tried to use https://codepen.io/MathieuRichard/pen/HAgnm, but failed :( -->
@@ -305,7 +346,7 @@ The results of the analysis are published in: <br><br><a href="http://www.nature
             var expire_time = '{{ token_expire_time }}';
             var view = {{ view }};
             var debug = {{ debug }};
-            var layers = {{ layers }};
+            var dastasets = {{ datasets }};
             var percentile = {{ percentile }};
             var smoothen = {{ smoothen }};
             var site = {{ site }};
