@@ -85,6 +85,9 @@ if($('body').width() < 590) {
 
 $('#message-initializing-ee').show();
 
+$('.ui.dropdown')
+  .dropdown();
+
 function inIframe () {
     try {
         return window.self !== window.top;
@@ -190,7 +193,7 @@ $('#button-menu-sidebar').click(function () {
 ga('create', 'UA-74927830-1', 'auto');
 ga('send', 'pageview');
 
- 
+
 /* buggy
 twttr.events.bind(
   'loaded',

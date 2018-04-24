@@ -15,6 +15,7 @@ function NamedImageMapType() {
   // in the ImageMapType body where the value of "this" is the new instance
   google.maps.ImageMapType.apply(this, arguments);
 }
+
 //Inherit
 NamedImageMapType.prototype = Object.create(google.maps.ImageMapType.prototype);
 
@@ -63,7 +64,7 @@ function renderLandsatMosaic(percentile, start, end, sharpen) {
 
   var images = ee.ImageCollection(l8.merge(l7).merge(l5).merge(l4));
 
-  if(minDoy !== 0 && maxDoy !== 365) {
+  if (minDoy !== 0 && maxDoy !== 365) {
     images = images.filter(ee.Filter.dayOfYear(minDoy, maxDoy))
   }
 
@@ -91,9 +92,10 @@ function renderSurfaceWaterChanges(enableHeatmap, change) {
   // SWBD mask
   var swbd = ee.Image('MODIS/MOD44W/MOD44W_005_2000_02_24').select('water_mask');
   var swbdMask = swbd.unmask().not()
-    .focal_max(60000, 'circle', 'meters').reproject('EPSG:4326', null, 10000);
+    // .focal_max(60000, 'circle', 'meters').reproject('EPSG:4326', null, 10000);
+    .focal_max(1000, 'circle', 'meters').reproject('EPSG:4326', null, 1000);
 
-  if(maskWater) {
+  if (maskWater) {
     land300m = land300m.mask(swbdMask);
     water300m = water300m.mask(swbdMask);
     scale = scale.multiply(swbdMask);
@@ -317,6 +319,12 @@ function renderWaterTrend(percentile, datesAndPeriods, slopeThreshold, slopeThre
     .and(mndwiMax.gt(-0.05)) // at least one value looks like water
     .and(mndwiMin.lt(0.1)); // at least one value looks like ground
 
+  var land = ee.FeatureCollection('USDOS/LSIB/2013')
+  var landImage = ee.Image(0).float().paint(land, 1)
+      .focal_max(5)
+
+  // mask = mask.multiply(landImage);
+
   if (filterCount > 0) {
     mask = mask
       .and(
@@ -376,7 +384,7 @@ function renderWaterTrend(percentile, datesAndPeriods, slopeThreshold, slopeThre
     }
   }
 
-  var bg = scale.visualize({
+  var bg = scale.mask(landImage).visualize({
     min: -slopeThreshold * slopeThresholdRatio,
     max: slopeThreshold * slopeThresholdRatio,
     palette: ['00ff00', '000000', '00d8ff'], opacity: waterSlopeOpacity
@@ -449,6 +457,7 @@ function setLayer(map, layer) {
     addStaticLayer(layer);
   }
 }
+
 function addStaticLayer(layer) {
   // use _.assign from options
   // The Google Maps API calls getTileUrl() when it tries to display a map
@@ -639,11 +648,11 @@ function initializeMap() {
   location.zoom = 3;
   location.center.lat = 16.240652044117923;
   location.center.lng = -10;
-  
-    // overwrite from the filled in template if available
-    location.zoom = _.get(view, 'zoom', location.zoom);
-    location.center.lat = _.get(view, 'lat', location.center.lat);
-    location.center.lng = _.get(view, 'lng', location.center.lng);
+
+  // overwrite from the filled in template if available
+  location.zoom = _.get(view, 'zoom', location.zoom);
+  location.center.lat = _.get(view, 'lat', location.center.lat);
+  location.center.lng = _.get(view, 'lng', location.center.lng);
 
   var mapOptions = {
     center: location.center,
@@ -672,6 +681,7 @@ function initializeMap() {
   var styleControlDiv = document.createElement('div');
   $(styleControlDiv).addClass('gm-aqua-control');
   styleControlDiv.innerHTML = '<button title="Switch between dark / light styles" class="ui toggle basic compact small icon button"><i class="paint brush icon"></button>';
+  styleControlDiv.style.width = '28px';
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(styleControlDiv);
   $(styleControlDiv).children('button').on('click', function (evt, el) {
     $('#map').toggleClass('styled');
@@ -681,10 +691,11 @@ function initializeMap() {
   // switch mode between dynamic / static
   var modeControlDiv = document.createElement('div');
   $(modeControlDiv).addClass('gm-aqua-control');
+  modeControlDiv.style.width = '28px';
   modeControlDiv.innerHTML = '<button title="Toggle between static/dynamic versions" class="ui toggle basic compact small icon button"><i class="options icon"></button>';
 
-  if(mode === 'dynamic') {
-      $(modeControlDiv).children('button').addClass('active')
+  if (mode === 'dynamic') {
+    $(modeControlDiv).children('button').addClass('active')
   }
 
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(modeControlDiv);
@@ -694,12 +705,16 @@ function initializeMap() {
     $(evt.currentTarget).toggleClass('active');
   });
 
+  // component (surface water change, coastline, etc.)
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push($('#datasets-button')[0]);
+
   // info button
-  if($('body').width() >= 1024) {
+  if ($('body').width() >= 1024) {
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push($('#info-button')[0]);
   }
-  
+
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push($('#share-button')[0]);
+
 
   // strange, style changes for one button (GMaps bugs?)
   $('#share-button').css('padding', 0)
@@ -709,10 +724,10 @@ function initializeMap() {
     var url = ''
 
     function delimiter() {
-        return count ? '&' : '?'
+      return count ? '&' : '?'
     }
 
-    if(mode != 'static') {
+    if (mode != 'static') {
       url += delimiter() + 'mode=dynamic';
       count++;
     }
@@ -726,17 +741,17 @@ function initializeMap() {
     url += delimiter() + 'view=' + map.getCenter().lat() + ',' + map.getCenter().lng() + ',' + map.getZoom() + 'z'
     count++;
 
-    if(minDoy !== 0) {
+    if (minDoy !== 0) {
       url += delimiter() + 'min_doy=' + minDoy;
       count++;
     }
 
-    if(minDoy !== 365) {
+    if (minDoy !== 365) {
       url += delimiter() + 'max_doy=' + maxDoy;
       count++;
     }
 
-    if(percentile != 20) { // default
+    if (percentile != 20) { // default
       url += delimiter() + 'percentile=' + percentile
       count++;
     }
@@ -824,9 +839,9 @@ function addLayers() {
     ];
 
     // update sliders
-    _.each(sliders, function(slider) {
+    _.each(sliders, function (slider) {
       function updateSlider(evt) {
-        _.each(slider.layers, function(layerName) {
+        _.each(slider.layers, function (layerName) {
           var layer = layerByName(layerName);
           layer.opacity = evt.value;
           refreshLayerOpacity(map, layer);
@@ -843,11 +858,11 @@ function addLayers() {
 
 
     // update toggles
-    _.each(sliders, function(slider) {
+    _.each(sliders, function (slider) {
       $(slider.toggleSelector).checkbox();
       $(slider.toggleSelector).change(function () {
         var checked = $('#toggle-change').is(':checked');
-        _.each(slider.layers, function(layerName) {
+        _.each(slider.layers, function (layerName) {
           var layer = layerByName(layerName);
           if (checked) {
             layer.opacity = 100;
@@ -861,6 +876,7 @@ function addLayers() {
     });
 
     $('.tooltip-main').removeClass('top').addClass('right');
+
     // this one is reused....
     function fixTooltips() {
       $('.tooltip-main').css('margin-left', '10px');
@@ -896,13 +912,13 @@ function addLayers() {
       }
 
       if ($('body').height() < 800) {
-         if($('#info-box').is(':visible')) {
-           $('#twitter-timeline-box').hide();
-         }       
+        if ($('#info-box').is(':visible')) {
+          $('#twitter-timeline-box').hide();
+        }
       } else {
-         if($('#info-box').is(':visible')) {
-           $('#twitter-timeline-box').show();
-         }
+        if ($('#info-box').is(':visible')) {
+          $('#twitter-timeline-box').show();
+        }
       }
     }
 
@@ -1099,8 +1115,8 @@ function refreshLayerOpacity(map, layer) {
     return;
   }
 
-  if(layer.mode === 'static') {
-    if(mode === 'static') {
+  if (layer.mode === 'static') {
+    if (mode === 'static') {
       overlay.setOpacity(layer.opacity / 100.0);
     } else {
       overlay.setOpacity(0);

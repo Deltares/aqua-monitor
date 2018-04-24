@@ -93,11 +93,11 @@ class MainPageHandler(webapp2.RequestHandler):
             'view': view_json
         }
 
-        layer_string = self.request.params.get('layers', '')
-        if layer_string:
-            template_values['layers'] = layer_string.split(',')
+        datasets_string = self.request.params.get('datasets', '')
+        if datasets_string:
+            template_values['datasets'] = datasets_string.split(',')
         else:
-            template_values['layers'] = ['surface']
+            template_values['datasets'] = ['surface']
 
         percentile = self.request.params.get('percentile', '')
         if percentile:
