@@ -4,11 +4,11 @@ http://aqua-monitor.appspot.com
 
 See also the following Nature Climate Change paper: http://nature.com/nclimate/journal/v6/n9/full/nclimate3111.html
 
-The website shows static map by default, visualizing surface water changes which occurred during 1985-2016 as explained in the above paper (see supplementary materials). 
+The website shows static map by default, visualizing surface water changes which occurred during 1985-2016 as explained in the above paper (see supplementary materials).
 
 A dynamic mode can be turned on for a more detailed analysis. In this mode, the surface water changes are computed on-the-fly using parameters provided by the user. Additionally, percentile composite images are generated for two selected years.
 
-The following Google Earth Engine script can be used to generate surface water changes on-the-fly: https://code.earthengine.google.com/ca1eb993dd2997337d647649fd3fced9. And the following was used to generate scatic maps: https://code.earthengine.google.com/211b8491e1770136316d9df7f7e5ee20. 
+The following Google Earth Engine script can be used to generate surface water changes on-the-fly: https://code.earthengine.google.com/ca1eb993dd2997337d647649fd3fced9. And the following was used to generate scatic maps: https://code.earthengine.google.com/211b8491e1770136316d9df7f7e5ee20.
 
 The results presented in the paper include a few additional clean-up steps (noise clean-up in the mountains using HAND mask, deforestation-like changes). But they were excluded during static map generation.
 
@@ -27,7 +27,7 @@ After that, run:
 
 The resulting dist/ directory can be used to deploy everything as a Google App Engine app.
 
-Use "gulp watch" to monitor sources continuously during development - they will be automatically compiled into dist/ on every change. 
+Use "gulp watch" to monitor sources continuously during development - they will be automatically compiled into dist/ on every change.
 See gulpfile.babel.js for the rules used to do this.
 
 # How to run and deploy?
@@ -35,16 +35,23 @@ See gulpfile.babel.js for the rules used to do this.
 To deploy the Aqua Monitor under Google App Engine. The following files need to be added / modified:
 
 * app/privatekey.json - add your service account key, this is used by Python backend.
-* app/privatekey-web.json - add your client id, secret, and a refresh token, used at runtime to generate access to GEE for the JavaScript code. 
+* app/privatekey-web.json - add your client id, secret, and a refresh token, used at runtime to generate access to GEE for the JavaScript code.
 
 Deploy using gcloud:
 
 * gcloud app deploy --project=<your-app-engine-project-name>
 
-Test lcoally (Google App Engine Standard environment, Python 2.7)
+# Test locally
+
+(Google App Engine Standard environment, Python 2.7)
 
 * cd dist
 * python dev_appserver.py app.yaml
+
+or (after you upgrade gcloud with the relevant components) `gcloud components install app-engine-python-extras`
+* `gulp serve:gae`
+
+Open the aqua monitor at port 8081
 
 
 # Advanced parameter, not exposed yet to the user interface
@@ -63,13 +70,11 @@ Format: http://aqua-monitor.appspot.com?min_year=1990&max_year=1995
 * max_year_selection - last year to select in the timeline
 * min_doy = 0
 * max_doy = 365
-* water_slope_opacity = 0.4 - can be used to show all slope values, not only the largest ones, ~0.7 is nice 
+* water_slope_opacity = 0.4 - can be used to show all slope values, not only the largest ones, ~0.7 is nice
 * percentile=20 - default percentile is 20, use smaller values to select darker ones (also higher chance of shadows)
-* filter_count = 0 - minimum number of images required, otherwise the result will be empty 
+* filter_count = 0 - minimum number of images required, otherwise the result will be empty
 * slope_threshold = 0.03 - slope threshold used to filter large changes
 * slope_threshold_sensitive = 0.02 - threshold for sensitive wetness slope, used after zoom in to refine change around larger change
 * ndvi_filter = -99 - can be used to filter-out changes which are not due to surface water (vegetation cover, like deforestation). This can be x2 slower. Using 0.1 to exclude deforestation woks in most cases.
 * smoothen=true - smoothen changes image or leave it blocky
 * debug = false -  currently only shows surface water change refinement regions at higher zoom levels
-
-

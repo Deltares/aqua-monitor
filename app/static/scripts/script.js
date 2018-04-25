@@ -708,6 +708,12 @@ function initializeMap() {
   // component (surface water change, coastline, etc.)
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push($('#datasets-button')[0]);
 
+  console.log($('#datasets-button'));
+  var dropdown = $('#datasets-button')
+      .dropdown();
+  dropdown.dropdown('set value', datasets);
+  console.log('dropdown', dropdown);
+
   // info button
   if ($('body').width() >= 1024) {
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push($('#info-button')[0]);
