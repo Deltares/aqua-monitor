@@ -709,7 +709,11 @@ function initializeMap() {
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push($('#datasets-button')[0]);
 
   var dropdown = $('#datasets-button')
-      .dropdown();
+      .dropdown({
+        action: function() {
+          console.log('action', this)
+        }
+      });
   dropdown.dropdown('set value', datasets);
 
   // info button

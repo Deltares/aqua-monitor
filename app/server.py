@@ -97,7 +97,7 @@ class MainPageHandler(webapp2.RequestHandler):
         if datasets_string:
             template_values['datasets'] = [x.encode() for x in datasets_string.split(',')]
         else:
-            template_values['datasets'] = ['surface']
+            template_values['datasets'] = ['surface-water']
 
         percentile = self.request.params.get('percentile', '')
         if percentile:
