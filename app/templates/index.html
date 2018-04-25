@@ -24,20 +24,20 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-{#
+        {#
         <script src="http://d3js.org/d3.v3.min.js"></script>
-#}
+        #}
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
 
-{#
+        {#
         <script src="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.5/dc.min.js"></script>
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.5/dc.min.css">
 
         <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-#}
+        #}
 
         <link rel="stylesheet" href="static/libs/normalize.css"/>
 
@@ -67,9 +67,9 @@
     </head>
     <body>
         <!--[if lt IE 11]>
-        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
-            href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
+                                                                                                     href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+            <![endif]-->
 
         <div id="sidebar" class="ui left demo vertical inverted sidebar labeled icon menu">
             <a class="item">
@@ -107,18 +107,18 @@
 
         <div id="map-buttons" class="ui vertical small icon buttons">
             <!--
-            <button id="button-download" class="ui icon button">
-                <i class="download icon"></i>
-            </button>
-            -->
+                <button id="button-download" class="ui icon button">
+                    <i class="download icon"></i>
+                </button>
+                -->
             <button id="button-query" class="ui icon toggle button">
                 <i class="area chart icon"></i>
             </button>
             <!--
-                        <button id="button-info" class="ui icon toggle button">
-                            <i class="info icon"></i>
-                        </button>
-            -->
+                <button id="button-info" class="ui icon toggle button">
+                    <i class="info icon"></i>
+                </button>
+                -->
         </div>
 
         <div id="zoom-warning" class="ui warning message">
@@ -159,143 +159,154 @@
         </div>
 
         <button id="share-button" class="ui button gm-aqua-control">
-          <i class="share alternate icon"></i>
+            <i class="share alternate icon"></i>
         </button>
 
         <button id="info-button" class="ui button active toggle gm-aqua-control">
-          <i class="info icon"></i>
+            <i class="info icon"></i>
         </button>
 
-{#
+        {#
         <button id="datasets-button" class="ui button active gm-aqua-control">
-          <i class="cubes icon"></i>
+            <i class="cubes icon"></i>
         </button>
 
-#}
+        #}
         <div id="datasets-button" class="ui multiple dropdown button gm-aqua-control">
-          <input type="hidden" name="filters">
-          <i id="datasets-icon" class="cubes icon"></i>
-          <span class="text">Datasets</span>
-          <div class="menu">
-            <div class="header">
-              <i class="add icon"></i>
-              add dataset ...
-            </div>
+            <input type="hidden" name="filters">
+            <i id="datasets-icon" class="cubes icon"></i>
+            <span class="text">Datasets</span>
+            <div class="menu">
+                <div class="header">
+                    <i class="add icon"></i>
+                    add dataset ...
+                </div>
 
-            <div class="scrolling menu">
-              <div class="item" data-value="surface-water">
-                <div class="ui green empty circular label"></div>
-                Surface Water
-              </div>
-              <div class="item" data-value="shoreline">
-                <div class="ui black empty circular label"></div>
-                Shoreline
-              </div>
-              <div class="item" data-value="bathymetry">
-                <div class="ui blue empty circular label"></div>
-                Bathymetry
-              </div>
-              <div class="item" data-value="reservoirs">
-                <div class="ui purple empty circular label"></div>
-                Reservoirs and Lakes
-              </div>
-              <div class="item" data-value="rivers">
-                <div class="ui orange empty circular label"></div>
-                Rivers
-              </div>
-              <div class="item" data-value="basins">
-                <div class="ui yellow empty circular label"></div>
-                Basins
-              </div>
+                <div class="scrolling menu">
+                    <div class="item" data-value="surface-water">
+                        <div class="ui green empty circular label"></div>
+                        Surface Water
+                    </div>
+                    <div class="item" data-value="shoreline">
+                        <div class="ui black empty circular label"></div>
+                        Shoreline
+                    </div>
+                    <div class="item" data-value="bathymetry">
+                        <div class="ui blue empty circular label"></div>
+                        Bathymetry
+                    </div>
+                    <div class="item" data-value="reservoirs">
+                        <div class="ui purple empty circular label"></div>
+                        Reservoirs and Lakes
+                    </div>
+                    <div class="item" data-value="rivers">
+                        <div class="ui orange empty circular label"></div>
+                        Rivers
+                    </div>
+                    <div class="item" data-value="basins">
+                        <div class="ui yellow empty circular label"></div>
+                        Basins
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
 
-       <!-- TODO: find out why style does not work in CSS -->
-       <!-- tried to use https://codepen.io/MathieuRichard/pen/HAgnm, but failed :( -->
-
-<!--
-       <div id="twitter-timeline-box" style="display:none;position:absolute;bottom: 20px;width: 320px;left: 12px;padding: 0;background: rgba(250, 250, 255, 1);box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);border-radius: 2px;" class="ui card">
-         <div class="content" id="twitter-timeline-content">
-
-
-         <a class="twitter-timeline scroll scroll-small" data-width="320" data-height="270" data-dnt="true" data-theme="light" data-chrome="noheader nofooter noborders transparent"
-            data-link-color="#2B7BB9" href="https://twitter.com/aqua_monitor">Tweets by aqua_monitor</a>
-
-         <script src="//platform.twitter.com/widgets.js" charset="utf-8">
-         </script>
-
-       </div>
--->
-
-        <div id="info-box" class="ui card">
-          <div class="content" id="info-text">
-            <h2 id="info-text-title">
-              Surface water changes (1985-2016)
-            </h2>
-
-            <p id="info-text-body">
-                Green and blue colors represent areas where surface water changes occured during the last 30 years.
-                Green pixels show where surface water has been turned into land (accretion, land reclamation, droughts).
-                Blue pixels show where land has been changed into surface water (erosion, reservoir construction).<br><br>
-
-The results of the analysis are published in: <br><br><a href="http://www.nature.com/nclimate/journal/v6/n9/full/nclimate3111.html"><strong>Donchyts et.al, 2016, Nature Climate Change</strong></a>
-<br><br><br>
-                <a href="http://earthengine.google.com">
-                    <img src="static/images/GEE.png">
-                </a>
-</p>
-         </div>
-
-          <div class="extra content" id="info-buttons-content">
-            <div class="left floated like" id="info-buttons">
-              <div id="twitter-div">
-                <a class="ui small primary button" id="twitter-button"
-                   href="https://twitter.com/aqua_monitor" title="Follow on Twitter">
-                    <i class="twitter icon"></i>
-                </a>
-            </div>
-
-            <div id="github-div">
-                <a class="ui small primary button" id="github-button"
-                   href="https://github.com/gena/aqua-monitor" title="Fork or Follow me on GitHub">
-                    <i class="github icon"></i>
-                </a>
-            </div>
-
-            <div id="contact-div">
-                <a class="ui small button" id="contact-button"
-                   href="mailto:gennadii.donchyts@deltares.nl?subject=Aqua Monitor Feedback" title="Get in touch!">
-                    <i class="mail icon"></i>
-                </a>
-            </div>
-
-            <div id="terms-div">
-                <a class="ui small button" id="terms-button" href="https://www.deltares.nl/en/disclaimer/"
-                   title="Terms of Use">
-                    <i class="copyright icon"></i>
-                </a>
-            </div>
-          </div>
-
-          <div class="right floated star">
-            <a class="ui small button" id="info-close-button">
-              <i class="close icon"></i>
-            </a>
-          </div>
-         </div>
-       </div>
+        <!-- TODO: find out why style does not work in CSS -->
+        <!-- tried to use https://codepen.io/MathieuRichard/pen/HAgnm, but failed :( -->
 
         <!--
-        <div id="slider-div-morph">
-           <input id="slider-morph" data-slider-tooltip="hide" type="text"/>
+            <div id="twitter-timeline-box" style="display:none;position:absolute;bottom: 20px;width: 320px;left: 12px;padding: 0;background: rgba(250, 250, 255, 1);box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);border-radius: 2px;" class="ui card">
+                <div class="content" id="twitter-timeline-content">
+
+
+                    <a class="twitter-timeline scroll scroll-small" data-width="320" data-height="270" data-dnt="true" data-theme="light" data-chrome="noheader nofooter noborders transparent"
+                       data-link-color="#2B7BB9" href="https://twitter.com/aqua_monitor">Tweets by aqua_monitor</a>
+
+                    <script src="//platform.twitter.com/widgets.js" charset="utf-8">
+                    </script>
+
+                </div>
+                -->
+
+        <div id="info-box" class="ui card">
+            <div class="content info-text" data-dataset="shoreline">
+                <h2 id="info-text-title">
+                    Shoreline changes (1985-2016)
+                </h2>
+
+                <p id="info-text-body">
+                    Red and green colors represent sandy coastlines where erosion occured during the last 30 years.
+                    Yellow coasts represent sandy coastlines without erosion.
+                    The results of the analysis are published in: <br><br><a href="http://www.nature.com"><strong>Luijendijk et.al, 2018, Nature Scientific Reports</strong></a>
+                </p>
+            </div>
+            <div class="content info-text" data-dataset="surface-water">
+                <h2 id="info-text-title">
+                    Surface water changes (1985-2016)
+                </h2>
+
+                <p id="info-text-body">
+                    Green and blue colors represent areas where surface water changes occured during the last 30 years.
+                    Green pixels show where surface water has been turned into land (accretion, land reclamation, droughts).
+                    Blue pixels show where land has been changed into surface water (erosion, reservoir construction).<br><br>
+
+                    The results of the analysis are published in: <br><br><a href="http://www.nature.com/nclimate/journal/v6/n9/full/nclimate3111.html"><strong>Donchyts et.al, 2016, Nature Climate Change</strong></a>
+                    <br><br><br>
+                    <a href="http://earthengine.google.com">
+                        <img src="static/images/GEE.png">
+                    </a>
+                </p>
+            </div>
+
+            <div class="extra content info-buttons-content">
+                <div class="left floated like" id="info-buttons">
+                    <div id="twitter-div">
+                        <a class="ui small primary button" id="twitter-button"
+                           href="https://twitter.com/aqua_monitor" title="Follow on Twitter">
+                            <i class="twitter icon"></i>
+                        </a>
+                    </div>
+
+                    <div id="github-div">
+                        <a class="ui small primary button" id="github-button"
+                           href="https://github.com/deltares/aqua-monitor" title="Fork or Follow me on GitHub">
+                            <i class="github icon"></i>
+                        </a>
+                    </div>
+
+                    <div id="contact-div">
+                        <a class="ui small button" id="contact-button"
+                           href="mailto:gennadii.donchyts@deltares.nl?subject=Aqua Monitor Feedback" title="Get in touch!">
+                            <i class="mail icon"></i>
+                        </a>
+                    </div>
+
+                    <div id="terms-div">
+                        <a class="ui small button" id="terms-button" href="https://www.deltares.nl/en/disclaimer/"
+                           title="Terms of Use">
+                            <i class="copyright icon"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="right floated star">
+                    <a class="ui small button" id="info-close-button">
+                        <i class="close icon"></i>
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <div id="slider-div-image">
-           <input id="slider-image" type="text"/>
-           <div class="slider-label">Image</div>
-        </div>
-        -->
+        <!--
+            <div id="slider-div-morph">
+                <input id="slider-morph" data-slider-tooltip="hide" type="text"/>
+            </div>
+
+            <div id="slider-div-image">
+                <input id="slider-image" type="text"/>
+                <div class="slider-label">Image</div>
+            </div>
+            -->
 
         <div id="label-year-before">1985</div>
         <div id="label-year-after">2016</div>
