@@ -195,6 +195,33 @@ function renderSurfaceWaterChanges(enableHeatmap, change) {
   }
 }
 
+function renderShorelineProfiles() {
+  // get the data
+  var table = ee.FeatureCollection("users/fbaart/merged");
+  // filter only the sandy shores
+  var sandyFilter = ee.Filter.eq('flag_sandy', 'True');
+  // start with numbers
+  var empty = ee.Image().float();
+  // draw
+  var lines = empty.paint({
+    featureCollection: table.filter(sandyFilter),
+    color: 'change_rat',
+    width: 3
+  });
+  // color
+  var rdYlGn = ['#d73027','#f46d43','#fdae61','#fee08b','#ffffbf','#d9ef8b','#a6d96a','#66bd63','#1a9850'];
+  return lines.visualize({
+
+    palette: rdYlGn,
+    min: -10,
+    max: 10
+  })
+  // to rgb
+    .rename(['r','g','b'])
+  // mosaic not needed, already a single image
+    .visualize({forceRgbOutput:true});
+}
+
 
 // A helper to apply an expression and linearly rescale the output.
 var rescale = function (img, thresholds) {
@@ -1052,7 +1079,17 @@ function addLayers() {
       maxZoom: 22,
       mode: 'dynamic',
       opacity: 100
-    }
+    },
+    {
+      name: 'shoreline-profiles',
+      urls: renderShorelineProfiles(),
+      index: nLayers++,
+      minZoom: 12,
+      maxZoom: 22,
+      mode: 'dynamic',
+      opacity: 100
+    },
+
   ];
   // add all layers
   _.each(layers, function (layer) {
