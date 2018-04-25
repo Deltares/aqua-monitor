@@ -195,6 +195,33 @@ function renderSurfaceWaterChanges(enableHeatmap, change) {
   }
 }
 
+function renderShorelineProfiles() {
+  // get the data
+  var table = ee.FeatureCollection("users/fbaart/merged");
+  // filter only the sandy shores
+  var sandyFilter = ee.Filter.eq('flag_sandy', 'True');
+  // start with numbers
+  var empty = ee.Image().float();
+  // draw
+  var lines = empty.paint({
+    featureCollection: table.filter(sandyFilter),
+    color: 'change_rat',
+    width: 3
+  });
+  // color
+  var rdYlGn = ['#d73027','#f46d43','#fdae61','#fee08b','#ffffbf','#d9ef8b','#a6d96a','#66bd63','#1a9850'];
+  return lines.visualize({
+
+    palette: rdYlGn,
+    min: -10,
+    max: 10
+  })
+  // to rgb
+    .rename(['r','g','b'])
+  // mosaic not needed, already a single image
+    .visualize({forceRgbOutput:true});
+}
+
 
 // A helper to apply an expression and linearly rescale the output.
 var rescale = function (img, thresholds) {
@@ -875,7 +902,7 @@ function addLayers() {
           if (checked) {
             layer.opacity = 100;
           } else {
-            layer.opacity = 0;
+            layer.opacity = 50;
           }
           refreshLayerOpacity(map, layer);
         });
@@ -978,6 +1005,7 @@ function addLayers() {
       minZoom: 0,
       maxZoom: 5,
       mode: 'static',
+      dataset: 'surface-water',
       opacity: 80
     },
     {
@@ -987,6 +1015,7 @@ function addLayers() {
       minZoom: 5,
       maxZoom: 10,
       mode: 'static',
+      dataset: 'surface-water',
       opacity: 80
     },
     {
@@ -996,7 +1025,28 @@ function addLayers() {
       minZoom: 10,
       maxZoom: 22,
       mode: 'static',
+      dataset: 'surface-water',
       opacity: 80
+    },
+    {
+      name: 'shoreline-profiles',
+      urls: 'https://storage.googleapis.com/shoreline-monitor/shoreline-500m-z0-10/{z}/{x}/{y}.png',
+      index: nLayers++,
+      minZoom: 0,
+      maxZoom: 10,
+      mode: 'static',
+      dataset: 'shoreline',
+      opacity: 80
+    },
+    {
+      name: 'shoreline-profiles',
+      urls: renderShorelineProfiles(),
+      index: nLayers++,
+      minZoom: 10,
+      maxZoom: 22,
+      mode: 'static',
+      dataset: 'shoreline',
+      opacity: 100
     },
     // dynamic mode layers
     {
@@ -1006,6 +1056,7 @@ function addLayers() {
       minZoom: 7,
       maxZoom: 12,
       mode: 'dynamic',
+      dataset: 'surface-water',
       opacity: 100
     },
     {
@@ -1015,6 +1066,7 @@ function addLayers() {
       minZoom: 7,
       maxZoom: 12,
       mode: 'dynamic',
+      dataset: 'surface-water',
       opacity: 0
     },
     {
@@ -1024,6 +1076,7 @@ function addLayers() {
       minZoom: 7,
       maxZoom: 12,
       mode: 'dynamic',
+      dataset: 'surface-water',
       opacity: 100
     },
     {
@@ -1033,6 +1086,7 @@ function addLayers() {
       minZoom: 12,
       maxZoom: 22,
       mode: 'dynamic',
+      dataset: 'surface-water',
       opacity: 100
     },
     {
@@ -1042,6 +1096,7 @@ function addLayers() {
       minZoom: 12,
       maxZoom: 22,
       mode: 'dynamic',
+      dataset: 'surface-water',
       opacity: 0
     },
     {
@@ -1051,12 +1106,28 @@ function addLayers() {
       minZoom: 12,
       maxZoom: 22,
       mode: 'dynamic',
+      dataset: 'surface-water',
+      opacity: 100
+    },
+    {
+      name: 'shoreline-profiles',
+      urls: renderShorelineProfiles(),
+      index: nLayers++,
+      minZoom: 0,
+      maxZoom: 22,
+      mode: 'dynamic',
+      dataset: 'shoreline',
       opacity: 100
     }
+
   ];
   // add all layers
   _.each(layers, function (layer) {
-    setLayer(map, layer);
+    // if datasets is not specified (Show all) or if dataset is in datasets
+    if (_.isEmpty(datasets) || _.includes(datasets, layer.dataset)) {
+      setLayer(map, layer);
+    }
+    // hide and show layers based on datasets-menu
   });
   afterLayersAdded();
 
