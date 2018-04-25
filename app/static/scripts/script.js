@@ -222,6 +222,23 @@ function renderShorelineProfiles() {
     .visualize({forceRgbOutput:true});
 }
 
+function clickShorelineProfile(pt) {
+  // get the data
+  var table = ee.FeatureCollection("users/fbaart/merged");
+  // filter only the sandy shores
+  var sandyFilter = ee.Filter.eq('flag_sandy', 'True');
+  var featureProxy = ee.Feature(
+    table
+      .filterBounds(pt.buffer(500))
+      .filter(sandyFilter)
+      .first()
+  );
+  var feature = featureProxy.getInfo();
+  // d is lost in translation
+  var id = _.get(feature, 'properties.transect_i');
+  console.log('show info for', feature.properties);
+  return id;
+}
 
 // A helper to apply an expression and linearly rescale the output.
 var rescale = function (img, thresholds) {
@@ -743,6 +760,15 @@ function initializeMap() {
     console.log('datasets changed', selectedDatasets);
   });
 
+  // hide all boxes
+  $('#info-box .info-text').hide();
+  // show the relevant ones
+  _.each(datasets || ['surface-water'], function(dataset) {
+    $('*[data-dataset=' + '"' + dataset + '"' + ']').show();
+  });
+
+
+
   // info button
   if ($('body').width() >= 1024) {
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push($('#info-button')[0]);
@@ -817,6 +843,16 @@ function addLayers() {
 
   function afterLayersAdded() {
 
+    function handleLayerClick(evt) {
+      var pt = ee.Geometry.Point([evt.latLng.lng(), evt.latLng.lat()]);
+      _.each(layers, function(layer) {
+        if (_.has(layer, 'handlers.click')) {
+          layer.handlers.click(pt);
+        }
+      });
+
+    }
+    map.addListener('click', handleLayerClick);
 
     var sliderDefaults = {
       min: 0,
@@ -902,7 +938,7 @@ function addLayers() {
           if (checked) {
             layer.opacity = 100;
           } else {
-            layer.opacity = 50;
+            layer.opacity = 0;
           }
           refreshLayerOpacity(map, layer);
         });
@@ -1046,7 +1082,10 @@ function addLayers() {
       maxZoom: 22,
       mode: 'static',
       dataset: 'shoreline',
-      opacity: 100
+      opacity: 100,
+      handlers: {
+        click: clickShorelineProfile
+      }
     },
     // dynamic mode layers
     {
@@ -1107,16 +1146,6 @@ function addLayers() {
       maxZoom: 22,
       mode: 'dynamic',
       dataset: 'surface-water',
-      opacity: 100
-    },
-    {
-      name: 'shoreline-profiles',
-      urls: renderShorelineProfiles(),
-      index: nLayers++,
-      minZoom: 0,
-      maxZoom: 22,
-      mode: 'dynamic',
-      dataset: 'shoreline',
       opacity: 100
     }
 
