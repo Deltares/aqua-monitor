@@ -247,6 +247,8 @@ function clickShorelineProfile(pt) {
       return _.get(feature, 'properties.transect_id', id);
     }));
     createShoreChart(feature);
+    $('#chart-modal')
+      .show();
   });
   console.log('id', id);
   return id;
