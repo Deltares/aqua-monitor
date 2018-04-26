@@ -1,6 +1,6 @@
 function createShoreChart(json) {
 
-  var elementId = 'chart-modal' ;
+  var elementId = 'chart-container' ;
 
   // data from global shore json file (single location)
   var props = json.properties;

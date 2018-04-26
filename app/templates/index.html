@@ -50,6 +50,40 @@
             <div class="query-chart" id="query-chart"></div>
         </template>
 
+        <script id="shoreline-chart-template" type="text/x-lodash-template">
+
+            <table class="ui definition table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Properties</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Profile</td>
+                        <td><%= transect_id %></td>
+                    </tr>
+                    <tr>
+                        <td>Country</td>
+                        <td><%= country_name %></td>
+                    </tr>
+                    <tr>
+                        <td>Continent</td>
+                        <td><%= continent %></td>
+                    </tr>
+                    <tr>
+                        <td>Sandy</td>
+                        <td><%= flag_sandy %></td>
+                    </tr>
+                    <tr>
+                        <td>Change rate</td>
+                        <td><%= change_rate.toFixed(1) %> m/yr +- <%= change_rate_unc.toFixed(1) %></td>
+                    </tr>
+                </tbody>
+            </table>
+        </script>
+
         <!-- build:css styles/vendor.css -->
         <!-- bower:css -->
         <!-- endbower -->
@@ -357,12 +391,16 @@
 
         <!-- Modal windows -->
 
-        <div class="ui modal" id="chart-modal">
-            <div class="right floated star">
-                <a class="ui small button info-close-button">
+        <div class="ui modal" id="chart-modal" style="display: none;">
+            <div id="chart-container"></div>
+            <div id="chart-table"></div>
+
+            <div class="right">
+                <a class="ui small button chart-modal-close-button">
                     <i class="close icon"></i>
                 </a>
             </div>
+
         </div>
         <!--
             <div id="slider-div-morph">
