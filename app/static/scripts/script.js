@@ -247,9 +247,10 @@ function clickShorelineProfile(pt) {
     section: section
   });
   $.getJSON(url, function(data) {
-    var feature = _.first(_.filter(data.features, function(feature) {
-      return _.get(feature, 'properties.transect_id', id);
-    }));
+    var filteredFeatures = _.filter(data.features, function(feature) {
+      return _.get(feature, 'properties.transect_id') === id;
+    });
+    var feature = _.first(filteredFeatures);
     createShoreChart(feature);
     var tableTemplate = _.template($('#shoreline-chart-template').html());
     var rendered = tableTemplate(feature.properties);
