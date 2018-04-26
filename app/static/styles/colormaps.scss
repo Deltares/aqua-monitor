@@ -1,0 +1,31 @@
+.legend-box {
+  width: 1em;
+  min-width: 10px;
+}
+.legend {
+  display: flex;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+.RdYlGn {
+  .q0-5{
+    fill: rgb(215,25,28);
+    background-color: rgb(215,25,28);
+  }
+  .q1-5{
+    fill: rgb(253,174,97);
+    background-color: rgb(253,174,97);
+  }
+  .q2-5{
+    fill: rgb(255,255,191);
+    background-color: rgb(255,255,191);
+  }
+  .q3-5{
+    fill: rgb(166,217,106);
+    background-color: rgb(166,217,106);
+  }
+  .q4-5 {
+    fill: rgb(26,150,65);
+    background-color: rgb(26,150,65);
+  }
+}

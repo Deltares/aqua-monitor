@@ -236,7 +236,10 @@ function clickShorelineProfile(pt) {
   var feature = featureProxy.getInfo();
   // d is lost in translation
   var id = _.get(feature, 'properties.transect_i');
-  console.log('show info for', feature.properties);
+  if (_.isNil(id)) {
+    return;
+  }
+  console.log('id', id);
   return id;
 }
 
@@ -762,6 +765,7 @@ function initializeMap() {
 
   // hide all boxes
   $('#info-box .info-text').hide();
+  $('#info-box .extra.content').hide();
   // show the relevant ones
   _.each(datasets || ['surface-water'], function(dataset) {
     $('*[data-dataset=' + '"' + dataset + '"' + ']').show();

@@ -140,7 +140,7 @@ ee.initialize(null, null, function () {
     queryMap = true;
   });
 
-  $('#info-close-button').click(function () {
+  $('.info-close-button').click(function () {
     $('#info-box').transition('slide right');
     //$('#twitter-timeline-box').transition('slide right');
     $('#info-button').toggleClass('active');
