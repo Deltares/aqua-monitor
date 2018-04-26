@@ -22,7 +22,7 @@ function createShoreChart(json) {
   // D3js time series chart
   var margin = {top: 20, right: 20, bottom: 20, left: 40},
     width = 600 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 300 - margin.top - margin.bottom;
 
   // Set the ranges
   var x = d3.time.scale().range([0, width]);
