@@ -213,8 +213,8 @@ function renderShorelineProfiles() {
   return lines.visualize({
 
     palette: rdYlGn,
-    min: -10,
-    max: 10
+    min: -3,
+    max: 3
   })
   // to rgb
     .rename(['r','g','b'])
@@ -1097,13 +1097,23 @@ function addLayers() {
     },
     {
       name: 'shoreline-profiles',
-      urls: 'https://storage.googleapis.com/shoreline-monitor/shoreline-500m-z0-10/{z}/{x}/{y}.png',
+      urls: 'https://storage.googleapis.com/shoreline-monitor/shoreline-500m-z0-11/{z}/{x}/{y}.png',
       index: nLayers++,
       minZoom: 0,
-      maxZoom: 10,
+      maxZoom: 11,
       mode: 'static',
       dataset: 'shoreline',
       opacity: 80
+    },
+    {
+      name: 'shoreline-heatmap',
+      urls: 'https://storage.googleapis.com/shoreline-monitor/shoreline-heatmap-z0-5/{z}/{x}/{y}.png',
+      index: nLayers++,
+      minZoom: 0,
+      maxZoom: 5,
+      mode: 'static',
+      dataset: 'shoreline',
+      opacity: 30
     },
     {
       name: 'shoreline-profiles',
