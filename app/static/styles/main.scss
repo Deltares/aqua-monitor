@@ -7,6 +7,7 @@ $button-shadow: rgba($black, .3) 0 1px 4px -1px;
 // bower:scss
 // endbower
 
+
 #map .gm-style {
   // OverlayMapPanes for these layers
   div:first-child > div:first-child {
@@ -215,7 +216,7 @@ $button-shadow: rgba($black, .3) 0 1px 4px -1px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   border-radius: 2px;
 
-#info-close-button {
+.info-close-button {
   background: transparent;
   position: absolute;
   right: 0px;
@@ -503,4 +504,9 @@ $button-shadow: rgba($black, .3) 0 1px 4px -1px;
   color: $white;
   font-size: 11px;
   text-shadow: 1px 1px 0px black, -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black;
+}
+
+
+#chart-modal.ui.modal {
+  top: 20%;
 }

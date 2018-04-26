@@ -236,7 +236,21 @@ function clickShorelineProfile(pt) {
   var feature = featureProxy.getInfo();
   // d is lost in translation
   var id = _.get(feature, 'properties.transect_i');
-  console.log('show info for', feature.properties);
+  if (_.isNil(id)) {
+    return;
+  }
+
+  var url = 'https://storage.googleapis.com/shoreline-monitor/features/030/000/BOX_030_000.json';
+  $.getJSON(url, function(data) {
+    console.log('data', data);
+    var feature = _.first(_.filter(data.features, function(feature) {
+      return _.get(feature, 'properties.transect_id', id);
+    }));
+    createShoreChart(feature);
+    $('#chart-modal')
+      .show();
+  });
+  console.log('id', id);
   return id;
 }
 
@@ -762,6 +776,7 @@ function initializeMap() {
 
   // hide all boxes
   $('#info-box .info-text').hide();
+  $('#info-box .extra.content').hide();
   // show the relevant ones
   _.each(datasets || ['surface-water'], function(dataset) {
     $('*[data-dataset=' + '"' + dataset + '"' + ']').show();

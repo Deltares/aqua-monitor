@@ -24,9 +24,7 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-        {#
         <script src="http://d3js.org/d3.v3.min.js"></script>
-        #}
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 
@@ -41,6 +39,7 @@
 
         <link rel="stylesheet" href="static/libs/normalize.css"/>
 
+        <link rel="stylesheet" href="static/styles/colormaps.css">
         <link rel="stylesheet" href="static/styles/chart.css">
         <link rel="stylesheet" href="static/styles/time-selector.css">
         <link rel="stylesheet" href="static/styles/searchbox.css">
@@ -231,15 +230,74 @@
         <div id="info-box" class="ui card">
             <div class="content info-text" data-dataset="shoreline">
                 <h2>
-                    Shoreline changes (1985-2016)
+                    Long-term Shoreline Changes (1984-2016)
                 </h2>
 
                 <p>
-                    Red and green colors represent sandy coastlines where erosion occured during the last 30 years.
-                    Yellow coasts represent sandy coastlines without erosion.
-                    The results of the analysis are published in: <br><br><a href="http://www.nature.com"><strong>Luijendijk et.al, 2018, Nature Scientific Reports</strong></a>
+                    The bars represent the erosion/accretion along sandy coasts, every 500m, over the period 1984-2016.
+                    Green bars indicate where shoreline accretion has occurred (natural accretion, land reclamation, nourishments).
+                    Red bars indicate erosive shorelines.
+                </p>
+                <div class="RdYlGn legend">
+                    <span>-10m/yr&nbsp;</span>
+                    <div class="legend-box q0-5" title="-10">&nbsp;</div>
+                    <div class="legend-box q1-5" title="-5">&nbsp;</div>
+                    <div class="legend-box q2-5" title="0">&nbsp;</div>
+                    <div class="legend-box q3-5" title="5">&nbsp;</div>
+                    <div class="legend-box q4-5" title="10">&nbsp;</div>
+                    <span>&nbsp;10m/yr</span>
+                </div>
+                <p>
+
+                    <!-- The heatmap shows the hotspots of erosive (red) and accretive (green) shorelines in the world. -->
+
+                    The results of the global analysis and methods can be found in:
+                    <a href="https://www.nature.com/articles/s41598-018-24630-6">Luijendijk et al., 2018, Scientific Reports</a>
+
+                    <br>
+                    For inquiries please fill in this <a href="https://docs.google.com/forms/d/e/1FAIpQLSfd6VpTH5WPaHrUm1ZQfN2FQ6az77Wd7BykEt-orWMMpIVYFA/viewform">form</a>.
                 </p>
             </div>
+
+            <div class="extra content info-buttons-content" data-dataset="shoreline">
+                <div class="left floated like">
+                    <div>
+                        <a class="ui small primary button"
+                           href="https://twitter.com/beachmonitor" title="Follow on Twitter">
+                            <i class="twitter icon"></i>
+                        </a>
+                    </div>
+
+                    <div>
+                        <a class="ui small primary button" id="github-button"
+                           href="https://github.com/deltares/aqua-monitor" title="Fork or Follow me on GitHub">
+                            <i class="github icon"></i>
+                        </a>
+                    </div>
+
+                    <div>
+                        <a class="ui small button"
+                           href="mailto:arjen.luijendijk@deltares.nl?subject=Shoreline Monitor Feedback" title="Get in touch!">
+                            <i class="mail icon"></i>
+                        </a>
+                    </div>
+
+                    <div>
+                        <a class="ui small button" id="terms-button" href="https://www.deltares.nl/en/disclaimer/"
+                           title="Terms of Use">
+                            <i class="copyright icon"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="right floated star">
+                    <a class="ui small button info-close-button">
+                        <i class="close icon"></i>
+                    </a>
+                </div>
+            </div>
+
+
             <div class="content info-text" data-dataset="surface-water">
                 <h2>
                     Surface water changes (1985-2016)
@@ -258,30 +316,30 @@
                 </p>
             </div>
 
-            <div class="extra content info-buttons-content">
-                <div class="left floated like" id="info-buttons">
-                    <div id="twitter-div">
-                        <a class="ui small primary button" id="twitter-button"
+            <div class="extra content info-buttons-content" data-dataset="surface-water">
+                <div class="left floated like">
+                    <div>
+                        <a class="ui small primary button"
                            href="https://twitter.com/aqua_monitor" title="Follow on Twitter">
                             <i class="twitter icon"></i>
                         </a>
                     </div>
 
-                    <div id="github-div">
+                    <div>
                         <a class="ui small primary button" id="github-button"
                            href="https://github.com/deltares/aqua-monitor" title="Fork or Follow me on GitHub">
                             <i class="github icon"></i>
                         </a>
                     </div>
 
-                    <div id="contact-div">
-                        <a class="ui small button" id="contact-button"
+                    <div>
+                        <a class="ui small button"
                            href="mailto:gennadii.donchyts@deltares.nl?subject=Aqua Monitor Feedback" title="Get in touch!">
                             <i class="mail icon"></i>
                         </a>
                     </div>
 
-                    <div id="terms-div">
+                    <div>
                         <a class="ui small button" id="terms-button" href="https://www.deltares.nl/en/disclaimer/"
                            title="Terms of Use">
                             <i class="copyright icon"></i>
@@ -290,13 +348,22 @@
                 </div>
 
                 <div class="right floated star">
-                    <a class="ui small button" id="info-close-button">
+                    <a class="ui small button info-close-button">
                         <i class="close icon"></i>
                     </a>
                 </div>
             </div>
         </div>
 
+        <!-- Modal windows -->
+
+        <div class="ui modal" id="chart-modal">
+            <div class="right floated star">
+                <a class="ui small button info-close-button">
+                    <i class="close icon"></i>
+                </a>
+            </div>
+        </div>
         <!--
             <div id="slider-div-morph">
                 <input id="slider-morph" data-slider-tooltip="hide" type="text"/>
@@ -414,6 +481,7 @@
         <script src="static/scripts/script.js"></script>
         <script src="static/scripts/time-selector.js"></script>
         <script src="static/scripts/query-chart.js"></script>
+        <script src="static/scripts/shore-chart.js"></script>
         <script src="static/scripts/main.js"></script>
         <!-- build:js static/scripts/all.js -->
         <!-- endbuild -->
