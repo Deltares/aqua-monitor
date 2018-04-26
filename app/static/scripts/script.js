@@ -204,6 +204,7 @@ function renderShorelineProfiles() {
   var lines = empty.paint({
     featureCollection: table,
     color: 'change_rat',
+    // TODO: this should be function of zoom level ~30m
     width: 3
   });
   // color
