@@ -239,6 +239,15 @@ function clickShorelineProfile(pt) {
   if (_.isNil(id)) {
     return;
   }
+
+  var url = 'https://storage.googleapis.com/shoreline-monitor/features/030/000/BOX_030_000.json';
+  $.getJSON(url, function(data) {
+    console.log('data', data);
+    var feature = _.first(_.filter(data.features, function(feature) {
+      return _.get(feature, 'properties.transect_id', id);
+    }));
+    createShoreChart(feature);
+  });
   console.log('id', id);
   return id;
 }
