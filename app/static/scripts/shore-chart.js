@@ -42,7 +42,6 @@ function createShoreChart(feature) {
         return x(d.date);
       })
       .y(function (d) {
-        console.log('dt', d.dt, d.dt * feature.properties.change_rate, feature);
         return y(d.dt * feature.properties.change_rate);
       });
 
