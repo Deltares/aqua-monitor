@@ -4,8 +4,14 @@
 }
 .legend {
   display: flex;
-  margin-top: 12px;
-  margin-bottom: 12px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  .label-left {
+    padding-right: 10px;
+  }
+  .label-right {
+    padding-left: 10px;
+  }
 }
 .RdYlGn {
   .q0-5{

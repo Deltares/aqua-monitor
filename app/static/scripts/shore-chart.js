@@ -21,7 +21,7 @@ function createShoreChart(feature) {
   });
 
   // D3js time series chart
-  var margin = {top: 20, right: 20, bottom: 20, left: 40},
+  var margin = {top: 20, right: 20, bottom: 40, left: 60},
       width = 600 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
@@ -94,12 +94,24 @@ function createShoreChart(feature) {
   svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
-    .call(xAxis);
+    .call(xAxis)
+    .append("text")
+    .attr("x", width)
+    .attr("y", -3)
+    .attr("dy", "-.35em")
+    .style("font-weight", "bold")
+    .style("text-anchor", "middle")
+    .text("time");
 
   // Add the Y Axis
   svg.append("g")
     .attr("class", "y axis")
-    .call(yAxis);
+    .call(yAxis)
+    .append("text")
+    .attr("x", 6)
+    .attr("dy", ".35em")
+    .style("font-weight", "bold")
+    .text("shoreline position [m]");
 
   // append the x line
   focus.append("line")
