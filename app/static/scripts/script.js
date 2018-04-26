@@ -198,14 +198,13 @@ function renderSurfaceWaterChanges(enableHeatmap, change) {
 function renderShorelineProfiles() {
   // get the data
   var table = ee.FeatureCollection("users/fbaart/merged");
-  // filter only the sandy shores
-  var sandyFilter = ee.Filter.eq('flag_sandy', 'True');
   // start with numbers
   var empty = ee.Image().float();
   // draw
   var lines = empty.paint({
-    featureCollection: table.filter(sandyFilter),
+    featureCollection: table,
     color: 'change_rat',
+    // TODO: this should be function of zoom level ~30m
     width: 3
   });
   // color
@@ -213,8 +212,8 @@ function renderShorelineProfiles() {
   return lines.visualize({
 
     palette: rdYlGn,
-    min: -10,
-    max: 10
+    min: -3,
+    max: 3
   })
   // to rgb
     .rename(['r','g','b'])
@@ -225,12 +224,9 @@ function renderShorelineProfiles() {
 function clickShorelineProfile(pt) {
   // get the data
   var table = ee.FeatureCollection("users/fbaart/merged");
-  // filter only the sandy shores
-  var sandyFilter = ee.Filter.eq('flag_sandy', 'True');
   var featureProxy = ee.Feature(
     table
       .filterBounds(pt.buffer(250))
-      .filter(sandyFilter)
       .first()
   );
   var feature = featureProxy.getInfo();
@@ -254,19 +250,13 @@ function clickShorelineProfile(pt) {
     var feature = _.first(_.filter(data.features, function(feature) {
       return _.get(feature, 'properties.transect_id', id);
     }));
-    console.log('data', data, feature);
-
-
     createShoreChart(feature);
     var tableTemplate = _.template($('#shoreline-chart-template').html());
-    console.log('table', $('#shoreline-chart-template').html());
     var rendered = tableTemplate(feature.properties);
-    console.log('rendered', rendered, feature.properties)
     $('#chart-table').html(rendered);
     $('#chart-modal')
       .show();
   });
-  console.log('id', id);
   return id;
 }
 
@@ -1097,13 +1087,23 @@ function addLayers() {
     },
     {
       name: 'shoreline-profiles',
-      urls: 'https://storage.googleapis.com/shoreline-monitor/shoreline-500m-z0-10/{z}/{x}/{y}.png',
+      urls: 'https://storage.googleapis.com/shoreline-monitor/shoreline-500m-z0-11/{z}/{x}/{y}.png',
       index: nLayers++,
       minZoom: 0,
-      maxZoom: 10,
+      maxZoom: 11,
       mode: 'static',
       dataset: 'shoreline',
       opacity: 80
+    },
+    {
+      name: 'shoreline-heatmap',
+      urls: 'https://storage.googleapis.com/shoreline-monitor/shoreline-heatmap-z0-5/{z}/{x}/{y}.png',
+      index: nLayers++,
+      minZoom: 0,
+      maxZoom: 5,
+      mode: 'static',
+      dataset: 'shoreline',
+      opacity: 30
     },
     {
       name: 'shoreline-profiles',

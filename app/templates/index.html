@@ -205,9 +205,13 @@
         </button>
 
         #}
-        <div id="datasets-button" class="ui multiple dropdown button gm-aqua-control">
+        <div
+            id="datasets-button"
+            class="ui multiple dropdown button gm-aqua-control disabled"
+            title="dataset selection is not yet implemented, you can use the datasets query parameter"
+             >
             <input type="hidden" name="filters">
-            <i id="datasets-icon" class="cubes icon"></i>
+            <i id="datasets-icon" class="cubes icon" ></i>
             <span class="text">Datasets</span>
             <div class="menu">
                 <div class="header">
@@ -268,18 +272,18 @@
                 </h2>
 
                 <p>
-                    The bars represent the erosion/accretion along sandy coasts, every 500m, over the period 1984-2016.
+                    The bars represent the erosion/accretion along coasts, every 500m, over the period 1984-2016.
                     Green bars indicate where shoreline accretion has occurred (natural accretion, land reclamation, nourishments).
-                    Red bars indicate erosive shorelines.
+                    Red bars indicate erosive shorelines, based on a linear fit through shoreline positions.
                 </p>
                 <div class="RdYlGn legend">
-                    <span>-10m/yr&nbsp;</span>
+                    <span>-3m/yr&nbsp;</span>
                     <div class="legend-box q0-5" title="-10">&nbsp;</div>
                     <div class="legend-box q1-5" title="-5">&nbsp;</div>
                     <div class="legend-box q2-5" title="0">&nbsp;</div>
                     <div class="legend-box q3-5" title="5">&nbsp;</div>
                     <div class="legend-box q4-5" title="10">&nbsp;</div>
-                    <span>&nbsp;10m/yr</span>
+                    <span>&nbsp;3m/yr</span>
                 </div>
                 <p>
 
