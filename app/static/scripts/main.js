@@ -158,6 +158,11 @@ ee.initialize(null, null, function () {
   $('#slider-label-after').text(maxYearSelection);
   $('#twitter-button').show();
 
+  $('.chart-modal-close-button').on('click', function() {
+    $('#chart-modal').hide();
+  });
+  $('#chart-modal').hide();
+
 
   if($('body').width() > 1024) {
     $('#info-box').show();

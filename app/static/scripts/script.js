@@ -229,7 +229,7 @@ function clickShorelineProfile(pt) {
   var sandyFilter = ee.Filter.eq('flag_sandy', 'True');
   var featureProxy = ee.Feature(
     table
-      .filterBounds(pt.buffer(500))
+      .filterBounds(pt.buffer(250))
       .filter(sandyFilter)
       .first()
   );
@@ -240,13 +240,29 @@ function clickShorelineProfile(pt) {
     return;
   }
 
-  var url = 'https://storage.googleapis.com/shoreline-monitor/features/030/000/BOX_030_000.json';
+  var parts = _.split(id, "_");
+  var box = parts[1];
+  var section = parts[2];
+
+  var url = _.template(
+    'https://storage.googleapis.com/shoreline-monitor/features/<%- box %>/<%- section %>/BOX_<%- box %>_<%- section %>.json'
+  )({
+    box: box,
+    section: section
+  });
   $.getJSON(url, function(data) {
-    console.log('data', data);
     var feature = _.first(_.filter(data.features, function(feature) {
       return _.get(feature, 'properties.transect_id', id);
     }));
+    console.log('data', data, feature);
+
+
     createShoreChart(feature);
+    var tableTemplate = _.template($('#shoreline-chart-template').html());
+    console.log('table', $('#shoreline-chart-template').html());
+    var rendered = tableTemplate(feature.properties);
+    console.log('rendered', rendered, feature.properties)
+    $('#chart-table').html(rendered);
     $('#chart-modal')
       .show();
   });
