@@ -1158,7 +1158,7 @@ function addLayers() {
       name: 'future-shoreline-points',
       urls: renderFutureShorelines(),
       index: nLayers++,
-      minZoom: 10,
+      minZoom: 12,
       maxZoom: 22,
       mode: 'static',
       dataset: 'future-shoreline',
