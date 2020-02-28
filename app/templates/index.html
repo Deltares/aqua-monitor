@@ -104,434 +104,463 @@
                                                                                                      href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
             <![endif]-->
 
-        <div id="sidebar" class="ui left demo vertical inverted sidebar labeled icon menu">
-            <a class="item">
-                <i class="area chart icon"></i>
-                Query
-            </a>
-            <a class="item">
-                <i class="download icon"></i>
-                Download
-            </a>
-            <a class="item">
-                <i class="twitter icon"></i>
-                Twitter
-            </a>
-        </div>
+             <div id="sidebar" class="ui left demo vertical inverted sidebar labeled icon menu">
+                 <a class="item">
+                     <i class="area chart icon"></i>
+                     Query
+                 </a>
+                 <a class="item">
+                     <i class="download icon"></i>
+                     Download
+                 </a>
+                 <a class="item">
+                     <i class="twitter icon"></i>
+                     Twitter
+                 </a>
+             </div>
 
-        <!-- places autocomplete input -->
-        <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+             <!-- places autocomplete input -->
+             <input id="pac-input" class="controls" type="text" placeholder="Search Box">
 
-        <!-- Google Map. -->
-        <div id="map"></div>
+             <!-- Google Map. -->
+             <div id="map"></div>
 
-        <div id="time-selector-container">
-            <input type="text" id="time-selector-range" value=""/>
-        </div>
+             <div id="time-selector-container">
+                 <input type="text" id="time-selector-range" value=""/>
+             </div>
 
-        <div id="chart-dashboard">
-            <div id="chart"></div>
-            <div id="chart-range"></div>
-        </div>
+             <div id="chart-dashboard">
+                 <div id="chart"></div>
+                 <div id="chart-range"></div>
+             </div>
 
-        <button id="button-menu-sidebar" class="ui icon button">
-            <i class="sidebar icon"></i>
-        </button>
+             <button id="button-menu-sidebar" class="ui icon button">
+                 <i class="sidebar icon"></i>
+             </button>
 
-        <div id="map-buttons" class="ui vertical small icon buttons">
-            <!--
-                <button id="button-download" class="ui icon button">
-                    <i class="download icon"></i>
-                </button>
-                -->
-            <button id="button-query" class="ui icon toggle button">
-                <i class="area chart icon"></i>
-            </button>
-            <!--
-                <button id="button-info" class="ui icon toggle button">
-                    <i class="info icon"></i>
-                </button>
-                -->
-        </div>
+             <div id="map-buttons" class="ui vertical small icon buttons">
+                 <!--
+                     <button id="button-download" class="ui icon button">
+                         <i class="download icon"></i>
+                     </button>
+                     -->
+                     <button id="button-query" class="ui icon toggle button">
+                         <i class="area chart icon"></i>
+                     </button>
+                     <!--
+                         <button id="button-info" class="ui icon toggle button">
+                             <i class="info icon"></i>
+                         </button>
+                         -->
+             </div>
 
-        <div id="zoom-warning" class="ui warning message">
-            <i class="close icon"></i>
+             <div id="zoom-warning" class="ui warning message">
+                 <i class="close icon"></i>
 
-            Warning! Zoom in to see surface water changes
-            for selected dates.
-        </div>
+                 Warning! Zoom in to see surface water changes
+                 for selected dates.
+             </div>
 
-        <div id="message-download" class="ui icon message">
-            <i id="message-download-icon" class="notched circle loading icon"></i>
+             <div id="message-download" class="ui icon message">
+                 <i id="message-download-icon" class="notched circle loading icon"></i>
 
-            <div id="message-download-content" class="content">
-                <div class="header">
-                    Just one second
-                </div>
-                <p>We're fetching that content for you.</p>
-            </div>
-        </div>
+                 <div id="message-download-content" class="content">
+                     <div class="header">
+                         Just one second
+                     </div>
+                     <p>We're fetching that content for you.</p>
+                 </div>
+             </div>
 
-        <div id="message-initializing-ee" class="ui icon message">
-            <i id="message-initialize-ee-icon" class="notched circle loading icon"></i>
+             <div id="message-initializing-ee" class="ui icon message">
+                 <i id="message-initialize-ee-icon" class="notched circle loading icon"></i>
 
-            <div id="message-initialize-ee-content" class="content">
-                <div class="header">
-                    Initializing
-                </div>
-                <p>Google Earth Engine ...</p>
-            </div>
-        </div>
+                 <div id="message-initialize-ee-content" class="content">
+                     <div class="header">
+                         Initializing
+                     </div>
+                     <p>Google Earth Engine ...</p>
+                 </div>
+             </div>
 
-        <div id="deltares-logo">
-            <a target="_blank" href="http://deltares.nl/en" title="Click for more information about Deltares">
-                <div id="deltares-logo-image-div">
-                    <img id="deltares-logo-image" src="static/images/DeltaresLogoSmall.png" draggable="false">
-                </div>
-            </a>
-        </div>
+             <div id="deltares-logo">
+                 <a target="_blank" href="http://deltares.nl/en" title="Click for more information about Deltares">
+                     <div id="deltares-logo-image-div">
+                         <img id="deltares-logo-image" src="static/images/DeltaresLogoSmall.png" draggable="false">
+                     </div>
+                 </a>
+             </div>
 
-        <button id="share-button" class="ui button gm-aqua-control">
-            <i class="share alternate icon"></i>
-        </button>
+             <button id="share-button" class="ui button gm-aqua-control">
+                 <i class="share alternate icon"></i>
+             </button>
 
-        <button id="info-button" class="ui button active toggle gm-aqua-control">
-            <i class="info icon"></i>
-        </button>
+             <button id="info-button" class="ui button active toggle gm-aqua-control">
+                 <i class="info icon"></i>
+             </button>
 
-        {#
-        <button id="datasets-button" class="ui button active gm-aqua-control">
-            <i class="cubes icon"></i>
-        </button>
+             {#
+             <button id="datasets-button" class="ui button active gm-aqua-control">
+                 <i class="cubes icon"></i>
+             </button>
 
-        #}
-        <div
-            id="datasets-button"
-            class="ui multiple dropdown button gm-aqua-control disabled"
-            title="dataset selection is not yet implemented, you can use the datasets query parameter"
-            >
-            <input type="hidden" name="filters">
-            <i id="datasets-icon" class="cubes icon" ></i>
-            <span class="text">Datasets</span>
-            <div class="menu">
-                <div class="header">
-                    <i class="add icon"></i>
-                    add dataset ...
-                </div>
+             #}
+             <div
+                 id="datasets-button"
+                 class="ui multiple dropdown button gm-aqua-control disabled"
+                 title="dataset selection is not yet implemented, you can use the datasets query parameter"
+                 >
+                 <input type="hidden" name="filters">
+                 <i id="datasets-icon" class="cubes icon" ></i>
+                 <span class="text">Datasets</span>
+                 <div class="menu">
+                     <div class="header">
+                         <i class="add icon"></i>
+                         add dataset ...
+                     </div>
 
-                <div class="scrolling menu">
-                    <div class="item" data-value="surface-water">
-                        <div class="ui green empty circular label"></div>
-                        Surface Water
-                    </div>
-                    <div class="item" data-value="shoreline">
-                        <div class="ui black empty circular label"></div>
-                        Shoreline
-                    </div>
-                    <div class="item" data-value="bathymetry">
-                        <div class="ui blue empty circular label"></div>
-                        Bathymetry
-                    </div>
-                    <div class="item" data-value="reservoirs">
-                        <div class="ui purple empty circular label"></div>
-                        Reservoirs and Lakes
-                    </div>
-                    <div class="item" data-value="rivers">
-                        <div class="ui orange empty circular label"></div>
-                        Rivers
-                    </div>
-                    <div class="item" data-value="basins">
-                        <div class="ui yellow empty circular label"></div>
-                        Basins
-                    </div>
-                </div>
-            </div>
-        </div>
+                     <div class="scrolling menu">
+                         <div class="item" data-value="surface-water">
+                             <div class="ui green empty circular label"></div>
+                             Surface Water
+                         </div>
+                         <div class="item" data-value="shoreline">
+                             <div class="ui black empty circular label"></div>
+                             Shoreline
+                         </div>
+                         <div class="item" data-value="bathymetry">
+                             <div class="ui blue empty circular label"></div>
+                             Bathymetry
+                         </div>
+                         <div class="item" data-value="reservoirs">
+                             <div class="ui purple empty circular label"></div>
+                             Reservoirs and Lakes
+                         </div>
+                         <div class="item" data-value="rivers">
+                             <div class="ui orange empty circular label"></div>
+                             Rivers
+                         </div>
+                         <div class="item" data-value="basins">
+                             <div class="ui yellow empty circular label"></div>
+                             Basins
+                         </div>
+                     </div>
+                 </div>
+             </div>
 
-        <!-- TODO: find out why style does not work in CSS -->
-        <!-- tried to use https://codepen.io/MathieuRichard/pen/HAgnm, but failed :( -->
+             <!-- TODO: find out why style does not work in CSS -->
+             <!-- tried to use https://codepen.io/MathieuRichard/pen/HAgnm, but failed :( -->
 
-        <!--
-            <div id="twitter-timeline-box" style="display:none;position:absolute;bottom: 20px;width: 320px;left: 12px;padding: 0;background: rgba(250, 250, 255, 1);box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);border-radius: 2px;" class="ui card">
-                <div class="content" id="twitter-timeline-content">
-
-
-                    <a class="twitter-timeline scroll scroll-small" data-width="320" data-height="270" data-dnt="true" data-theme="light" data-chrome="noheader nofooter noborders transparent"
-                       data-link-color="#2B7BB9" href="https://twitter.com/aqua_monitor">Tweets by aqua_monitor</a>
-
-                    <script src="//platform.twitter.com/widgets.js" charset="utf-8">
-                    </script>
-
-                </div>
-                -->
-
-        <div id="info-box" class="ui card">
-            <div class="content info-text" data-dataset="shoreline">
-                <h2>
-                    Long-term Shoreline Changes (1984-2016)
-                </h2>
-
-                <p>
-                    The bars represent the erosion/accretion along coasts, every 500m, over the period 1984-2016.
-                    Green bars indicate where shoreline accretion has occurred (natural accretion, land reclamation, nourishments).
-                    Red bars indicate erosive shorelines, based on a linear fit through shoreline positions.
-                    If you're zoomed in you can click on a profile to see a time series chart.
-                </p>
-                <p>
-                    <div class="RdYlGn legend">
-                        <span class="label-left">-3m/yr</span>
-                        <div class="legend-box q0-5" title="-10">&nbsp;</div>
-                        <div class="legend-box q1-5" title="-5">&nbsp;</div>
-                        <div class="legend-box q2-5" title="0">&nbsp;</div>
-                        <div class="legend-box q3-5" title="5">&nbsp;</div>
-                        <div class="legend-box q4-5" title="10">&nbsp;</div>
-                        <span class="label-right">3m/yr</span>
-                    </div>
-                </p>
-
-                <p>
-
-                    <!-- The heatmap shows the hotspots of erosive (red) and accretive (green) shorelines in the world. -->
-
-                    The results of the global analysis and methods can be found in:
-                    <a href="https://www.nature.com/articles/s41598-018-24630-6">Luijendijk et al., 2018, Scientific Reports</a>
-                </p>
-                <p>For inquiries please fill in this <a href="https://docs.google.com/forms/d/e/1FAIpQLSfd6VpTH5WPaHrUm1ZQfN2FQ6az77Wd7BykEt-orWMMpIVYFA/viewform">form</a>.
-                </p>
-                <p>This dataset is created in collaboration with the Delft University of Technology.</p>
-                <p><img alt="" src="static/images/TUDelftLogo.png" style="max-height: 60px"/></p>
-            </div>
-
-            <div class="extra content info-buttons-content" data-dataset="shoreline">
-                <div class="left floated like">
-                    <div>
-                        <a class="ui small primary button"
-                           href="https://twitter.com/beachmonitor" title="Follow on Twitter">
-                            <i class="twitter icon"></i>
-                        </a>
-                    </div>
-
-                    <div>
-                        <a class="ui small primary button" id="github-button"
-                           href="https://github.com/deltares/aqua-monitor" title="Fork or Follow me on GitHub">
-                            <i class="github icon"></i>
-                        </a>
-                    </div>
-
-                    <div>
-                        <a class="ui small button"
-                           href="mailto:arjen.luijendijk@deltares.nl?subject=Shoreline Monitor Feedback" title="Get in touch!">
-                            <i class="mail icon"></i>
-                        </a>
-                    </div>
-
-                    <div>
-                        <a class="ui small button" id="terms-button" href="https://www.deltares.nl/en/disclaimer/"
-                           title="Terms of Use">
-                            <i class="copyright icon"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="right floated star">
-                    <a class="ui small button info-close-button">
-                        <i class="close icon"></i>
-                    </a>
-                </div>
-            </div>
+             <!--
+                 <div id="twitter-timeline-box" style="display:none;position:absolute;bottom: 20px;width: 320px;left: 12px;padding: 0;background: rgba(250, 250, 255, 1);box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);border-radius: 2px;" class="ui card">
+                     <div class="content" id="twitter-timeline-content">
 
 
-            <div class="content info-text" data-dataset="surface-water">
-                <h2>
-                    Surface water changes (1985-2016)
-                </h2>
+                         <a class="twitter-timeline scroll scroll-small" data-width="320" data-height="270" data-dnt="true" data-theme="light" data-chrome="noheader nofooter noborders transparent"
+                            data-link-color="#2B7BB9" href="https://twitter.com/aqua_monitor">Tweets by aqua_monitor</a>
 
-                <p >
-                    Green and blue colors represent areas where surface water changes occured during the last 30 years.
-                    Green pixels show where surface water has been turned into land (accretion, land reclamation, droughts).
-                    Blue pixels show where land has been changed into surface water (erosion, reservoir construction).<br><br>
+                         <script src="//platform.twitter.com/widgets.js" charset="utf-8">
+                         </script>
 
-                    The results of the analysis are published in: <br><br><a href="http://www.nature.com/nclimate/journal/v6/n9/full/nclimate3111.html"><strong>Donchyts et.al, 2016, Nature Climate Change</strong></a>
-                    <br><br><br>
-                    <a href="http://earthengine.google.com">
-                        <img src="static/images/GEE.png">
-                    </a>
-                </p>
-            </div>
+                     </div>
+                     -->
 
-            <div class="extra content info-buttons-content" data-dataset="surface-water">
-                <div class="left floated like">
-                    <div>
-                        <a class="ui small primary button"
-                           href="https://twitter.com/aqua_monitor" title="Follow on Twitter">
-                            <i class="twitter icon"></i>
-                        </a>
-                    </div>
+                     <div id="info-box" class="ui card">
+                         <div class="content info-text" data-dataset="shoreline">
+                             <h2>
+                                 Long-term Shoreline Changes (1984-2016)
+                             </h2>
 
-                    <div>
-                        <a class="ui small primary button" id="github-button"
-                           href="https://github.com/deltares/aqua-monitor" title="Fork or Follow me on GitHub">
-                            <i class="github icon"></i>
-                        </a>
-                    </div>
+                             <p>
+                                 The bars represent the erosion/accretion along coasts, every 500m, over the period 1984-2016.
+                                 Green bars indicate where shoreline accretion has occurred (natural accretion, land reclamation, nourishments).
+                                 Red bars indicate erosive shorelines, based on a linear fit through shoreline positions.
+                                 If you're zoomed in you can click on a profile to see a time series chart.
+                             </p>
+                             <p>
+                                 <div class="RdYlGn legend">
+                                     <span class="label-left">-3m/yr</span>
+                                     <div class="legend-box q0-5" title="-10">&nbsp;</div>
+                                     <div class="legend-box q1-5" title="-5">&nbsp;</div>
+                                     <div class="legend-box q2-5" title="0">&nbsp;</div>
+                                     <div class="legend-box q3-5" title="5">&nbsp;</div>
+                                     <div class="legend-box q4-5" title="10">&nbsp;</div>
+                                     <span class="label-right">3m/yr</span>
+                                 </div>
+                             </p>
 
-                    <div>
-                        <a class="ui small button"
-                           href="mailto:gennadii.donchyts@deltares.nl?subject=Aqua Monitor Feedback" title="Get in touch!">
-                            <i class="mail icon"></i>
-                        </a>
-                    </div>
+                             <p>
 
-                    <div>
-                        <a class="ui small button" id="terms-button" href="https://www.deltares.nl/en/disclaimer/"
-                           title="Terms of Use">
-                            <i class="copyright icon"></i>
-                        </a>
-                    </div>
-                </div>
+                                 <!-- The heatmap shows the hotspots of erosive (red) and accretive (green) shorelines in the world. -->
 
-                <div class="right floated star">
-                    <a class="ui small button info-close-button">
-                        <i class="close icon"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+                                 The results of the global analysis and methods can be found in:
+                                 <a href="https://www.nature.com/articles/s41598-018-24630-6">Luijendijk et al., 2018, Scientific Reports</a>
+                             </p>
+                             <p>For inquiries please fill in this <a href="https://docs.google.com/forms/d/e/1FAIpQLSfd6VpTH5WPaHrUm1ZQfN2FQ6az77Wd7BykEt-orWMMpIVYFA/viewform">form</a>.
+                             </p>
+                             <p>This dataset is created in collaboration with the Delft University of Technology.</p>
+                             <p><img alt="" src="static/images/TUDelftLogo.png" style="max-height: 60px"/></p>
+                         </div>
 
-        <!-- Modal windows -->
+                         <div class="extra content info-buttons-content" data-dataset="shoreline">
+                             <div class="left floated like">
+                                 <div>
+                                     <a class="ui small primary button"
+                                        href="https://twitter.com/beachmonitor" title="Follow on Twitter">
+                                         <i class="twitter icon"></i>
+                                     </a>
+                                 </div>
 
-        <div class="ui modal" id="chart-modal" style="display: none;">
-            <div id="chart-container"></div>
-            <div id="chart-table"></div>
+                                 <div>
+                                     <a class="ui small primary button" id="github-button"
+                                        href="https://github.com/deltares/aqua-monitor" title="Fork or Follow me on GitHub">
+                                         <i class="github icon"></i>
+                                     </a>
+                                 </div>
 
-            <div class="right">
-                <a class="ui small button chart-modal-close-button">
-                    <i class="close icon"></i>
-                </a>
-            </div>
+                                 <div>
+                                     <a class="ui small button"
+                                        href="mailto:arjen.luijendijk@deltares.nl?subject=Shoreline Monitor Feedback" title="Get in touch!">
+                                         <i class="mail icon"></i>
+                                     </a>
+                                 </div>
 
-        </div>
-        <!--
-            <div id="slider-div-morph">
-                <input id="slider-morph" data-slider-tooltip="hide" type="text"/>
-            </div>
+                                 <div>
+                                     <a class="ui small button" id="terms-button" href="https://www.deltares.nl/en/disclaimer/"
+                                        title="Terms of Use">
+                                         <i class="copyright icon"></i>
+                                     </a>
+                                 </div>
+                             </div>
 
-            <div id="slider-div-image">
-                <input id="slider-image" type="text"/>
-                <div class="slider-label">Image</div>
-            </div>
-            -->
+                             <div class="right floated star">
+                                 <a class="ui small button info-close-button">
+                                     <i class="close icon"></i>
+                                 </a>
+                             </div>
+                         </div>
 
-        <div id="label-year-before">1985</div>
-        <div id="label-year-after">2016</div>
+                         <div class="content info-text" data-dataset="future-shoreline">
+                             <h2>
+                                 Future Shoreline Changes (2050-2100)
+                             </h2>
 
-        <table id="layers-table">
-            <tr>
-                <td>
-                    <div class="slider-label">Changes</div>
-                </td>
-                <td><input id="slider-change" type="text"/></td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="slider-label" id='slider-label-after'>2016</div>
-                </td>
-                <td><input id="slider-after" type="text"/></td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="slider-label" id='slider-label-before'>2000</div>
-                </td>
-                <td><input id="slider-before" type="text"/></td>
-            </tr>
-        </table>
-
-        <div id="layers-toggle-table">
-            <div class="ui toggle checkbox">
-                <input id="toggle-change" type="checkbox" checked>
-                <label for="toggle-change">Changes</label>
-            </div>
-            <div class="ui toggle checkbox">
-                <input id="toggle-after" type="checkbox">
-                <label for="toggle-after">2016</label>
-            </div>
-            <div class="ui toggle checkbox">
-                <input id="toggle-before" type="checkbox" checked>
-                <label for="toggle-before">2000</label>
-            </div>
-        </div>
+                             <p>
+                                 The points represent origins of future shorelines. You can click on a point to show estimates of future shorelines under different scenario's.
+                             </p>
 
 
-        <!-- Slow loading scripts can be at the end -->
-        <script>
-            var client_id = '{{ client_id }}';
-            var token_type = '{{ token_type }}';
-            var access_token = '{{ access_token }}';
-            var token_expires_in_sec = '{{ token_expires_in_sec }}';
-            var expire_time = '{{ token_expire_time }}';
-            var view = {{ view }};
-            var debug = {{ debug }};
-            var datasets = {{ datasets }};
-            var percentile = {{ percentile }};
-            var smoothen = {{ smoothen }};
-            var site = {{ site }};
-            var refine = {{ refine }};
-            var waterSlopeThreshold = {{ slope_threshold }};
-            var waterSlopeThresholdSensitive = {{ slope_threshold_sensitive }};
-            var allYears = {{ all_years }};
-            var allYearsStep = {{ all_years_step }};
-            var averagingMonths1 = {{ averaging_months1 }};
-            var averagingMonths2 = {{ averaging_months2 }};
-            var minYear = {{ min_year }};
-            var maxYear = {{ max_year }};
-            var minDoy = {{ min_doy }};
-            var maxDoy = {{ max_doy }};
-            var filterCount = {{ filter_count }};
-            var ndviFilter = {{ ndvi_filter }};
-            var waterSlopeOpacity = {{ water_slope_opacity }};
-            var mode = '{{ mode }}';
-            var minYearSelection = {{ min_year_selection }};
-            var maxYearSelection = {{ max_year_selection }};
-            var maskWater = {{ mask_water }};
-        </script>
+                             <p>
 
-        <!-- build:js /static/scripts/vendor.js -->
-        <!-- bower:js -->
-        <script src="/bower_components/jquery/dist/jquery.js"></script>
-        <script src="/bower_components/lodash/lodash.js"></script>
-        <!-- endbower -->
-        <!-- endbuild -->
+                                 The procedure to produce the dataset and the findings are discussed in the following paper: Vousdoukas, M.I., Ranasinghe, R., Mentaschi, L., Plomaritis, T.P., Athanasiou, P., Luijendijk, A., and Feyen, L. (2020). Sandy coastlines under threat of erosion. Nature Communications. https://doi.org/10.1038/s41558-020-0697-0
 
-        <!-- TODO: move to bower -->
-        <link rel="stylesheet" type="text/css"
-              href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
+                                 The variables included are:
+                                 <ul>
+                                     <li>SLR_Retreat: change because of sea level rise.</li>
+                                     <li>Storm retreat: this refers to the erosion resulting from the 100 year event: erosion of 100 year event at 2100 (or 2050) MINUS the one of the 100 year event today (Expresses how the intensity of the storms will change). This has literally a minor effect.</li>
+                                     <li>ambient change: includes shoreline change from factors OTHER THAN climate change (geological factors, human intervention, large scale morphological processes, etc). This is estimated assuming that the trend observed during the last 30 years will continue as follows during the rest of the century. It is also the most uncertain component.</li>
+                                     <li>Long Term Change: this is the combination of all the above and the main product.</li>
+                                 </ul>
 
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.1.5/css/bootstrap-slider.min.css"
-              crossorigin="anonymous">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.1.5/bootstrap-slider.min.js"
-                crossorigin="anonymous"></script>
+                                 Each file contains 9 columns: lat, lon and values for the following percentiles: 1, 5, 17, 50, 83, 95, 99.
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+                             </p>
+                             <p>For inquiries please fill in this <a href="https://docs.google.com/forms/d/e/1FAIpQLSfd6VpTH5WPaHrUm1ZQfN2FQ6az77Wd7BykEt-orWMMpIVYFA/viewform">form</a>.
+                             </p>
+                             <p>This dataset is created in collaboration with the Joint Research Centre.</p>
+                             <p><img alt="" src="static/images/jrc.png" style="max-height: 100px"/></p>
+                         </div>
+                         <div class="content info-text" data-dataset="surface-water">
+                             <h2>
+                                 Surface water changes (1985-2016)
+                             </h2>
 
-        <link rel="stylesheet" href="static/libs/ion.rangeSlider.css">
-        <link rel="stylesheet" href="static/libs/ion.rangeSlider.skinModern.css">
+                             <p >
+                                 Green and blue colors represent areas where surface water changes occured during the last 30 years.
+                                 Green pixels show where surface water has been turned into land (accretion, land reclamation, droughts).
+                                 Blue pixels show where land has been changed into surface water (erosion, reservoir construction).<br><br>
 
-        <script type="text/javascript" src="static/libs/ion.rangeSlider.js"></script>
+                                 The results of the analysis are published in: <br><br><a href="http://www.nature.com/nclimate/journal/v6/n9/full/nclimate3111.html"><strong>Donchyts et.al, 2016, Nature Climate Change</strong></a>
+                                 <br><br><br>
+                                 <a href="http://earthengine.google.com">
+                                     <img src="static/images/GEE.png">
+                                 </a>
+                             </p>
+                         </div>
 
-        <!-- build:js static/scripts/plugins.js -->
-        <!-- endbuild -->
+                         <div class="extra content info-buttons-content" data-dataset="surface-water">
+                             <div class="left floated like">
+                                 <div>
+                                     <a class="ui small primary button"
+                                        href="https://twitter.com/aqua_monitor" title="Follow on Twitter">
+                                         <i class="twitter icon"></i>
+                                     </a>
+                                 </div>
 
-        <script src="static/libs/ee_api_js.js"></script>
-        <script src="static/scripts/searchbox.js"></script>
-        <script src="static/scripts/script.js"></script>
-        <script src="static/scripts/time-selector.js"></script>
-        <script src="static/scripts/query-chart.js"></script>
-        <script src="static/scripts/shore-chart.js"></script>
-        <script src="static/scripts/main.js"></script>
-        <script src="static/scripts/console-hello.js"></script>
-        <!-- build:js static/scripts/all.js -->
-        <!-- endbuild -->
+                                 <div>
+                                     <a class="ui small primary button" id="github-button"
+                                        href="https://github.com/deltares/aqua-monitor" title="Fork or Follow me on GitHub">
+                                         <i class="github icon"></i>
+                                     </a>
+                                 </div>
+
+                                 <div>
+                                     <a class="ui small button"
+                                        href="mailto:gennadii.donchyts@deltares.nl?subject=Aqua Monitor Feedback" title="Get in touch!">
+                                         <i class="mail icon"></i>
+                                     </a>
+                                 </div>
+
+                                 <div>
+                                     <a class="ui small button" id="terms-button" href="https://www.deltares.nl/en/disclaimer/"
+                                        title="Terms of Use">
+                                         <i class="copyright icon"></i>
+                                     </a>
+                                 </div>
+                             </div>
+
+                             <div class="right floated star">
+                                 <a class="ui small button info-close-button">
+                                     <i class="close icon"></i>
+                                 </a>
+                             </div>
+                         </div>
+                     </div>
+
+                     <!-- Modal windows -->
+
+                     <div class="ui modal" id="chart-modal" style="display: none;">
+                         <div id="chart-container"></div>
+                         <div id="chart-table"></div>
+
+                         <div class="right">
+                             <a class="ui small button chart-modal-close-button">
+                                 <i class="close icon"></i>
+                             </a>
+                         </div>
+
+                     </div>
+                     <!--
+                         <div id="slider-div-morph">
+                             <input id="slider-morph" data-slider-tooltip="hide" type="text"/>
+                         </div>
+
+                         <div id="slider-div-image">
+                             <input id="slider-image" type="text"/>
+                             <div class="slider-label">Image</div>
+                         </div>
+                         -->
+
+                         <div id="label-year-before">1985</div>
+                         <div id="label-year-after">2016</div>
+
+                         <table id="layers-table">
+                             <tr>
+                                 <td>
+                                     <div class="slider-label">Changes</div>
+                                 </td>
+                                 <td><input id="slider-change" type="text"/></td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <div class="slider-label" id='slider-label-after'>2016</div>
+                                 </td>
+                                 <td><input id="slider-after" type="text"/></td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <div class="slider-label" id='slider-label-before'>2000</div>
+                                 </td>
+                                 <td><input id="slider-before" type="text"/></td>
+                             </tr>
+                         </table>
+
+                         <div id="layers-toggle-table">
+                             <div class="ui toggle checkbox">
+                                 <input id="toggle-change" type="checkbox" checked>
+                                 <label for="toggle-change">Changes</label>
+                             </div>
+                             <div class="ui toggle checkbox">
+                                 <input id="toggle-after" type="checkbox">
+                                 <label for="toggle-after">2016</label>
+                             </div>
+                             <div class="ui toggle checkbox">
+                                 <input id="toggle-before" type="checkbox" checked>
+                                 <label for="toggle-before">2000</label>
+                             </div>
+                         </div>
+
+
+                         <!-- Slow loading scripts can be at the end -->
+                         <script>
+                             var client_id = '{{ client_id }}';
+                             var token_type = '{{ token_type }}';
+                             var access_token = '{{ access_token }}';
+                             var token_expires_in_sec = '{{ token_expires_in_sec }}';
+                             var expire_time = '{{ token_expire_time }}';
+                             var view = {{ view }};
+                             var debug = {{ debug }};
+                             var datasets = {{ datasets }};
+                             var percentile = {{ percentile }};
+                             var smoothen = {{ smoothen }};
+                             var site = {{ site }};
+                             var refine = {{ refine }};
+                             var waterSlopeThreshold = {{ slope_threshold }};
+                             var waterSlopeThresholdSensitive = {{ slope_threshold_sensitive }};
+                             var allYears = {{ all_years }};
+                             var allYearsStep = {{ all_years_step }};
+                             var averagingMonths1 = {{ averaging_months1 }};
+                             var averagingMonths2 = {{ averaging_months2 }};
+                             var minYear = {{ min_year }};
+                             var maxYear = {{ max_year }};
+                             var minDoy = {{ min_doy }};
+                             var maxDoy = {{ max_doy }};
+                             var filterCount = {{ filter_count }};
+                             var ndviFilter = {{ ndvi_filter }};
+                             var waterSlopeOpacity = {{ water_slope_opacity }};
+                             var mode = '{{ mode }}';
+                             var minYearSelection = {{ min_year_selection }};
+                             var maxYearSelection = {{ max_year_selection }};
+                             var maskWater = {{ mask_water }};
+                         </script>
+
+                         <!-- build:js /static/scripts/vendor.js -->
+                         <!-- bower:js -->
+                         <script src="/bower_components/jquery/dist/jquery.js"></script>
+                         <script src="/bower_components/lodash/lodash.js"></script>
+                         <!-- endbower -->
+                         <!-- endbuild -->
+
+                         <!-- TODO: move to bower -->
+                         <link rel="stylesheet" type="text/css"
+                               href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
+                         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
+
+                         <link rel="stylesheet"
+                               href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.1.5/css/bootstrap-slider.min.css"
+                               crossorigin="anonymous">
+                         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.1.5/bootstrap-slider.min.js"
+                                 crossorigin="anonymous"></script>
+
+                         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+                         <link rel="stylesheet" href="static/libs/ion.rangeSlider.css">
+                         <link rel="stylesheet" href="static/libs/ion.rangeSlider.skinModern.css">
+
+                         <script type="text/javascript" src="static/libs/ion.rangeSlider.js"></script>
+
+                         <!-- build:js static/scripts/plugins.js -->
+                         <!-- endbuild -->
+
+                         <script src="static/libs/ee_api_js.js"></script>
+                         <script src="static/scripts/searchbox.js"></script>
+                         <script src="static/scripts/script.js"></script>
+                         <script src="static/scripts/time-selector.js"></script>
+                         <script src="static/scripts/query-chart.js"></script>
+                         <script src="static/scripts/shore-chart.js"></script>
+                         <script src="static/scripts/main.js"></script>
+                         <script src="static/scripts/console-hello.js"></script>
+                         <!-- build:js static/scripts/all.js -->
+                         <!-- endbuild -->
     </body>
 </html>
