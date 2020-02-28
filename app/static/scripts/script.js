@@ -261,6 +261,41 @@ function clickShorelineProfile(pt) {
   return id;
 }
 
+
+
+function renderFutureShorelines() {
+  // get the data
+  var table = ee.FeatureCollection("users/fbaart/amb_85_2050");
+  var points = table.style({
+      color: 'ffffff77',
+      pointSize: 7,
+      pointShape: 'o',
+      width: 2,
+      fillColor: '00000055'
+  })
+  return points
+}
+
+function clickFutureShoreline(pt) {
+  // get the data
+  var table = ee.FeatureCollection("users/fbaart/future-shorelines/merged-2020-02");
+  var featureProxy = ee.Feature(
+    table
+      .filterBounds(pt.buffer(250))
+      .first()
+  );
+  var feature = featureProxy.getInfo();
+  if (!feature) {
+    // if  feature  is null
+    return
+  }
+  createFutureShorelineChart(feature)
+  $('#chart-modal')
+    .show();
+
+  return feature;
+}
+
 // A helper to apply an expression and linearly rescale the output.
 var rescale = function (img, thresholds) {
   return img
@@ -1117,6 +1152,19 @@ function addLayers() {
       opacity: 100,
       handlers: {
         click: clickShorelineProfile
+      }
+    },
+    {
+      name: 'future-shoreline-points',
+      urls: renderFutureShorelines(),
+      index: nLayers++,
+      minZoom: 10,
+      maxZoom: 22,
+      mode: 'static',
+      dataset: 'future-shoreline',
+      opacity: 100,
+      handlers: {
+        click: clickFutureShoreline
       }
     },
     // dynamic mode layers
