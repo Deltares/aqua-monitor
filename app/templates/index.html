@@ -83,7 +83,40 @@
                 </tbody>
             </table>
         </script>
+        <script id="future-shoreline-chart-template" type="text/x-lodash-template">
 
+            <table class="ui definition table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Properties</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2100 ambient change</td>
+                        <td><%= _.round(prop50ac2100, 0) %></td>
+                    </tr>
+                    <tr>
+                        <td>2100 RCP45 coastline change due to sea-level rise</td>
+                        <td><%= _.round(prop50sl452100, 0) %></td>
+                    </tr>
+                    <tr>
+                        <td>2100 RCP45 total coastline change</td>
+                        <td><%= _.round(prop50lt452100, 0) %></td>
+                    </tr>
+                    <tr>
+                        <td>2100 RCP85 coastline change due to sea-level rise</td>
+                        <td><%= _.round(prop50sl852100, 0) %></td>
+                    </tr>
+                    <tr>
+                        <td>2100 RCP85 total coastline change</td>
+                        <td><%= _.round(prop50lt852100, 0) %></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </script>
         <!-- build:css styles/vendor.css -->
         <!-- bower:css -->
         <!-- endbower -->
@@ -228,6 +261,10 @@
                              <div class="ui black empty circular label"></div>
                              Shoreline
                          </div>
+                         <div class="item" data-value="future-shoreline">
+                             <div class="ui black empty circular label"></div>
+                             Future shoreline
+                         </div>
                          <div class="item" data-value="bathymetry">
                              <div class="ui blue empty circular label"></div>
                              Bathymetry
@@ -346,29 +383,29 @@
                              </h2>
 
                              <p>
-                                 The black points with white stroke represent origins of future shorelines. You can click on a circle to show estimates of future shorelines under different scenario's.
+                                 The future shoreline dataset is
+                                 visible if you zoom into level 12 and
+                                 further (1km scale). You can click
+                                 on the black circles with white
+                                 stroke to show estimates of future
+                                 shorelines under different emission
+                                 scenario's.
                              </p>
-
                              <p>
                                  <img src="static/images/future-shorelines-legend.png" style="max-width: 100%;">
                              </p>
                              <p>
-
-                                 The procedure to produce the dataset and the findings are discussed in the following paper: Vousdoukas, M.I., Ranasinghe, R., Mentaschi, L., Plomaritis, T.P., Athanasiou, P., Luijendijk, A., and Feyen, L. (2020). Sandy coastlines under threat of erosion. Nature Communications. https://doi.org/10.1038/s41558-020-0697-0
-
-                                 The variables included are:
-                                 <ul>
-                                     <li>SLR_Retreat: change because of sea level rise.</li>
-                                     <li>Storm retreat: this refers to the erosion resulting from the 100 year event: erosion of 100 year event at 2100 (or 2050) MINUS the one of the 100 year event today (Expresses how the intensity of the storms will change). This has literally a minor effect.</li>
-                                     <li>ambient change: includes shoreline change from factors OTHER THAN climate change (geological factors, human intervention, large scale morphological processes, etc). This is estimated assuming that the trend observed during the last 30 years will continue as follows during the rest of the century. It is also the most uncertain component.</li>
-                                     <li>Long Term Change: this is the combination of all the above and the main product.</li>
-                                 </ul>
-
-                                 Each file contains 9 columns: lat, lon and values for the following percentiles: 1, 5, 17, 50, 83, 95, 99.
-
+                                 The procedure to produce the dataset
+                                 and the findings are discussed in the
+                                 following paper: Vousdoukas, M.I.,
+                                 Ranasinghe, R., Mentaschi, L.,
+                                 Plomaritis, T.P., Athanasiou, P.,
+                                 Luijendijk, A., and Feyen,
+                                 L. (2020). Sandy coastlines under
+                                 threat of erosion. Nature
+                                 Communications. https://doi.org/10.1038/s41558-020-0697-0
                              </p>
-                             <p>For inquiries please fill in this <a href="https://docs.google.com/forms/d/e/1FAIpQLSfd6VpTH5WPaHrUm1ZQfN2FQ6az77Wd7BykEt-orWMMpIVYFA/viewform">form</a>.
-                             </p>
+
                              <p>This dataset is created in collaboration with the Joint Research Centre.</p>
                              <p><img alt="" src="static/images/jrc.png" style="max-height: 100px"/></p>
                          </div>
