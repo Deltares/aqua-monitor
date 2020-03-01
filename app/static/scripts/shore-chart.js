@@ -135,6 +135,7 @@ function createShoreChart(feature) {
 
 
 function createFutureShorelineChart(feature) {
+  console.log('feature', feature)
   var elementId = 'chart-container' ;
 
   // data from global shore json file (single location)
@@ -194,6 +195,21 @@ function createFutureShorelineChart(feature) {
       .y0( function(d) { return y(d.y0) } )
       .y1(  function(d) { return y(d.y1) } );
 
+  var line = d3.svg.line()
+      .interpolate("linear")
+      .x( function(d) { return x(d.x) } )
+      .y(  function(d) { return y(d.y) } );
+
+  var sl45perc50 = [
+    {x: 2020, y: 0},
+    {x: 2050, y: properties['50lt452050']},
+    {x: 2100, y: properties['50lt452100']}
+  ]
+  var sl85perc50 = [
+    {x: 2020, y: 0},
+    {x: 2050, y: properties['50lt852050']},
+    {x: 2100, y: properties['50lt852100']}
+  ]
   var sl45perc66 = [
     {x: 2020, y0: 0, y1: 0},
     {x: 2050, y0: properties['17lt452050'], y1: properties['83lt452050']},
@@ -224,18 +240,18 @@ function createFutureShorelineChart(feature) {
     {x: 2050, y0: properties['1lt852050'], y1: properties['99lt852050']},
     {x: 2100, y0: properties['1lt852100'], y1: properties['99lt852100']},
   ]
-  svg.append("g")
-    .attr("class", "ci sl45")
-    .append('path')
-    .datum(sl45perc66)
-    .attr('class', 'area')
-    .attr('d', area);
-  svg.append("g")
-    .attr("class", "ci sl85")
-    .append('path')
-    .datum(sl85perc66)
-    .attr('class', 'area')
-    .attr('d', area);
+  // svg.append("g")
+  //   .attr("class", "ci sl45")
+  //   .append('path')
+  //   .datum(sl45perc66)
+  //   .attr('class', 'area')
+  //   .attr('d', area);
+  // svg.append("g")
+  //   .attr("class", "ci sl85")
+  //   .append('path')
+  //   .datum(sl85perc66)
+  //   .attr('class', 'area')
+  //   .attr('d', area);
   svg.append("g")
     .attr("class", "ci sl45")
     .append('path')
@@ -248,19 +264,31 @@ function createFutureShorelineChart(feature) {
     .datum(sl85perc90)
     .attr('class', 'area')
     .attr('d', area);
+  // svg.append("g")
+  //   .attr("class", "ci sl45")
+  //   .append('path')
+  //   .datum(sl45perc98)
+  //   .attr('class', 'area')
+  //   .attr('d', area);
+  // svg.append("g")
+  //   .attr("class", "ci sl85")
+  //   .append('path')
+  //   .datum(sl85perc98)
+  //   .attr('class', 'area')
+  //   .attr('d', area);
+
   svg.append("g")
     .attr("class", "ci sl45")
     .append('path')
-    .datum(sl45perc98)
-    .attr('class', 'area')
-    .attr('d', area);
+    .datum(sl45perc50)
+    .attr('class', 'line')
+    .attr('d', line);
   svg.append("g")
     .attr("class", "ci sl85")
     .append('path')
-    .datum(sl85perc98)
-    .attr('class', 'area')
-    .attr('d', area);
-
+    .datum(sl85perc50)
+    .attr('class', 'line')
+    .attr('d', line);
 
 
 

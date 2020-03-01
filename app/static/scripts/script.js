@@ -290,6 +290,16 @@ function clickFutureShoreline(pt) {
     return
   }
   createFutureShorelineChart(feature)
+  var tableTemplate = _.template($('#future-shoreline-chart-template').html());
+
+  var obj = {}
+  Object.keys(feature.properties).forEach(function(key) {
+    // prefix  all properties with property
+    // otherwise lodash gives a syntax error
+    obj['prop' + key] = feature.properties[key]
+  })
+  var rendered = tableTemplate(obj);
+  $('#chart-table').html(rendered);
   $('#chart-modal')
     .show();
 
@@ -903,6 +913,10 @@ function addLayers() {
     function handleLayerClick(evt) {
       var pt = ee.Geometry.Point([evt.latLng.lng(), evt.latLng.lat()]);
       _.each(layers, function(layer) {
+        // check if layer is in current loaded layers
+        if (!datasets.includes(layer.dataset)) {
+          return
+        }
         if (_.has(layer, 'handlers.click')) {
           layer.handlers.click(pt);
         }
