@@ -23,3 +23,14 @@ svg.query-chart .axis line {
     padding: -9px;
 }
 
+
+.abline path {
+  stroke-width: 1px;
+  stroke: black
+}
+
+.ci { fill-opacity: 0.2; }
+.query-chart .sl45 { fill: black;}
+.query-chart .sl85 { fill: blue; }
+.query-chart .sl45 .line { stroke: black; }
+.query-chart .sl85 .line { stroke: blue; }
