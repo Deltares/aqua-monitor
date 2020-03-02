@@ -829,8 +829,13 @@ function initializeMap() {
   // hide all boxes
   $('#info-box .info-text').hide();
   $('#info-box .extra.content').hide();
+
   // show the relevant ones
   _.each(datasets || ['surface-water'], function(dataset) {
+    if(datasets.length > 1) {
+      $('#info-box .original-only').hide();
+    }
+
     $('*[data-dataset=' + '"' + dataset + '"' + ']').show();
   });
 
