@@ -228,7 +228,7 @@ function clickShorelineProfile(pt) {
 
 function renderFutureShorelines() {
   // get the data
-  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates");
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines");
   var points = table.style({
     color: 'ffffffdd',
     pointSize: 7,
@@ -241,7 +241,7 @@ function renderFutureShorelines() {
 
 function clickFutureShoreline(pt) {
   // get the data
-  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates");
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines");
   var featureProxy = ee.Feature(
     table
       .filterBounds(pt.buffer(250))
