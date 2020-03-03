@@ -1,5 +1,5 @@
-function createShoreChart(feature) {
-
+function createShoreChart(feature, futureFeature) {
+  console.log('feature shore',  feature,  futureFeature)
   var elementId = 'chart-container' ;
 
   // data from global shore json file (single location)
@@ -64,12 +64,36 @@ function createShoreChart(feature) {
       .style("display", "none");
 
   // Scale the range of the data
-  x.domain(d3.extent(data, function (d) {
+  var xExtent = d3.extent(data, function (d) {
     return d.date;
-  }));
-  y.domain(d3.extent(data, function (d) {
+  })
+
+  if (futureFeature) {
+    // extent to future
+    xExtent[1] = new Date(2100, 1, 1)
+  }
+
+  var yExtent = d3.extent(data, function (d) {
     return d.value;
-  }));
+  })
+
+  if (futureFeature) {
+    // update y Extent
+    let properties = futureFeature.properties
+    let allProps = Object.keys(properties).filter(function(key) { return key.includes('lt')})
+    let allValues = allProps.map(function(key) {return properties[key]})
+    allValues.push(0)
+
+    let ymin = Math.min(...allValues, yExtent[0])
+    let ymax = Math.max(...allValues, yExtent[1])
+    // update yExtent
+    yExtent = [ymin, ymax]
+
+  }
+
+
+  x.domain(xExtent);
+  y.domain();
 
   var lineGroup = svg.append("g");
   lineGroup
