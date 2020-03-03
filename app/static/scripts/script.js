@@ -225,10 +225,9 @@ function clickShorelineProfile(pt) {
   return id;
 }
 
-
 function renderFutureShorelines() {
   // get the data
-  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates");
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates")
   var points = table.style({
     color: 'ffffffdd',
     pointSize: 5,
@@ -237,36 +236,6 @@ function renderFutureShorelines() {
     fillColor: '000000aa'
   })
   return points
-}
-
-function clickFutureShoreline(pt) {
-  // get the data
-  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates");
-  var featureProxy = ee.Feature(
-    table
-      .filterBounds(pt.buffer(250))
-      .first()
-  );
-  var feature = featureProxy.getInfo();
-  if (!feature) {
-    // if  feature  is null
-    return
-  }
-  createFutureShorelineChart(feature)
-  var tableTemplate = _.template($('#future-shoreline-chart-template').html());
-
-  var obj = {}
-  Object.keys(feature.properties).forEach(function (key) {
-    // prefix  all properties with property
-    // otherwise lodash gives a syntax error
-    obj['prop' + key] = feature.properties[key]
-  })
-  var rendered = tableTemplate(obj);
-  $('#chart-table').html(rendered);
-  $('#chart-modal')
-    .show();
-
-  return feature;
 }
 
 // A helper to apply an expression and linearly rescale the output.
@@ -728,8 +697,8 @@ function initializeMap() {
   location.center.lng = _.get(view, 'lng', location.center.lng);
 
   // Set to Texel
-  location.center = {lng: 4.778553150000011, lat: 53.07320558366855}
-  location.zoom = 12
+  // location.center = {lng: 4.778553150000011, lat: 53.07320558366855}
+  // location.zoom = 12
 
   var mapOptions = {
     center: location.center,
@@ -1152,10 +1121,7 @@ function addLayers() {
       maxZoom: 22,
       mode: 'static',
       dataset: 'future-shoreline',
-      opacity: 100,
-      handlers: {
-        click: clickFutureShoreline
-      }
+      opacity: 100
     },
     // dynamic mode layers
     {

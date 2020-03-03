@@ -34,3 +34,6 @@ svg.query-chart .axis line {
 .query-chart .sl85 { fill: blue; }
 .query-chart .sl45 .line { stroke: black; }
 .query-chart .sl85 .line { stroke: blue; }
+.abline.future {
+  stroke-dasharray: 15 15;
+}
