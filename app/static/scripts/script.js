@@ -182,6 +182,7 @@ function clickShorelineProfile(pt) {
       .first()
   );
   var feature = featureProxy.getInfo();
+  console.log('current feature', feature)
   // d is lost in translation
   var id = _.get(feature, 'properties.transect_i');
   if (_.isNil(id)) {
@@ -191,6 +192,17 @@ function clickShorelineProfile(pt) {
   var parts = _.split(id, "_");
   var box = parts[1];
   var section = parts[2];
+
+  var futureFeature = null
+  if (datasets.includes('future-shoreline')) {
+    var futureTable = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates")
+    futureFeature = futureTable
+        .filter(ee.Filter.eq('transect_i', feature.properties.transect_i))
+        .first()
+        .getInfo()
+
+  }
+  console.log('future feature', futureFeature)
 
   var url = _.template(
     'https://storage.googleapis.com/shoreline-monitor/features/<%- box %>/<%- section %>/BOX_<%- box %>_<%- section %>.json'
@@ -202,10 +214,10 @@ function clickShorelineProfile(pt) {
     var filteredFeatures = _.filter(data.features, function (feature) {
       return _.get(feature, 'properties.transect_id') === id;
     });
-    var feature = _.first(filteredFeatures);
-    createShoreChart(feature);
+    var seriesFeature = _.first(filteredFeatures);
+    createShoreChart(seriesFeature, futureFeature);
     var tableTemplate = _.template($('#shoreline-chart-template').html());
-    var rendered = tableTemplate(feature.properties);
+    var rendered = tableTemplate(seriesFeature.properties);
     $('#chart-table').html(rendered);
     $('#chart-modal')
       .show();
