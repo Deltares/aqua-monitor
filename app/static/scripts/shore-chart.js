@@ -93,7 +93,7 @@ function createShoreChart(feature, futureFeature) {
 
 
   x.domain(xExtent);
-  y.domain();
+  y.domain(yExtent);
 
   var lineGroup = svg.append("g");
   lineGroup
@@ -113,6 +113,10 @@ function createShoreChart(feature, futureFeature) {
     .attr("d", d3.svg.symbol()
           .size(40));
 
+
+  if (futureFeature)  {
+    extendWithFuture(svg, futureFeature, x, y)
+  }
 
   // Add the X Axis
   svg.append("g")
@@ -156,6 +160,66 @@ function createShoreChart(feature, futureFeature) {
     .attr("x2", width);
 }
 
+function extendWithFuture(svg, futureFeature, xScale, yScale)  {
+
+  var properties = futureFeature.properties
+  var area = d3.svg.area()
+      .interpolate("linear")
+      .x( function(d) { return xScale(d.x) } )
+      .y0( function(d) { return yScale(d.y0) } )
+      .y1(  function(d) { return yScale(d.y1) } );
+
+  var line = d3.svg.line()
+      .interpolate("linear")
+      .x( function(d) { return xScale(d.x) } )
+      .y(  function(d) { return yScale(d.y) } );
+
+  var sl45perc50 = [
+    {x: new Date(2020, 1, 1), y: 0},
+    {x: new Date(2050, 1, 1), y: properties['50lt452050']},
+    {x: new Date(2100, 1, 1), y: properties['50lt452100']}
+  ]
+  var sl85perc50 = [
+    {x: new Date(2020, 1, 1), y: 0},
+    {x: new Date(2050, 1, 1), y: properties['50lt852050']},
+    {x: new Date(2100, 1, 1), y: properties['50lt852100']}
+  ]
+  var sl45perc90 = [
+    {x: new Date(2020, 1, 1), y0: 0, y1: 0},
+    {x: new Date(2050, 1, 1), y0: properties['5lt452050'], y1: properties['95lt452050']},
+    {x: new Date(2100, 1, 1), y0: properties['5lt452100'], y1: properties['95lt452100']},
+  ]
+  var sl85perc90 = [
+    {x: new Date(2020, 1, 1), y0: 0, y1: 0},
+    {x: new Date(2050, 1, 1), y0: properties['5lt852050'], y1: properties['95lt852050']},
+    {x: new Date(2100, 1, 1), y0: properties['5lt852100'], y1: properties['95lt852100']},
+  ]
+  svg.append("g")
+    .attr("class", "ci sl45")
+    .append('path')
+    .datum(sl45perc90)
+    .attr('class', 'area')
+    .attr('d', area);
+  svg.append("g")
+    .attr("class", "ci sl85")
+    .append('path')
+    .datum(sl85perc90)
+    .attr('class', 'area')
+    .attr('d', area);
+  svg.append("g")
+    .attr("class", "ci sl45")
+    .append('path')
+    .datum(sl45perc50)
+    .attr('class', 'line')
+    .attr('d', line);
+  svg.append("g")
+    .attr("class", "ci sl85")
+    .append('path')
+    .datum(sl85perc50)
+    .attr('class', 'line')
+    .attr('d', line);
+
+}
 
 
 function createFutureShorelineChart(feature) {
