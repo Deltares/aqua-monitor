@@ -149,7 +149,7 @@ function renderSurfaceWaterChanges(change) {
 
 function renderShorelineProfiles() {
   // get the data
-  var table = ee.FeatureCollection("users/fbaart/merged");
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/transects");
   // start with numbers
   var empty = ee.Image().float();
   // draw
@@ -175,7 +175,7 @@ function renderShorelineProfiles() {
 
 function clickShorelineProfile(pt) {
   // get the data
-  var table = ee.FeatureCollection("users/fbaart/merged");
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/transects");
   var featureProxy = ee.Feature(
     table
       .filterBounds(pt.buffer(250))
@@ -216,20 +216,20 @@ function clickShorelineProfile(pt) {
 
 function renderFutureShorelines() {
   // get the data
-  var table = ee.FeatureCollection("users/fbaart/amb_85_2050");
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates");
   var points = table.style({
-    color: 'ffffff77',
+    color: 'ffffffdd',
     pointSize: 7,
     pointShape: 'o',
     width: 2,
-    fillColor: '00000055'
+    fillColor: '000000aa'
   })
   return points
 }
 
 function clickFutureShoreline(pt) {
   // get the data
-  var table = ee.FeatureCollection("users/fbaart/future-shorelines/merged-2020-02");
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates");
   var featureProxy = ee.Feature(
     table
       .filterBounds(pt.buffer(250))

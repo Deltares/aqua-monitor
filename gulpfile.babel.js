@@ -181,14 +181,17 @@ gulp.task('default', ['clean'], () => {
 ;
 
 gulp.task('serve:gae', function () {
-  gulp.src('dist/app.yaml')
-    .pipe($.plumber())
-    .pipe(gae('dev_appserver.py', [], {
-      port: 8081,
-      host: '0.0.0.0',
-      admin_port: 8001,
-      admin_host: '0.0.0.0'
-    }));
+  // on Windows run dev_appserver.py manually, see README.md
+  if(process.platform !== "win32") {
+    gulp.src('dist/app.yaml')
+      .pipe($.plumber())
+      .pipe(gae('dev_appserver.py', [], {
+        port: 8081,
+        host: '0.0.0.0',
+        admin_port: 8001,
+        admin_host: '0.0.0.0'
+      }));
+  }
   gulp.watch('app/templates/*.html', ['templates']);
   gulp.watch('app/static/*.html', ['html']);
   gulp.watch('app/static/styles/**/*.scss', ['styles-scss']);
