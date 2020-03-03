@@ -1,6 +1,6 @@
 function createShoreChart(feature, futureFeature) {
-  console.log('feature shore',  feature,  futureFeature)
-  var elementId = 'chart-container' ;
+  console.log('feature shore', feature, futureFeature)
+  var elementId = 'chart-container';
 
   // data from global shore json file (single location)
   var properties = feature.properties;
@@ -9,7 +9,7 @@ function createShoreChart(feature, futureFeature) {
   var dist = properties.distances;
 
   var data = [];
-  $.each(dist, function( index, value ) {
+  $.each(dist, function (index, value) {
     var item = {};
     item.value = dist[index] - intercept;
     item.dt = dt[index];
@@ -22,8 +22,8 @@ function createShoreChart(feature, futureFeature) {
 
   // D3js time series chart
   var margin = {top: 20, right: 20, bottom: 40, left: 60},
-      width = 600 - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+    width = 600 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
   // Set the ranges
   var x = d3.time.scale().range([0, width]);
@@ -31,19 +31,19 @@ function createShoreChart(feature, futureFeature) {
 
   // Define the axes
   var xAxis = d3.svg.axis().scale(x)
-      .orient("bottom").ticks(10);
+    .orient("bottom").ticks(10);
 
   var yAxis = d3.svg.axis().scale(y)
-      .orient("left").ticks(5);
+    .orient("left").ticks(5);
 
   // Define the regression
   var abLine = d3.svg.line()
-      .x(function (d) {
-        return x(d.date);
-      })
-      .y(function (d) {
-        return y(d.dt * feature.properties.change_rate);
-      });
+    .x(function (d) {
+      return x(d.date);
+    })
+    .y(function (d) {
+      return y(d.dt * feature.properties.change_rate);
+    });
 
   // clear content
   d3.select('#' + elementId)
@@ -51,17 +51,17 @@ function createShoreChart(feature, futureFeature) {
     .remove();
 
   // Adds the svg canvas
-  var svg = d3.select("#"+ elementId)
-      .append("svg")
-      .classed({'query-chart': true})
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+  var svg = d3.select("#" + elementId)
+    .append("svg")
+    .classed({'query-chart': true})
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform",
+      "translate(" + margin.left + "," + margin.top + ")");
 
   var focus = svg.append("g")
-      .style("display", "none");
+    .style("display", "none");
 
   // Scale the range of the data
   var xExtent = d3.extent(data, function (d) {
@@ -80,8 +80,12 @@ function createShoreChart(feature, futureFeature) {
   if (futureFeature) {
     // update y Extent
     let properties = futureFeature.properties
-    let allProps = Object.keys(properties).filter(function(key) { return key.includes('lt')})
-    let allValues = allProps.map(function(key) {return properties[key]})
+    let allProps = Object.keys(properties).filter(function (key) {
+      return key.includes('lt')
+    })
+    let allValues = allProps.map(function (key) {
+      return properties[key]
+    })
     allValues.push(0)
 
     let ymin = Math.min(...allValues, yExtent[0])
@@ -109,12 +113,14 @@ function createShoreChart(feature, futureFeature) {
     .data(data)
     .enter()
     .append("path")
-    .attr("transform", function(d) { return "translate(" + x(d.date) + "," + y(d.value) + ")"; })
+    .attr("transform", function (d) {
+      return "translate(" + x(d.date) + "," + y(d.value) + ")";
+    })
     .attr("d", d3.svg.symbol()
-          .size(40));
+      .size(40));
 
 
-  if (futureFeature)  {
+  if (futureFeature) {
     extendWithFuture(svg, futureFeature, x, y)
   }
 
@@ -139,7 +145,7 @@ function createShoreChart(feature, futureFeature) {
     .attr("x", 6)
     .attr("dy", ".35em")
     .style("font-weight", "bold")
-    .text("shoreline position [m]");
+    .text("shoreline position [m]")
 
   // append the x line
   focus.append("line")
@@ -160,19 +166,28 @@ function createShoreChart(feature, futureFeature) {
     .attr("x2", width);
 }
 
-function extendWithFuture(svg, futureFeature, xScale, yScale)  {
-
+function extendWithFuture(svg, futureFeature, xScale, yScale) {
   var properties = futureFeature.properties
   var area = d3.svg.area()
-      .interpolate("linear")
-      .x( function(d) { return xScale(d.x) } )
-      .y0( function(d) { return yScale(d.y0) } )
-      .y1(  function(d) { return yScale(d.y1) } );
+    .interpolate("linear")
+    .x(function (d) {
+      return xScale(d.x)
+    })
+    .y0(function (d) {
+      return yScale(d.y0)
+    })
+    .y1(function (d) {
+      return yScale(d.y1)
+    });
 
   var line = d3.svg.line()
-      .interpolate("linear")
-      .x( function(d) { return xScale(d.x) } )
-      .y(  function(d) { return yScale(d.y) } );
+    .interpolate("linear")
+    .x(function (d) {
+      return xScale(d.x)
+    })
+    .y(function (d) {
+      return yScale(d.y)
+    });
 
   var sl45perc50 = [
     {x: new Date(2020, 1, 1), y: 0},
@@ -219,12 +234,39 @@ function extendWithFuture(svg, futureFeature, xScale, yScale)  {
     .attr('class', 'line')
     .attr('d', line);
 
+  // append the vertical line on 2020
+  // var allProps = Object.keys(properties).filter(function (key) {
+  //   return key.includes('lt')
+  // });
+  //
+  // var allValues = allProps.map(function (key) {
+  //   return properties[key]
+  // });
+  // allValues.push(0)
+  //
+  // var ymin = Math.min(...allValues);
+  // var ymax = Math.max(...allValues);
+  // // y.domain([ymin, ymax]);
+
+  var tStart = new Date(2020, 1, 1);
+
+  var yRange = yScale.domain();
+  // var yMargin = 0.05 * (yRange[1] - yRange[0])
+
+  svg.append("line")
+    .attr("x1", xScale(tStart))
+    .attr("y1", yRange[0])
+    .attr("x2", xScale(tStart))
+    .attr("y2", yRange[1])
+    .style("stroke-width", 2)
+    .style("stroke", "red")
+    .style("fill", "none");
 }
 
 
 function createFutureShorelineChart(feature) {
   console.log('feature', feature)
-  var elementId = 'chart-container' ;
+  var elementId = 'chart-container';
 
   // data from global shore json file (single location)
   var properties = feature.properties;
@@ -232,8 +274,8 @@ function createFutureShorelineChart(feature) {
 
   // D3js time series chart
   var margin = {top: 20, right: 20, bottom: 40, left: 60},
-      width = 600 - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+    width = 600 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
   // Set the ranges
   var x = d3.scale.linear().range([0, width]);
@@ -241,10 +283,10 @@ function createFutureShorelineChart(feature) {
 
   // Define the axes
   var xAxis = d3.svg.axis().scale(x)
-      .orient("bottom").ticks(10);
+    .orient("bottom").ticks(10);
 
   var yAxis = d3.svg.axis().scale(y)
-      .orient("left").ticks(5);
+    .orient("left").ticks(5);
 
 
   // clear content
@@ -253,23 +295,27 @@ function createFutureShorelineChart(feature) {
     .remove();
 
   // Adds the svg canvas
-  var svg = d3.select("#"+ elementId)
-      .append("svg")
-      .classed({'query-chart': true})
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+  var svg = d3.select("#" + elementId)
+    .append("svg")
+    .classed({'query-chart': true})
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform",
+      "translate(" + margin.left + "," + margin.top + ")");
 
   var focus = svg.append("g")
-      .style("display", "none");
+    .style("display", "none");
 
   // Scale the range of the data
   x.domain([2020, 2100]);
 
-  var allProps = Object.keys(properties).filter(function(key) { return key.includes('lt')})
-  var allValues = allProps.map(function(key) {return properties[key]})
+  var allProps = Object.keys(properties).filter(function (key) {
+    return key.includes('lt')
+  })
+  var allValues = allProps.map(function (key) {
+    return properties[key]
+  })
   allValues.push(0)
 
   var ymin = Math.min(...allValues)
@@ -278,15 +324,25 @@ function createFutureShorelineChart(feature) {
 
 
   var area = d3.svg.area()
-      .interpolate("linear")
-      .x( function(d) { return x(d.x) } )
-      .y0( function(d) { return y(d.y0) } )
-      .y1(  function(d) { return y(d.y1) } );
+    .interpolate("linear")
+    .x(function (d) {
+      return x(d.x)
+    })
+    .y0(function (d) {
+      return y(d.y0)
+    })
+    .y1(function (d) {
+      return y(d.y1)
+    });
 
   var line = d3.svg.line()
-      .interpolate("linear")
-      .x( function(d) { return x(d.x) } )
-      .y(  function(d) { return y(d.y) } );
+    .interpolate("linear")
+    .x(function (d) {
+      return x(d.x)
+    })
+    .y(function (d) {
+      return y(d.y)
+    });
 
   var sl45perc50 = [
     {x: 2020, y: 0},
@@ -377,7 +433,6 @@ function createFutureShorelineChart(feature) {
     .datum(sl85perc50)
     .attr('class', 'line')
     .attr('d', line);
-
 
 
   // Add the X Axis

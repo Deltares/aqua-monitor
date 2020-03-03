@@ -228,10 +228,10 @@ function clickShorelineProfile(pt) {
 
 function renderFutureShorelines() {
   // get the data
-  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines");
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates");
   var points = table.style({
     color: 'ffffffdd',
-    pointSize: 7,
+    pointSize: 5,
     pointShape: 'o',
     width: 2,
     fillColor: '000000aa'
@@ -241,7 +241,7 @@ function renderFutureShorelines() {
 
 function clickFutureShoreline(pt) {
   // get the data
-  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines");
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates");
   var featureProxy = ee.Feature(
     table
       .filterBounds(pt.buffer(250))
@@ -727,6 +727,10 @@ function initializeMap() {
   location.center.lat = _.get(view, 'lat', location.center.lat);
   location.center.lng = _.get(view, 'lng', location.center.lng);
 
+  // Set to Texel
+  location.center = {lng: 4.778553150000011, lat: 53.07320558366855}
+  location.zoom = 12
+
   var mapOptions = {
     center: location.center,
     zoom: location.zoom,
@@ -746,6 +750,8 @@ function initializeMap() {
   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
 
   map.setOptions({draggableCursor:'crosshair'});
+
+
 
   map.addListener('zoom_changed', function () {
     console.log('Map zoom: ' + map.getZoom());
@@ -1142,7 +1148,7 @@ function addLayers() {
       name: 'future-shoreline-points',
       urls: renderFutureShorelines(),
       index: nLayers++,
-      minZoom: 12,
+      minZoom: 11,
       maxZoom: 22,
       mode: 'static',
       dataset: 'future-shoreline',
