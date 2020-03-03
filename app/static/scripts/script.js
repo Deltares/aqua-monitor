@@ -84,7 +84,7 @@ function renderLandsatMosaic(percentile, start, end, sharpen) {
   return image.visualize({min: 0.05, max: [0.5, 0.5, 0.6], gamma: 1.4});
 }
 
-function renderSurfaceWaterChanges(enableHeatmap, change) {
+function renderSurfaceWaterChanges(change) {
   var scale = ee.Image('users/gena/AquaMonitor/water_changes_1985_240_2013_48');
   var land300m = ee.Image('users/gena/AquaMonitor/water_changes_1985_240_2013_48_land_300m');
   var water300m = ee.Image('users/gena/AquaMonitor/water_changes_1985_240_2013_48_water_300m');
@@ -92,7 +92,7 @@ function renderSurfaceWaterChanges(enableHeatmap, change) {
   // SWBD mask
   var swbd = ee.Image('MODIS/MOD44W/MOD44W_005_2000_02_24').select('water_mask');
   var swbdMask = swbd.unmask().not()
-    // .focal_max(60000, 'circle', 'meters').reproject('EPSG:4326', null, 10000);
+  // .focal_max(60000, 'circle', 'meters').reproject('EPSG:4326', null, 10000);
     .focal_max(1000, 'circle', 'meters').reproject('EPSG:4326', null, 1000);
 
   if (maskWater) {
@@ -110,34 +110,6 @@ function renderSurfaceWaterChanges(enableHeatmap, change) {
 
   var waterVis = water300m.mask(water300m.divide(maxArea))
     .visualize({min: 0, max: maxArea, palette: ['000000', '00d8ff']});
-
-  // heatmap
-  var bufferSize = 20000;
-  var blurSize = 30000;
-  var blurSigma = 20000;
-  var maxArea = 1500000;
-
-  var fc = ee.FeatureCollection('ft:17TEfjvF14hKeDmSotkXrjYeplyT8O_SgRLuJFbYk');
-
-  var heatmapWater = fc
-    .reduceToImage(['total_wate'], ee.Reducer.sum())
-    .focal_max(bufferSize, 'circle', 'meters')
-    .focal_mode(bufferSize, 'circle', 'meters', 3)
-    .convolve(ee.Kernel.gaussian(blurSize, blurSigma, 'meters'));
-
-  var heatmapLand = fc
-    .reduceToImage(['total_land'], ee.Reducer.sum())
-    .focal_max(bufferSize, 'circle', 'meters')
-    .focal_mode(bufferSize, 'circle', 'meters', 3)
-    .convolve(ee.Kernel.gaussian(blurSize, blurSigma, 'meters'));
-
-  var heatmapColors = ['000000', '00d8ff', 'aaffff'];
-  var heatmapWaterVis = heatmapWater.mask(heatmapWater.divide(maxArea))
-    .visualize({min: 0, max: maxArea, opacity: 0.3, palette: heatmapColors});
-
-  var heatmapColors = ['000000', '00ff00', 'aaffaa'];
-  var heatmapLandVis = heatmapLand.mask(heatmapLand.divide(maxArea))
-    .visualize({min: 0, max: maxArea, opacity: 0.3, palette: heatmapColors});
 
   if (change) {
     var changeImage = scale.visualize({
@@ -160,39 +132,19 @@ function renderSurfaceWaterChanges(enableHeatmap, change) {
       });
   }
 
-  // composite
-  if (enableHeatmap) {
-    return ee.ImageCollection.fromImages([
-      bg.visualize({opacity: 0.7})
-        .rename(['r', 'g', 'b']),
-      waterVis
-        .rename(['r', 'g', 'b']),
-      landVis
-        .rename(['r', 'g', 'b']),
-      heatmapLandVis
-        .rename(['r', 'g', 'b']),
-      heatmapWaterVis
-        .rename(['r', 'g', 'b'])
-    ])
-      .mosaic()
-      .visualize({
-        forceRgbOutput: true
-      });
-  } else {
-    return ee.ImageCollection.fromImages([
-      bg
-        .visualize({opacity: 0.7})
-        .rename(['r', 'g', 'b']),
-      waterVis
-        .rename(['r', 'g', 'b']),
-      landVis
-        .rename(['r', 'g', 'b']),
-    ])
-      .mosaic()
-      .visualize({
-        forceRgbOutput: true
-      });
-  }
+  return ee.ImageCollection.fromImages([
+    bg
+      .visualize({opacity: 0.7})
+      .rename(['r', 'g', 'b']),
+    waterVis
+      .rename(['r', 'g', 'b']),
+    landVis
+      .rename(['r', 'g', 'b']),
+  ])
+    .mosaic()
+    .visualize({
+      forceRgbOutput: true
+    });
 }
 
 function renderShorelineProfiles() {
@@ -208,7 +160,7 @@ function renderShorelineProfiles() {
     width: 3
   });
   // color
-  var rdYlGn = ['#d73027','#f46d43','#fdae61','#fee08b','#ffffbf','#d9ef8b','#a6d96a','#66bd63','#1a9850'];
+  var rdYlGn = ['#d73027', '#f46d43', '#fdae61', '#fee08b', '#ffffbf', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850'];
   return lines.visualize({
 
     palette: rdYlGn,
@@ -216,9 +168,9 @@ function renderShorelineProfiles() {
     max: 3
   })
   // to rgb
-    .rename(['r','g','b'])
-  // mosaic not needed, already a single image
-    .visualize({forceRgbOutput:true});
+    .rename(['r', 'g', 'b'])
+    // mosaic not needed, already a single image
+    .visualize({forceRgbOutput: true});
 }
 
 function clickShorelineProfile(pt) {
@@ -246,8 +198,8 @@ function clickShorelineProfile(pt) {
     box: box,
     section: section
   });
-  $.getJSON(url, function(data) {
-    var filteredFeatures = _.filter(data.features, function(feature) {
+  $.getJSON(url, function (data) {
+    var filteredFeatures = _.filter(data.features, function (feature) {
       return _.get(feature, 'properties.transect_id') === id;
     });
     var feature = _.first(filteredFeatures);
@@ -262,16 +214,15 @@ function clickShorelineProfile(pt) {
 }
 
 
-
 function renderFutureShorelines() {
   // get the data
   var table = ee.FeatureCollection("users/fbaart/amb_85_2050");
   var points = table.style({
-      color: 'ffffff77',
-      pointSize: 7,
-      pointShape: 'o',
-      width: 2,
-      fillColor: '00000055'
+    color: 'ffffff77',
+    pointSize: 7,
+    pointShape: 'o',
+    width: 2,
+    fillColor: '00000055'
   })
   return points
 }
@@ -293,7 +244,7 @@ function clickFutureShoreline(pt) {
   var tableTemplate = _.template($('#future-shoreline-chart-template').html());
 
   var obj = {}
-  Object.keys(feature.properties).forEach(function(key) {
+  Object.keys(feature.properties).forEach(function (key) {
     // prefix  all properties with property
     // otherwise lodash gives a syntax error
     obj['prop' + key] = feature.properties[key]
@@ -431,7 +382,7 @@ function renderWaterTrend(percentile, datesAndPeriods, slopeThreshold, slopeThre
 
   var land = ee.FeatureCollection('USDOS/LSIB/2013')
   var landImage = ee.Image(0).float().paint(land, 1)
-      .focal_max(5)
+    .focal_max(5)
 
   // mask = mask.multiply(landImage);
 
@@ -559,7 +510,7 @@ function renderWaterTrend(percentile, datesAndPeriods, slopeThreshold, slopeThre
 
 function setLayer(map, layer) {
   // add the layer to the map
-  if (typeof(layer.urls) === 'object') {
+  if (typeof (layer.urls) === 'object') {
     // some object that generates urls
     addEELayer(layer);
   } else {
@@ -782,6 +733,8 @@ function initializeMap() {
   map = new google.maps.Map(document.getElementById('map'), mapOptions);
   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
 
+  map.setOptions({draggableCursor:'crosshair'});
+
   map.addListener('zoom_changed', function () {
     console.log('Map zoom: ' + map.getZoom());
     updateMapZoomDependencies();
@@ -819,9 +772,9 @@ function initializeMap() {
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push($('#datasets-button')[0]);
 
   var dropdown = $('#datasets-button')
-      .dropdown();
+    .dropdown();
   dropdown.dropdown('set value', datasets);
-  dropdown.on('change', function() {
+  dropdown.on('change', function () {
     var selectedDatasets = $(this).dropdown('get value').split(',');
     console.log('datasets changed', selectedDatasets);
   });
@@ -831,14 +784,13 @@ function initializeMap() {
   $('#info-box .extra.content').hide();
 
   // show the relevant ones
-  _.each(datasets || ['surface-water'], function(dataset) {
-    if(datasets.length > 1) {
+  _.each(datasets || ['surface-water'], function (dataset) {
+    if (datasets.length > 1) {
       $('#info-box .original-only').hide();
     }
 
     $('*[data-dataset=' + '"' + dataset + '"' + ']').show();
   });
-
 
 
   // info button
@@ -917,7 +869,7 @@ function addLayers() {
 
     function handleLayerClick(evt) {
       var pt = ee.Geometry.Point([evt.latLng.lng(), evt.latLng.lat()]);
-      _.each(layers, function(layer) {
+      _.each(layers, function (layer) {
         // check if layer is in current loaded layers
         if (!datasets.includes(layer.dataset)) {
           return
@@ -928,6 +880,7 @@ function addLayers() {
       });
 
     }
+
     map.addListener('click', handleLayerClick);
 
     var sliderDefaults = {
@@ -1132,7 +1085,7 @@ function addLayers() {
     },
     {
       name: 'change',
-      urls: renderSurfaceWaterChanges(false, true),
+      urls: renderSurfaceWaterChanges(true),
       index: nLayers++,
       minZoom: 10,
       maxZoom: 22,
