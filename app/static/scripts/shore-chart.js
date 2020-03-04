@@ -148,16 +148,6 @@ function createShoreChart(feature, futureFeature) {
     .style("text-anchor", "middle")
     .text("time");
 
-  svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .append("text")
-    .attr("x", 0)
-    .attr("y", 35)
-    .attr("dy", "-.35em")
-    .style("font-weight", "bold")
-    .style("text-anchor", "start")
-    .text("The current ambient change is projected to the future and can be uncertain.");
-
   // Add the Y Axis
   svg.append("g")
     .attr("class", "y axis")

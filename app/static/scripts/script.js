@@ -173,7 +173,18 @@ function renderShorelineProfiles() {
     .visualize({forceRgbOutput: true});
 }
 
+var isLoading = false;
+
 function clickShorelineProfile(pt) {
+  if (!datasets.includes('shoreline')) {
+    return
+  }
+
+  // if(isLoading) {
+  //   return;
+  // }
+  // $('#inprogress').show();
+
   // get the data
   var table = ee.FeatureCollection("projects/dgds-gee/shorelines/transects");
   var featureProxy = ee.Feature(
@@ -182,7 +193,7 @@ function clickShorelineProfile(pt) {
       .first()
   );
   var feature = featureProxy.getInfo();
-  console.log('current feature', feature)
+
   // d is lost in translation
   var id = _.get(feature, 'properties.transect_i');
   if (_.isNil(id)) {
@@ -202,7 +213,6 @@ function clickShorelineProfile(pt) {
         .getInfo()
 
   }
-  console.log('future feature', futureFeature)
 
   var url = _.template(
     'https://storage.googleapis.com/shoreline-monitor/features/<%- box %>/<%- section %>/BOX_<%- box %>_<%- section %>.json'
@@ -221,6 +231,29 @@ function clickShorelineProfile(pt) {
     $('#chart-table').html(rendered);
     $('#chart-modal')
       .show();
+
+    if (datasets.includes('future-shoreline') && futureFeature) {
+      $("#note-text-row").show();
+      $("#note-text-row").css({"display": "contents"});
+    } else {
+        $("#note-text-row").hide();
+    }
+  
+    // HACK: Bootstrap restyles everything :(
+    $('.chart-modal-close-button').css({
+        "position": "absolute",
+        "padding-left": "5px",
+        "padding-right": "5px",
+        "padding-top": "5px",
+        "padding-bottom": "5px",
+        "height": "20px",
+        "width": "20px",
+        "right": "0px",
+        "margin": "0px"
+    });
+    
+    // Done loading.
+    // $('#inprogress').hide()
   });
   return id;
 }
@@ -765,6 +798,7 @@ function initializeMap() {
     var selectedDatasets = $(this).dropdown('get value').split(',');
     console.log('datasets changed', selectedDatasets);
   });
+
 
   // hide all boxes
   $('#info-box .info-text').hide();

@@ -77,11 +77,16 @@
                         <td><%= flag_sandy %></td>
                     </tr>
                     <tr>
-                        <td>Change rate</td>
+                        <td>Ambient change rate</td>
                         <td><%= change_rate.toFixed(1) %> m/yr +- <%= change_rate_unc.toFixed(1) %></td>
+                    </tr>
+                    <tr id="note-text-row">
+                        <td colspan="2" id="note-text">For future ambient change a continuation of the present coastal policy and its effectiveness is assumed, which may be highly uncertain in future. Moreover, the present analysis assumes unlimited backshore space for shoreline retreat.</td>
                     </tr>
                 </tbody>
             </table>
+
+            
         </script>
         <script id="future-shoreline-chart-template" type="text/x-lodash-template">
 <!--            <p>For a future ambient change, a continuation of the present coastal (nourishment) policy and its effectiveness is assumed, which may be highly uncertain in the future.</p>-->
@@ -308,17 +313,17 @@
                      <div id="info-box" class="ui card">
                         <div class="content info-text" data-dataset="future-shoreline">
                             <h2>
-                                Future Shoreline Changes (2050-2100)
+                                Future Shoreline Changes<br>(2020-2100)
                             </h2>
 
                             <p>
                                 The future shoreline dataset is
                                 visible if you zoom into level 12 and
-                                further (1km scale). You can click
+                                further (2km scale). You can click
                                 on the black circles with white
                                 stroke to show estimates of future
                                 shorelines under different emission
-                                scenario's.
+                                scenario's. Below, the legend for typical historical and predicted shoreline position changes over time is shown.
                             </p>
                             <p>
                                 <img src="static/images/future-shorelines-legend.png" style="max-width: 100%;">
@@ -326,20 +331,21 @@
                             <p>
                                 The procedure to produce the dataset
                                 and the findings are discussed in the
-                                following paper: Vousdoukas, M.I.,
-                                Ranasinghe, R., Mentaschi, L.,
-                                Plomaritis, T.P., Athanasiou, P.,
-                                Luijendijk, A., and Feyen,
-                                L. (2020). Sandy coastlines under
-                                threat of erosion. Nature
-                                Communications. https://doi.org/10.1038/s41558-020-0697-0
+                                following paper: <a href="https://www.nature.com/articles/s41558-020-0697-0">Vousdoukas et. al., 2020, Nature Climate Change</a>.
                             </p>
 
                             <p>This dataset is created in collaboration with the Joint Research Centre.</p>
 
                             <p><img alt="" src="static/images/jrc.png" style="max-height: 100px"/></p>
 
-                            <p>For the information on historical shoreline changes dataset visit: <a href="/?datasets=shoreline">Deltares Shorelines</a></p>
+                            <br>
+                                Methods to derive historical shoreline changes can be found 
+                                in: <a href="https://www.nature.com/articles/s41598-018-24630-6">Luijendijk et. al., 2018, Nature Scientific Reports</a>. 
+                                For more information visit: <a href="/?datasets=shoreline">Deltares Shorelines</a>.
+
+                            <!-- <p id="inprogress">
+                                Loading plot ...
+                            </p> -->
                         </div>
 
                         <div class="extra content info-buttons-content original-only" data-dataset="future-shoreline">
@@ -409,16 +415,15 @@
                                  <!-- The heatmap shows the hotspots of erosive (red) and accretive (green) shorelines in the world. -->
 
                                  The results of the global analysis and methods can be found in:
-                                 <a href="https://www.nature.com/articles/s41598-018-24630-6">Luijendijk et al., 2018, Scientific Reports</a>
+                                 <a href="https://www.nature.com/articles/s41598-018-24630-6">Luijendijk et al., 2018, Scientific Reports</a>.
                              </p>
                              <p>For inquiries please fill in this <a href="https://docs.google.com/forms/d/e/1FAIpQLSfd6VpTH5WPaHrUm1ZQfN2FQ6az77Wd7BykEt-orWMMpIVYFA/viewform">form</a>.
                              </p>
                              <p>This dataset is created in collaboration with the Delft University of Technology.</p>
 
-                             <p>For the estimates of future shorelines please visit: <a href="/?datasets=shoreline,future-shoreline">Future Shorelines</a>.
-
-                            </p>
                              <p><img alt="" src="static/images/TUDelftLogo.png" style="max-height: 60px"/></p>
+
+                             <p>For the estimates of future shorelines please visit: <a href="/?datasets=shoreline,future-shoreline">Future Shorelines</a>.</p>
 
                          </div>
 
