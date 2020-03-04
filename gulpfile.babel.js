@@ -4,8 +4,9 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import browserSync from 'browser-sync';
 import del from 'del';
 import {stream as wiredep} from 'wiredep';
-const debug = require('gulp-debug');
 import gae from 'gulp-gae';
+
+const debug = require('gulp-debug');
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -49,8 +50,9 @@ function lint(files, options) {
       .pipe($.eslint(options))
       .pipe($.eslint.format())
       .pipe($.if(!browserSync.active, $.eslint.failAfterError()));
-  };
+  }
 }
+
 const testLintOptions = {
   env: {
     mocha: true
@@ -62,7 +64,7 @@ gulp.task('lint:test', lint('test/spec/**/*.js', testLintOptions));
 
 gulp.task('html', ['styles-scss', 'styles', 'scripts', 'libs'], () => {
   return gulp.src('app/static/*.html')
-    //.pipe($.htmlmin({collapseWhitespace: true}))
+  //.pipe($.htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest('dist/static'));
 });
 
@@ -73,7 +75,7 @@ gulp.task('templates', ['styles-scss', 'styles'], () => {
 
   return gulp.src(['app/templates/*.html'])
     .pipe(
-      $.useref({ searchPath: ['dist', '.'] })
+      $.useref({searchPath: ['dist', '.']})
     )
     .pipe(
       // html to templates
@@ -93,28 +95,29 @@ gulp.task('images', () => {
       // as hooks for embedding and styling
       svgoPlugins: [{cleanupIDs: false}]
     }))
-    .on('error', function (err) {
-      console.log(err);
-      this.end();
-    })))
+      .on('error', function (err) {
+        console.log(err);
+        this.end();
+      })))
     .pipe(gulp.dest('dist/static/images'));
 });
 
 gulp.task('fonts', () => {
-  return gulp.src(require('main-bower-files')('**/*.{eot,svg,ttf,woff,woff2}', function (err) {})
+  return gulp.src(require('main-bower-files')('**/*.{eot,svg,ttf,woff,woff2}', function (err) {
+  })
     .concat('app/static/fonts/**/*'))
     .pipe(gulp.dest('.tmp/static/fonts'))
     .pipe(gulp.dest('dist/static/fonts'));
 });
 
 gulp.task('extras', () => {
-  return gulp.src(['app/**/*.yaml','app/**/*.pem','app/**/*.py','app/**/*.txt', 'app/*.json'])
-	  .pipe(gulp.dest('dist'));
+  return gulp.src(['app/**/*.yaml', 'app/**/*.pem', 'app/**/*.py', 'app/**/*.txt', 'app/*.json'])
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('libs', () => {
   return gulp.src(['app/static/libs/**/*'])
-	.pipe(gulp.dest('dist/static/libs'));
+    .pipe(gulp.dest('dist/static/libs'));
 });
 
 gulp.task('watch', () => {
@@ -122,11 +125,12 @@ gulp.task('watch', () => {
   gulp.watch('app/static/*.html', ['html']);
   gulp.watch('app/static/styles/**/*.scss', ['styles-scss', 'templates']);
   gulp.watch('app/static/styles/**/*.css', ['styles', 'templates']);
-  gulp.watch('app/static/scripts/**/*.js', ['scripts','libs']);
+  gulp.watch('app/static/scripts/**/*.js', ['scripts', 'libs']);
   gulp.watch('app/static/fonts/**/*', ['fonts']);
   gulp.watch('bower.json', ['wiredep', 'fonts']);
   gulp.watch('app/*.{py,yaml}', ['extras']);
-});
+})
+;
 
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
@@ -147,7 +151,8 @@ gulp.task('serve:test', ['scripts'], () => {
   gulp.watch('app/static/scripts/**/*.js', ['scripts']);
   gulp.watch('test/spec/**/*.js').on('change', reload);
   gulp.watch('test/spec/**/*.js', ['lint:test']);
-});
+})
+;
 
 // inject bower components
 gulp.task('wiredep', () => {
@@ -167,26 +172,31 @@ gulp.task('wiredep', () => {
 
 gulp.task('build', ['html', 'images', 'fonts', 'extras', 'templates'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
-});
+})
+;
 
 gulp.task('default', ['clean'], () => {
   gulp.start('build');
-});
+})
+;
 
 gulp.task('serve:gae', function () {
-  gulp.src('dist/app.yaml')
-    .pipe($.plumber())
-    .pipe(gae('dev_appserver.py', [], {
-      port: 8081,
-      host: '0.0.0.0',
-      admin_port: 8001,
-      admin_host: '0.0.0.0'
-    }));
+  // on Windows run dev_appserver.py manually, see README.md
+  if(process.platform !== "win32") {
+    gulp.src('dist/app.yaml')
+      .pipe($.plumber())
+      .pipe(gae('dev_appserver.py', [], {
+        port: 8081,
+        host: '0.0.0.0',
+        admin_port: 8001,
+        admin_host: '0.0.0.0'
+      }));
+  }
   gulp.watch('app/templates/*.html', ['templates']);
   gulp.watch('app/static/*.html', ['html']);
   gulp.watch('app/static/styles/**/*.scss', ['styles-scss']);
   gulp.watch('app/static/styles/**/*.css', ['styles']);
-  gulp.watch('app/static/scripts/**/*.js', ['scripts','libs']);
+  gulp.watch('app/static/scripts/**/*.js', ['scripts', 'libs']);
   gulp.watch('app/static/fonts/**/*', ['fonts']);
   gulp.watch('bower.json', ['wiredep', 'fonts']);
   gulp.watch('app/*.{py,yaml}', ['extras']);

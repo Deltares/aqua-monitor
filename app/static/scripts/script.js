@@ -84,7 +84,7 @@ function renderLandsatMosaic(percentile, start, end, sharpen) {
   return image.visualize({min: 0.05, max: [0.5, 0.5, 0.6], gamma: 1.4});
 }
 
-function renderSurfaceWaterChanges(enableHeatmap, change) {
+function renderSurfaceWaterChanges(change) {
   var scale = ee.Image('users/gena/AquaMonitor/water_changes_1985_240_2013_48');
   var land300m = ee.Image('users/gena/AquaMonitor/water_changes_1985_240_2013_48_land_300m');
   var water300m = ee.Image('users/gena/AquaMonitor/water_changes_1985_240_2013_48_water_300m');
@@ -92,7 +92,7 @@ function renderSurfaceWaterChanges(enableHeatmap, change) {
   // SWBD mask
   var swbd = ee.Image('MODIS/MOD44W/MOD44W_005_2000_02_24').select('water_mask');
   var swbdMask = swbd.unmask().not()
-    // .focal_max(60000, 'circle', 'meters').reproject('EPSG:4326', null, 10000);
+  // .focal_max(60000, 'circle', 'meters').reproject('EPSG:4326', null, 10000);
     .focal_max(1000, 'circle', 'meters').reproject('EPSG:4326', null, 1000);
 
   if (maskWater) {
@@ -110,34 +110,6 @@ function renderSurfaceWaterChanges(enableHeatmap, change) {
 
   var waterVis = water300m.mask(water300m.divide(maxArea))
     .visualize({min: 0, max: maxArea, palette: ['000000', '00d8ff']});
-
-  // heatmap
-  var bufferSize = 20000;
-  var blurSize = 30000;
-  var blurSigma = 20000;
-  var maxArea = 1500000;
-
-  var fc = ee.FeatureCollection('ft:17TEfjvF14hKeDmSotkXrjYeplyT8O_SgRLuJFbYk');
-
-  var heatmapWater = fc
-    .reduceToImage(['total_wate'], ee.Reducer.sum())
-    .focal_max(bufferSize, 'circle', 'meters')
-    .focal_mode(bufferSize, 'circle', 'meters', 3)
-    .convolve(ee.Kernel.gaussian(blurSize, blurSigma, 'meters'));
-
-  var heatmapLand = fc
-    .reduceToImage(['total_land'], ee.Reducer.sum())
-    .focal_max(bufferSize, 'circle', 'meters')
-    .focal_mode(bufferSize, 'circle', 'meters', 3)
-    .convolve(ee.Kernel.gaussian(blurSize, blurSigma, 'meters'));
-
-  var heatmapColors = ['000000', '00d8ff', 'aaffff'];
-  var heatmapWaterVis = heatmapWater.mask(heatmapWater.divide(maxArea))
-    .visualize({min: 0, max: maxArea, opacity: 0.3, palette: heatmapColors});
-
-  var heatmapColors = ['000000', '00ff00', 'aaffaa'];
-  var heatmapLandVis = heatmapLand.mask(heatmapLand.divide(maxArea))
-    .visualize({min: 0, max: maxArea, opacity: 0.3, palette: heatmapColors});
 
   if (change) {
     var changeImage = scale.visualize({
@@ -160,44 +132,24 @@ function renderSurfaceWaterChanges(enableHeatmap, change) {
       });
   }
 
-  // composite
-  if (enableHeatmap) {
-    return ee.ImageCollection.fromImages([
-      bg.visualize({opacity: 0.7})
-        .rename(['r', 'g', 'b']),
-      waterVis
-        .rename(['r', 'g', 'b']),
-      landVis
-        .rename(['r', 'g', 'b']),
-      heatmapLandVis
-        .rename(['r', 'g', 'b']),
-      heatmapWaterVis
-        .rename(['r', 'g', 'b'])
-    ])
-      .mosaic()
-      .visualize({
-        forceRgbOutput: true
-      });
-  } else {
-    return ee.ImageCollection.fromImages([
-      bg
-        .visualize({opacity: 0.7})
-        .rename(['r', 'g', 'b']),
-      waterVis
-        .rename(['r', 'g', 'b']),
-      landVis
-        .rename(['r', 'g', 'b']),
-    ])
-      .mosaic()
-      .visualize({
-        forceRgbOutput: true
-      });
-  }
+  return ee.ImageCollection.fromImages([
+    bg
+      .visualize({opacity: 0.7})
+      .rename(['r', 'g', 'b']),
+    waterVis
+      .rename(['r', 'g', 'b']),
+    landVis
+      .rename(['r', 'g', 'b']),
+  ])
+    .mosaic()
+    .visualize({
+      forceRgbOutput: true
+    });
 }
 
 function renderShorelineProfiles() {
   // get the data
-  var table = ee.FeatureCollection("users/fbaart/merged");
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/transects");
   // start with numbers
   var empty = ee.Image().float();
   // draw
@@ -208,7 +160,7 @@ function renderShorelineProfiles() {
     width: 3
   });
   // color
-  var rdYlGn = ['#d73027','#f46d43','#fdae61','#fee08b','#ffffbf','#d9ef8b','#a6d96a','#66bd63','#1a9850'];
+  var rdYlGn = ['#d73027', '#f46d43', '#fdae61', '#fee08b', '#ffffbf', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850'];
   return lines.visualize({
 
     palette: rdYlGn,
@@ -216,20 +168,32 @@ function renderShorelineProfiles() {
     max: 3
   })
   // to rgb
-    .rename(['r','g','b'])
-  // mosaic not needed, already a single image
-    .visualize({forceRgbOutput:true});
+    .rename(['r', 'g', 'b'])
+    // mosaic not needed, already a single image
+    .visualize({forceRgbOutput: true});
 }
 
+var isLoading = false;
+
 function clickShorelineProfile(pt) {
+  if (!datasets.includes('shoreline')) {
+    return
+  }
+
+  // if(isLoading) {
+  //   return;
+  // }
+  // $('#inprogress').show();
+
   // get the data
-  var table = ee.FeatureCollection("users/fbaart/merged");
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/transects");
   var featureProxy = ee.Feature(
     table
       .filterBounds(pt.buffer(250))
       .first()
   );
   var feature = featureProxy.getInfo();
+
   // d is lost in translation
   var id = _.get(feature, 'properties.transect_i');
   if (_.isNil(id)) {
@@ -240,25 +204,71 @@ function clickShorelineProfile(pt) {
   var box = parts[1];
   var section = parts[2];
 
+  var futureFeature = null
+  if (datasets.includes('future-shoreline')) {
+    var futureTable = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates")
+    futureFeature = futureTable
+        .filter(ee.Filter.eq('transect_i', feature.properties.transect_i))
+        .first()
+        .getInfo()
+
+  }
+
   var url = _.template(
     'https://storage.googleapis.com/shoreline-monitor/features/<%- box %>/<%- section %>/BOX_<%- box %>_<%- section %>.json'
   )({
     box: box,
     section: section
   });
-  $.getJSON(url, function(data) {
-    var filteredFeatures = _.filter(data.features, function(feature) {
+  $.getJSON(url, function (data) {
+    var filteredFeatures = _.filter(data.features, function (feature) {
       return _.get(feature, 'properties.transect_id') === id;
     });
-    var feature = _.first(filteredFeatures);
-    createShoreChart(feature);
+    var seriesFeature = _.first(filteredFeatures);
+    createShoreChart(seriesFeature, futureFeature);
     var tableTemplate = _.template($('#shoreline-chart-template').html());
-    var rendered = tableTemplate(feature.properties);
+    var rendered = tableTemplate(seriesFeature.properties);
     $('#chart-table').html(rendered);
     $('#chart-modal')
       .show();
+
+    if (datasets.includes('future-shoreline') && futureFeature) {
+      $("#note-text-row").show();
+      $("#note-text-row").css({"display": "contents"});
+    } else {
+        $("#note-text-row").hide();
+    }
+  
+    // HACK: Bootstrap restyles everything :(
+    $('.chart-modal-close-button').css({
+        "position": "absolute",
+        "padding-left": "5px",
+        "padding-right": "5px",
+        "padding-top": "5px",
+        "padding-bottom": "5px",
+        "height": "20px",
+        "width": "20px",
+        "right": "0px",
+        "margin": "0px"
+    });
+    
+    // Done loading.
+    // $('#inprogress').hide()
   });
   return id;
+}
+
+function renderFutureShorelines() {
+  // get the data
+  var table = ee.FeatureCollection("projects/dgds-gee/shorelines/future_shorelines_with_duplicates")
+  var points = table.style({
+    color: 'ffffffdd',
+    pointSize: 5,
+    pointShape: 'o',
+    width: 2,
+    fillColor: '000000aa'
+  })
+  return points
 }
 
 // A helper to apply an expression and linearly rescale the output.
@@ -386,7 +396,7 @@ function renderWaterTrend(percentile, datesAndPeriods, slopeThreshold, slopeThre
 
   var land = ee.FeatureCollection('USDOS/LSIB/2013')
   var landImage = ee.Image(0).float().paint(land, 1)
-      .focal_max(5)
+    .focal_max(5)
 
   // mask = mask.multiply(landImage);
 
@@ -514,7 +524,7 @@ function renderWaterTrend(percentile, datesAndPeriods, slopeThreshold, slopeThre
 
 function setLayer(map, layer) {
   // add the layer to the map
-  if (typeof(layer.urls) === 'object') {
+  if (typeof (layer.urls) === 'object') {
     // some object that generates urls
     addEELayer(layer);
   } else {
@@ -719,6 +729,10 @@ function initializeMap() {
   location.center.lat = _.get(view, 'lat', location.center.lat);
   location.center.lng = _.get(view, 'lng', location.center.lng);
 
+  // Set to Texel
+  // location.center = {lng: 4.778553150000011, lat: 53.07320558366855}
+  // location.zoom = 12
+
   var mapOptions = {
     center: location.center,
     zoom: location.zoom,
@@ -736,6 +750,10 @@ function initializeMap() {
   // Create the base Google Map.
   map = new google.maps.Map(document.getElementById('map'), mapOptions);
   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+
+  map.setOptions({draggableCursor:'crosshair'});
+
+
 
   map.addListener('zoom_changed', function () {
     console.log('Map zoom: ' + map.getZoom());
@@ -774,21 +792,26 @@ function initializeMap() {
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push($('#datasets-button')[0]);
 
   var dropdown = $('#datasets-button')
-      .dropdown();
+    .dropdown();
   dropdown.dropdown('set value', datasets);
-  dropdown.on('change', function() {
+  dropdown.on('change', function () {
     var selectedDatasets = $(this).dropdown('get value').split(',');
     console.log('datasets changed', selectedDatasets);
   });
 
+
   // hide all boxes
   $('#info-box .info-text').hide();
   $('#info-box .extra.content').hide();
+
   // show the relevant ones
-  _.each(datasets || ['surface-water'], function(dataset) {
+  _.each(datasets || ['surface-water'], function (dataset) {
+    if (datasets.length > 1) {
+      $('#info-box .original-only').hide();
+    }
+
     $('*[data-dataset=' + '"' + dataset + '"' + ']').show();
   });
-
 
 
   // info button
@@ -867,13 +890,18 @@ function addLayers() {
 
     function handleLayerClick(evt) {
       var pt = ee.Geometry.Point([evt.latLng.lng(), evt.latLng.lat()]);
-      _.each(layers, function(layer) {
+      _.each(layers, function (layer) {
+        // check if layer is in current loaded layers
+        if (!datasets.includes(layer.dataset)) {
+          return
+        }
         if (_.has(layer, 'handlers.click')) {
           layer.handlers.click(pt);
         }
       });
 
     }
+
     map.addListener('click', handleLayerClick);
 
     var sliderDefaults = {
@@ -1078,7 +1106,7 @@ function addLayers() {
     },
     {
       name: 'change',
-      urls: renderSurfaceWaterChanges(false, true),
+      urls: renderSurfaceWaterChanges(true),
       index: nLayers++,
       minZoom: 10,
       maxZoom: 22,
@@ -1118,6 +1146,16 @@ function addLayers() {
       handlers: {
         click: clickShorelineProfile
       }
+    },
+    {
+      name: 'future-shoreline-points',
+      urls: renderFutureShorelines(),
+      index: nLayers++,
+      minZoom: 11,
+      maxZoom: 22,
+      mode: 'static',
+      dataset: 'future-shoreline',
+      opacity: 100
     },
     // dynamic mode layers
     {

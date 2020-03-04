@@ -9,3 +9,28 @@
   left: 10px;
   text-align: center;
 }
+
+.chart-modal-close-button {
+  position: absolute;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  height: 20px;
+  width: 20px;
+  right: 0px;
+  margin: 0px;
+}
+
+#chart-table {
+  margin-top: 1px;
+}
+
+#note-text {
+  text-align: justify;
+  font-weight: normal;
+}
+
+#note-text-row {
+  display: none;
+}

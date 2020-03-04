@@ -43,12 +43,23 @@ Deploy using gcloud:
 
 # Test locally
 
+Since we're using Python 2.7 here, we need old version of GCS tools here, such as dev_appserver.py
+
+Installing this on Windows for development purposes is not easy. One way to do this is via https://pypi.org/project/gae_installer/:
+
+* pip install gae_installer
+                           
 (Google App Engine Standard environment, Python 2.7)
 
 * cd dist
 * python dev_appserver.py app.yaml
 
-or (after you upgrade gcloud with the relevant components) `gcloud components install app-engine-python-extras`
+On Windows use (assumin virtualenv with Python 2.7 named aqua-monitor):
+
+* cd dist
+* python <replace_with_python_installation_dir>\envs\aqua-monitor\Lib\site-packages\google_appengine\dev_appserver.py app.yaml
+
+On Linux (after you upgrade gcloud with the relevant components) `gcloud components install app-engine-python-extras`
 * `gulp serve:gae`
 
 Open the aqua monitor at port 8081
