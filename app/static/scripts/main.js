@@ -9,7 +9,7 @@ var queryMap = false;
 
 var maxChartIndex = 1;
 
-var beginDate = minYear.toString() + '-01-01', endDate = (maxYear+1).toString() + '2017-01-01';
+var beginDate = minYear.toString() + '-01-01', endDate = (maxYear+1).toString() + '2019-01-01';
 
 var mapLoaded = false;
 
