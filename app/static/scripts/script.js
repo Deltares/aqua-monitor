@@ -606,9 +606,8 @@ function addEELayer(layer) {
           return '';
         }
 
-        var baseUrl = 'https://earthengine.googleapis.com/map';
-        var url = [baseUrl, id, zoom, tile.x, tile.y].join('/');
-        url += '?token=' + token;
+        var baseUrl = 'https://earthengine.googleapis.com/v1alpha'
+        var url = [baseUrl, id, 'tiles', zoom, tile.x, tile.y].join('/');
 
         return url;
       },

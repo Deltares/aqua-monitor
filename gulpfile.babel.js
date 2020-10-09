@@ -34,10 +34,10 @@ gulp.task('styles', () => {
 
 gulp.task('scripts', () => {
   return gulp.src('app/static/scripts/*.js')
-    .pipe($.plumber())
+    //.pipe($.plumber())
     .pipe($.sourcemaps.init())
     .pipe($.babel())
-    .pipe($.uglify({mangle: true}))
+    //.pipe($.uglify({mangle: true}))
     .pipe($.sourcemaps.write('../maps'))
     .pipe(gulp.dest('dist/static/scripts'))
     .pipe(reload({stream: true}));

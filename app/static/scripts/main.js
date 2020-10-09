@@ -101,7 +101,7 @@ var embedded = inIframe();
 if(embedded) {
   console.log('embedded')
 }
-
+        
 // client variables should be set by global template
 ee.data.setAuthToken(client_id, token_type, access_token, token_expires_in_sec, true);
 
