@@ -1,2 +1,3 @@
 cd dist 
-gcloud app deploy --project aqua-monitor
+rem gcloud app deploy --project aqua-monitor
+gcloud app deploy --project aqua-monitor -v upgrade-ee --bucket gs://aqua-monitor-src

@@ -1252,7 +1252,7 @@ function toggleMode() {
   console.log('mode change to', mode);
 
   if (mode === 'dynamic') {
-    $('#info-text-title').text('Surface water changes (1985-2020)');
+    $('#info-text-title').text('Surface water changes (1985-2021)');
     $('#info-text-body').html('Green and blue colors represent areas where surface water changes occured during the last 30 years. Green pixels show where surface water has been turned into land (accretion, land reclamation, droughts). Blue pixels show where land has been changed into surface water (erosion, reservoir construction). <br><br><strong>Note, it may take some time for results to appear, because the analysis is performed on-the-fly.</strong><br><br>The results of the analysis are published in: <br><br><a href="http://www.nature.com/nclimate/journal/v6/n9/full/nclimate3111.html"><strong>Donchyts et.al, 2016, Nature Climate Change</strong></a><br><br><br><a href="http://earthengine.google.com"><img src="static/images/GEE.png"></a>');
 
     $('#map').addClass('dynamic');

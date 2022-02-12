@@ -191,7 +191,7 @@ def root():
     if max_year_selection:
         template_values['max_year_selection'] = max_year_selection
     else:
-        template_values['max_year_selection'] = 2019
+        template_values['max_year_selection'] = 2021
 
     min_doy = request.args.get('min_doy', '')
     if min_doy:
@@ -215,7 +215,7 @@ def root():
     if max_year:
         template_values['max_year'] = max_year
     else:
-        template_values['max_year'] = 2019
+        template_values['max_year'] = 2021
 
     filter_count = request.args.get('filter_count', '')
     if filter_count:
