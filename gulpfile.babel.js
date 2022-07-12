@@ -34,10 +34,10 @@ gulp.task('styles', () => {
 
 gulp.task('scripts', () => {
   return gulp.src('app/static/scripts/*.js')
-    .pipe($.plumber())
+    //.pipe($.plumber())
     .pipe($.sourcemaps.init())
     .pipe($.babel())
-    .pipe($.uglify({mangle: true}))
+    //.pipe($.uglify({mangle: true}))
     .pipe($.sourcemaps.write('../maps'))
     .pipe(gulp.dest('dist/static/scripts'))
     .pipe(reload({stream: true}));
@@ -60,6 +60,7 @@ const testLintOptions = {
 };
 
 gulp.task('lint', lint('app/static/scripts/**/*.js'));
+
 gulp.task('lint:test', lint('test/spec/**/*.js', testLintOptions));
 
 gulp.task('html', ['styles-scss', 'styles', 'scripts', 'libs'], () => {
@@ -170,7 +171,7 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app/templates'));
 });
 
-gulp.task('build', ['html', 'images', 'fonts', 'extras', 'templates'], () => {
+gulp.task('build', ['html', 'images', 'fonts', 'extras', 'templates', 'libs-py'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 })
 ;
@@ -202,6 +203,9 @@ gulp.task('serve:gae', function () {
   gulp.watch('app/*.{py,yaml}', ['extras']);
 });
 
+gulp.task('libs-py', () => {
+    return gulp.src(['libs/**/*']).pipe(gulp.dest('dist'));
+});
 
 gulp.task('gae-deploy', function () {
   gulp.src('app/app.yaml')

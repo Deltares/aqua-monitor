@@ -56,13 +56,15 @@ if (!String.prototype.format) {
 function renderLandsatMosaic(percentile, start, end, sharpen) {
   var bands = ['swir1', 'nir', 'green'];
 
-  var l8 = new ee.ImageCollection('LANDSAT/LC08/C01/T1_RT_TOA').filterDate(start, end).select(['B6', 'B5', 'B3'], bands);
-  var l7 = new ee.ImageCollection('LANDSAT/LE07/C01/T1_RT_TOA').filterDate(start, end).select(['B5', 'B4', 'B2'], bands);
+  var l9 = new ee.ImageCollection('LANDSAT/LC09/C02/T1_TOA').filterDate(start, end).select(['B6', 'B5', 'B3'], bands);
+  
+  var l8 = new ee.ImageCollection('LANDSAT/LC08/C02/T1_RT_TOA').filterDate(start, end).select(['B6', 'B5', 'B3'], bands);
+  var l7 = new ee.ImageCollection("LANDSAT/LE07/C02/T1_RT_TOA").filterDate(start, end).select(['B5', 'B4', 'B2'], bands);
 
-  var l5 = new ee.ImageCollection('LANDSAT/LT5_L1T_TOA').filterDate(start, end).select(['B5', 'B4', 'B2'], bands);
-  var l4 = new ee.ImageCollection('LANDSAT/LT4_L1T_TOA').filterDate(start, end).select(['B5', 'B4', 'B2'], bands);
+  var l5 = new ee.ImageCollection("LANDSAT/LT05/C02/T1_TOA").filterDate(start, end).select(['B5', 'B4', 'B2'], bands);
+  var l4 = new ee.ImageCollection("LANDSAT/LT04/C02/T1_TOA").filterDate(start, end).select(['B5', 'B4', 'B2'], bands);
 
-  var images = ee.ImageCollection(l8.merge(l7).merge(l5).merge(l4));
+  var images = ee.ImageCollection(l9.merge(l8).merge(l7).merge(l5).merge(l4));
 
   if (minDoy !== 0 && maxDoy !== 365) {
     images = images.filter(ee.Filter.dayOfYear(minDoy, maxDoy))
@@ -238,7 +240,7 @@ function clickShorelineProfile(pt) {
     } else {
         $("#note-text-row").hide();
     }
-  
+
     // HACK: Bootstrap restyles everything :(
     $('.chart-modal-close-button').css({
         "position": "absolute",
@@ -251,7 +253,7 @@ function clickShorelineProfile(pt) {
         "right": "0px",
         "margin": "0px"
     });
-    
+
     // Done loading.
     // $('#inprogress').hide()
   });
@@ -311,16 +313,19 @@ function renderWaterTrend(percentile, datesAndPeriods, slopeThreshold, slopeThre
 
   var images = new ee.ImageCollection([]);
 
-  var images_l8 = new ee.ImageCollection('LANDSAT/LC8_L1T_TOA').select(bands8, bands);
+  var images_l9 = new ee.ImageCollection('LANDSAT/LC09/C02/T1_TOA').select(bands8, bands);
+  images = new ee.ImageCollection(images.merge(images_l9));
+
+  var images_l8 = new ee.ImageCollection('LANDSAT/LC08/C02/T1_RT_TOA').select(bands8, bands);
   images = new ee.ImageCollection(images.merge(images_l8));
 
-  var images_l7 = new ee.ImageCollection('LANDSAT/LE7_L1T_TOA').select(bands7, bands);
+  var images_l7 = new ee.ImageCollection('LANDSAT/LE07/C02/T1_RT_TOA').select(bands7, bands);
   images = new ee.ImageCollection(images.merge(images_l7));
 
-  var images_l5 = new ee.ImageCollection('LANDSAT/LT5_L1T_TOA').select(bands7, bands);
+  var images_l5 = new ee.ImageCollection('LANDSAT/LT05/C02/T1_TOA').select(bands7, bands);
   images = new ee.ImageCollection(images.merge(images_l5));
 
-  var images_l4 = new ee.ImageCollection('LANDSAT/LT4_L1T_TOA').select(bands7, bands);
+  var images_l4 = new ee.ImageCollection('LANDSAT/LT04/C02/T1_TOA').select(bands7, bands);
   images = new ee.ImageCollection(images.merge(images_l4));
 
   var list = ee.List(datesAndPeriods);
@@ -606,9 +611,8 @@ function addEELayer(layer) {
           return '';
         }
 
-        var baseUrl = 'https://earthengine.googleapis.com/map';
-        var url = [baseUrl, id, zoom, tile.x, tile.y].join('/');
-        url += '?token=' + token;
+        var baseUrl = 'https://earthengine.googleapis.com/v1alpha'
+        var url = [baseUrl, id, 'tiles', zoom, tile.x, tile.y].join('/');
 
         return url;
       },
@@ -1247,13 +1251,15 @@ function layerByName(name) {
   return _.find(layers, ['name', name]);
 }
 
+var currentYear = new Date().getFullYear();
+
 function toggleMode() {
   // change the global mode
   mode = (mode == 'dynamic') ? 'static' : 'dynamic';
   console.log('mode change to', mode);
 
   if (mode === 'dynamic') {
-    $('#info-text-title').text('Surface water changes (1985-2017)');
+    $('#info-text-title').text('Surface water changes (1985-' + currentYear + ')');
     $('#info-text-body').html('Green and blue colors represent areas where surface water changes occured during the last 30 years. Green pixels show where surface water has been turned into land (accretion, land reclamation, droughts). Blue pixels show where land has been changed into surface water (erosion, reservoir construction). <br><br><strong>Note, it may take some time for results to appear, because the analysis is performed on-the-fly.</strong><br><br>The results of the analysis are published in: <br><br><a href="http://www.nature.com/nclimate/journal/v6/n9/full/nclimate3111.html"><strong>Donchyts et.al, 2016, Nature Climate Change</strong></a><br><br><br><a href="http://earthengine.google.com"><img src="static/images/GEE.png"></a>');
 
     $('#map').addClass('dynamic');

@@ -9,7 +9,7 @@ var queryMap = false;
 
 var maxChartIndex = 1;
 
-var beginDate = minYear.toString() + '-01-01', endDate = (maxYear+1).toString() + '2017-01-01';
+var beginDate = minYear.toString() + '-01-01', endDate = (maxYear+1).toString() + '2021-01-01';
 
 var mapLoaded = false;
 
@@ -101,7 +101,7 @@ var embedded = inIframe();
 if(embedded) {
   console.log('embedded')
 }
-
+        
 // client variables should be set by global template
 ee.data.setAuthToken(client_id, token_type, access_token, token_expires_in_sec, true);
 
