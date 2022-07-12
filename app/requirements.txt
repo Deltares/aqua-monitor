@@ -1,5 +1,8 @@
+Jinja2==3.0.3
+werkzeug==2.0.2
+itsdangerous==2.0.1
 Flask==1.1.2
 Flask-Cors==3.0.9
 gunicorn==20.0.4
-earthengine-api==0.1.237
+earthengine-api==0.1.316
 oauth2client==4.1.3
