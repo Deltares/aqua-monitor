@@ -22,6 +22,7 @@ import jinja2
 from flask import Flask, jsonify, redirect, request
 import flask_cors
 import error_handler
+from datetime import date
 
 app = Flask(__name__)
 app.register_blueprint(error_handler.error_handler)
@@ -191,7 +192,7 @@ def root():
     if max_year_selection:
         template_values['max_year_selection'] = max_year_selection
     else:
-        template_values['max_year_selection'] = 2021
+        template_values['max_year_selection'] = date.today().year - 1
 
     min_doy = request.args.get('min_doy', '')
     if min_doy:
@@ -215,7 +216,7 @@ def root():
     if max_year:
         template_values['max_year'] = max_year
     else:
-        template_values['max_year'] = 2021
+        template_values['max_year'] = date.today().year
 
     filter_count = request.args.get('filter_count', '')
     if filter_count:
