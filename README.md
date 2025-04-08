@@ -8,7 +8,7 @@ The website shows static map by default, visualizing surface water changes which
 
 A dynamic mode can be turned on for a more detailed analysis. In this mode, the surface water changes are computed on-the-fly using parameters provided by the user. Additionally, percentile composite images are generated for two selected years.
 
-The following Google Earth Engine script can be used to generate surface water changes on-the-fly: https://code.earthengine.google.com/ca025b5b16b195c18793936cb56b6a69. And the following was used to generate static maps: https://code.earthengine.google.com/ca025b5b16b195c18793936cb56b6a69.
+The following Google Earth Engine script can be used to generate surface water changes on-the-fly: https://code.earthengine.google.com/cf59ddfc92657de3a55e9ead901cdfe2. And the following was used to generate static maps: https://code.earthengine.google.com/2172c2d0a52cec3f8de8d22088012c2b.
 
 The results presented in the paper include a few additional clean-up steps (noise clean-up in the mountains using HAND mask, deforestation-like changes). But they were excluded during static map generation.
 
