@@ -43,27 +43,10 @@ Deploy using gcloud:
 
 # Test locally
 
-Since we're using Python 2.7 here, we need old version of GCS tools here, such as dev_appserver.py
-
-Installing this on Windows for development purposes is not easy. One way to do this is via https://pypi.org/project/gae_installer/:
-
-* pip install gae_installer
-                           
-(Google App Engine Standard environment, Python 2.7)
-
-* cd dist
-* python dev_appserver.py app.yaml
-
-On Windows use (assumin virtualenv with Python 2.7 named aqua-monitor):
-
-* cd dist
-* python <replace_with_python_installation_dir>\envs\aqua-monitor\Lib\site-packages\google_appengine\dev_appserver.py app.yaml
-
 On Linux (after you upgrade gcloud with the relevant components) `gcloud components install app-engine-python-extras`
 * `gulp serve:gae`
 
 Open the aqua monitor at port 8081
-
 
 # Advanced parameter, not exposed yet to the user interface
 
@@ -89,3 +72,15 @@ Format: http://aqua-monitor.appspot.com?min_year=1990&max_year=1995
 * ndvi_filter = -99 - can be used to filter-out changes which are not due to surface water (vegetation cover, like deforestation). This can be x2 slower. Using 0.1 to exclude deforestation woks in most cases.
 * smoothen=true - smoothen changes image or leave it blocky
 * debug = false -  currently only shows surface water change refinement regions at higher zoom levels
+
+# Request refresh token
+
+In the app/privatekey-web.json you configure a client id, client secret and refresh token. This is used to generate an access token during runtime which enables the application to communicate with Google APIs.
+
+Access tokens have limited lifetimes. If your application needs access to a Google API beyond the lifetime of a single access token, it can obtain a refresh token. A refresh token allows your application to obtain new access tokens.
+
+See more information here: https://developers.google.com/identity/protocols/oauth2
+
+Although refresh tokens should be unlimited, this is not actually documented anywhere by Google. Observed was that the refresh token was no longer valid after 2+ years and was not allowed to request an access token. A simple Flask app was added to this project to be able to request a refresh token.
+
+Run the Flask app in request_refresh_token.py to obtain a refresh token. Configure the app to include the correct client id and client secret.
