@@ -1,4 +1,4 @@
-runtime: python37
+runtime: python39
 entrypoint: gunicorn -t 300 -b :$PORT server:app
 
 runtime_config:
